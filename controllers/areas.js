@@ -70,7 +70,59 @@ exports.postVertex = async (req, res) => {
 };
 
 exports.putArea = async (req, res) => {
-    return
+    const { idArea, name, timeLimit, maxCapacity, idFacility, isActive } = req.body;
+    try {
+        const area = await Areas.updateArea({
+            idArea, name, timeLimit, maxCapacity, idFacility, isActive, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: area });
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
+exports.putAreaEdge = async (req, res) => {
+    const { idAreaEdge, idEdge, idArea, isActive } = req.body;
+    try {
+        const areaEdge = await Areas.updateAreaEdge({
+            idAreaEdge, idEdge, idArea, isActive, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: areaEdge });
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
+exports.putEdge = async (req, res) => {
+    const { idEdge, root, target, isActive } = req.body;
+    try {
+        const edge = await Areas.updateEdge({
+            idEdge, root, target, isActive, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: edge });
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
+exports.putVertex = async (req, res) => {
+    const { idVertex, x, y, isActive } = req.body;
+    try {
+        const vertex = await Areas.updateVertex({
+            idVertex, x, y, isActive, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: vertex });
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.deleteArea = async (req, res) => {
