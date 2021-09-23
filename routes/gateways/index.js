@@ -13,6 +13,7 @@ router.post("/", auth.valid, GatewaysController.postGateways);
 
 //PUT
 router.put("/", auth.valid, GatewaysController.putGateways);
+router.put("/area", auth.valid, GatewaysController.putGatewayArea);
 
 //DELETE
 router.delete("/", auth.valid, GatewaysController.deleteGateways);

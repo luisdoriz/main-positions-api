@@ -8,6 +8,9 @@ const Area = sequelize.define(
       allowNull:false,
       autoIncrement: true
    }, 
+   name: {
+      type: DataTypes.STRING
+   }, 
    timeLimit: {
       type: DataTypes.INTEGER
    }, 
@@ -35,6 +38,8 @@ const Area = sequelize.define(
    }
 }, { 
   timestamps: true,
+  createdAt: 'CreationDate',
+  updatedAt: 'UpdatedDate',
   paranoid: true,
   freezeTableName: true
   }

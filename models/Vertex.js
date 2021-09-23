@@ -31,6 +31,8 @@ const Vertex = sequelize.define(
    }
 }, { 
   timestamps: true,
+  createdAt: 'CreationDate',
+  updatedAt: 'UpdatedDate',
   paranoid: true,
   freezeTableName: true
   }

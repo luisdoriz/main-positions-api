@@ -8,6 +8,9 @@ const Facility = sequelize.define(
       allowNull:false,
       autoIncrement: true
    }, 
+   name: {
+      type: DataTypes.STRING
+   }, 
    sizeX: {
       type: DataTypes.INTEGER
    }, 
@@ -35,6 +38,8 @@ const Facility = sequelize.define(
    }
 }, { 
   timestamps: true,
+  createdAt: 'CreationDate',
+  updatedAt: 'UpdatedDate',
   paranoid: true,
   freezeTableName: true
   }
