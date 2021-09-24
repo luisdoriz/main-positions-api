@@ -1,7 +1,7 @@
 
 const { Person } = require('../../models');
 
-const updateBeaconEmployeePerson = async ({ idPerson, idBeacon, isActive, UpdatedBy }) => {
+const updateBeaconPerson = async ({ idPerson, idBeacon, isActive, UpdatedBy }) => {
     return Person.update({
         idBeacon, isActive, UpdatedBy
     }, {
@@ -12,5 +12,5 @@ const updateBeaconEmployeePerson = async ({ idPerson, idBeacon, isActive, Update
 }
 
 module.exports = {
-    updateBeaconEmployeePerson,
+    updateBeaconPerson,
 }

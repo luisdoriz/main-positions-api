@@ -14,8 +14,8 @@ router.post("/employee", auth.valid, PersonsController.postEmployee);
 router.post("/visitor", auth.valid, PersonsController.postVisitor);
 
 //PUT
+router.put("/beacon", auth.valid, PersonsController.putBeaconPerson);
 router.put("/employee", auth.valid, PersonsController.putEmployee);
-router.put("/employee/beacon", auth.valid, PersonsController.putBeaconEmployeePerson);
 router.put("/visitor", auth.valid, PersonsController.putVisitor);
 
 //DELETE

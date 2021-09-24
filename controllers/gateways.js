@@ -23,7 +23,6 @@ exports.postGateways = async (req, res) => {
             UpdatedBy: req.user.idUser
         })
         res.status(201).json({ status: 'success', data: gateway });
-
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });

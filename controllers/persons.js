@@ -1,5 +1,19 @@
 const Persons = require('../actions/persons');
 
+exports.putBeaconPerson = async (req, res) => {
+    //links a beacon to a person
+    const { idPerson, idBeacon, isActive } = req.body;
+    try {
+        const person = await Persons.updateBeaconPerson({
+            idPerson, idBeacon, isActive, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: person });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
 //********************************EMPLOYEE****************************************
 exports.getEmployee = async (req, res) => {
     return
@@ -22,20 +36,6 @@ exports.putEmployee = async (req, res) => {
     return
 };
 
-exports.putBeaconEmployeePerson = async (req, res) => {
-    //links a beacon to an employee
-    const { idPerson, idBeacon, isActive } = req.body;
-    try {
-        const employee = await Persons.updateBeaconEmployeePerson({
-            idPerson, idBeacon, isActive, UpdatedBy: req.user.idUser
-        })
-        res.status(201).json({ status: 'success', data: employee });
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ status: 'error', error });
-    }
-};
-
 exports.deleteEmployee = async (req, res) => {
     return
 };
@@ -46,7 +46,16 @@ exports.getVisitor = async (req, res) => {
 };
 
 exports.postVisitor = async (req, res) => {
-    return
+    const { name, firstLastName, secondLastName, email, idFacility, idBeacon, expirationDate } = req.body;
+    try {
+        const visitor = await Persons.createEmployee({
+            name, firstLastName, secondLastName, email, idFacility, idBeacon, expirationDate, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: visitor });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.putVisitor = async (req, res) => {
