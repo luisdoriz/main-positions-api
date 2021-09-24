@@ -1,8 +1,4 @@
 const Areas = require('../actions/areas');
-const AreaAccess = require('../actions/areaAccess');
-const AreaEdges = require('../actions/areaEdge');
-const Edges = require('../actions/edges');
-const Vertex = require('../actions/vertex');
 
 exports.getArea = async (req, res) => {
     return
@@ -129,4 +125,21 @@ exports.deleteArea = async (req, res) => {
     return
 };
 
+exports.getPrivilegeLevels = async (req, res) => {
+    const areas = await Areas.readPrivilegeLevels();
+    return res.status(200).send({ status: 'success', data: areas })
+};
 
+exports.postPrivilegeLevel = async (req, res) => {
+    const { name } = req.body;
+    try {
+        const privilegeLevel = await Areas.createPrivilegeLevel({
+            name, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: privilegeLevel });
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};

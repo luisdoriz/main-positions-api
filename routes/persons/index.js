@@ -1,29 +1,26 @@
 const express = require("express");
 const router = express.Router();
-//const { auth } = require('../../middleware/auth');
+const auth = require('../../middleware/auth');
 const PersonsController = require('../../controllers/persons');
 
 //base '/persons'
 
 //GET
-router.get("/", PersonsController.getPersons);
-router.get("/employee", PersonsController.getEmployee);
-router.get("/visitor", PersonsController.getVisitor);
+router.get("/employee", auth.valid, PersonsController.getEmployee);
+router.get("/visitor", auth.valid, PersonsController.getVisitor);
 
 //POST
-router.post("/", PersonsController.postPersons);
-router.post("/employee", PersonsController.postEmployee);
-router.post("/visitor", PersonsController.postVisitor);
+router.post("/employee", auth.valid, PersonsController.postEmployee);
+router.post("/visitor", auth.valid, PersonsController.postVisitor);
 
 //PUT
-router.put("/", PersonsController.putPersons);
-router.put("/employee", PersonsController.putEmployee);
-router.put("/visitor", PersonsController.putVisitor);
+router.put("/employee", auth.valid, PersonsController.putEmployee);
+router.put("/employee/beacon", auth.valid, PersonsController.putBeaconEmployeePerson);
+router.put("/visitor", auth.valid, PersonsController.putVisitor);
 
 //DELETE
-router.delete("/", PersonsController.deletePersons);
-router.delete("/employee", PersonsController.deleteEmployee);
-router.delete("/visitor", PersonsController.deleteVisitor);
+router.delete("/employee", auth.valid, PersonsController.deleteEmployee);
+router.delete("/visitor", auth.valid, PersonsController.deleteVisitor);
 
 
 module.exports = router;

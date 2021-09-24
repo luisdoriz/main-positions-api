@@ -1,4 +1,4 @@
-const { Sequelize, AreaEdge, Edge, Vertex } = require('../../models');
+const { Sequelize, AreaEdge, Edge, Vertex, PrivilegeLevel } = require('../../models');
 
 const readAreasAll = async () => {
     const vertices = await AreaEdge.findAll({
@@ -37,7 +37,15 @@ const readAreasAll = async () => {
     return areaVertices
 }
 
+const readPrivilegeLevels = async () => {
+    return PrivilegeLevel.findAll({
+        where: {
+            isActive: 1
+        }
+    });
+}
+
 module.exports = {
     readAreasAll,
-
+    readPrivilegeLevels
 }

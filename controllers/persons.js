@@ -1,31 +1,39 @@
 const Persons = require('../actions/persons');
 
-exports.getPersons = async (req, res) => {
-    return
-};
-
-exports.postPersons = async (req, res) => {
-    return
-};
-
-exports.putPersons = async (req, res) => {
-    return
-};
-
-exports.deletePersons = async (req, res) => {
-    return
-};
 //********************************EMPLOYEE****************************************
 exports.getEmployee = async (req, res) => {
     return
 };
 
 exports.postEmployee = async (req, res) => {
-    return
+    const { name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId } = req.body;
+    try {
+        const employee = await Persons.createEmployee({
+            name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: employee });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.putEmployee = async (req, res) => {
     return
+};
+
+exports.putBeaconEmployeePerson = async (req, res) => {
+    //links a beacon to an employee
+    const { idPerson, idBeacon, isActive } = req.body;
+    try {
+        const employee = await Persons.updateBeaconEmployeePerson({
+            idPerson, idBeacon, isActive, UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: employee });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.deleteEmployee = async (req, res) => {

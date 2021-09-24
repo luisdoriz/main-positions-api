@@ -8,12 +8,14 @@ const AreaController = require('../../controllers/areas');
 //GET
 router.get("/", auth.valid, AreaController.getArea);
 router.get("/all", auth.valid, AreaController.getAreaAll);
+router.get("/privilegeLevel", auth.valid, AreaController.getPrivilegeLevels);
 
 //POST
 router.post("/", auth.valid, AreaController.postArea);
 router.post("/areaEdge", auth.valid, AreaController.postAreaEdge);
 router.post("/edge", auth.valid, AreaController.postEdge);
 router.post("/vertex", auth.valid, AreaController.postVertex);
+router.post("/privilegeLevel", auth.valid, AreaController.postPrivilegeLevel);
 
 //PUT
 router.put("/", auth.valid, AreaController.putArea);

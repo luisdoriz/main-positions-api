@@ -1,4 +1,4 @@
-const { Area, AreaEdge, Edge, Vertex } = require('../../models');
+const { Area, AreaEdge, Edge, Vertex, PrivilegeLevel } = require('../../models');
 
 const createArea = async ({ name, timeLimit, maxCapacity, idFacility, isActive, CreatedBy, UpdatedBy }) => Area.create({
     name,
@@ -34,9 +34,17 @@ const createVertex = async ({ x, y, isActive, CreatedBy, UpdatedBy }) => Vertex.
     UpdatedBy,
 });
 
+const createPrivilegeLevel = async ({ name, isActive, CreatedBy, UpdatedBy }) => PrivilegeLevel.create({
+    name,
+    isActive,
+    CreatedBy,
+    UpdatedBy,
+});
+
 module.exports = {
     createArea,
     createAreaEdge,
     createEdge,
-    createVertex
+    createVertex,
+    createPrivilegeLevel
 };

@@ -1,21 +1,22 @@
 const express = require("express");
 const router = express.Router();
-//const { auth } = require('../../middleware/auth');
+const auth = require('../../middleware/auth');
 const BeaconsController = require('../../controllers/beacons');
 
 //base '/beacons'
 
 //GET
-router.get("/", BeaconsController.getBeacon);
+router.get("/", auth.valid, BeaconsController.getBeacon);
+router.get("/all", auth.valid, BeaconsController.getBeaconsAll);
 
 //POST
-router.post("/", BeaconsController.postBeacon);
+router.post("/", auth.valid, BeaconsController.postBeacon);
 
 //PUT
-router.put("/", BeaconsController.putBeacon);
+router.put("/", auth.valid, BeaconsController.putBeacon);
 
 //DELETE
-router.delete("/", BeaconsController.deleteBeacon);
+router.delete("/", auth.valid, BeaconsController.deleteBeacon);
 
 
 module.exports = router;
