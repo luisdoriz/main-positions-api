@@ -7,6 +7,7 @@ const AreaController = require('../../controllers/areas');
 
 //GET
 router.get("/", auth.valid, AreaController.getArea);
+router.get("/beacon", auth.valid, AreaController.getAreaBeacon);
 router.get("/all", auth.valid, AreaController.getAreaAll);
 router.get("/privilegeLevel", auth.valid, AreaController.getPrivilegeLevels);
 

@@ -4,6 +4,13 @@ exports.getArea = async (req, res) => {
     return
 };
 
+exports.getAreaBeacon = async (req, res) => {
+    //gets areas in facilities a beacon is registered at
+    const { macAddress } = req.body;
+    const areas = await Areas.readAreasBeacon({ macAddress });
+    return res.status(200).send({ status: 'success', data: areas })
+};
+
 exports.getAreaAll = async (req, res) => {
     const areas = await Areas.readAreasAll();
     return res.status(200).send({ status: 'success', data: areas })
