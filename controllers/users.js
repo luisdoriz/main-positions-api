@@ -14,7 +14,7 @@ exports.logIn = async (req, res) => {
 
 //********************************USERS****************************************
 exports.getUser = async (req, res) => {
-    return res.status(200).json({ status: 'success', data: req.body.user });
+    return res.status(200).json({ status: 'success', data: req.user });
 };
 
 exports.postUser = async (req, res) => {

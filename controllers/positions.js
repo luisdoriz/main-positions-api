@@ -20,7 +20,20 @@ exports.postPositions = async (req, res) => {
     }
 };
 exports.putPositions = async (req, res) => {
-    return
+    //data from flask
+    const { x, y, from, to, area, beacon } = req.body;
+    try {
+        const position = await Positions.upsertPosition({
+            x, y, from, to, area, beacon,
+            isActive: 1,
+            CreatedBy: req.user.idUser,
+            UpdatedBy: req.user.idUser
+        })
+        res.status(201).json({ status: 'success', data: position });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.deletePositions = async (req, res) => {
