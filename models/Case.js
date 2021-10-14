@@ -5,13 +5,15 @@ module.exports = (sequelize, DataTypes) => {
       idCase: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        autoIncrement: true
       },
       from: {
         type: DataTypes.DATE
       },
       to: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: true
       },
       ongoing: {
         type: DataTypes.BOOLEAN
@@ -43,6 +45,14 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: true
     }
   );
+  Case.associate = function(models) {
 
+    Case.belongsTo(models.Person, {
+     foreignKey: 'idPerson',
+     target: 'idPerson'
+    });
+    
+    
+    }
   return Case;
 };

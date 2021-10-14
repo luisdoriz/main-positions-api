@@ -19,6 +19,17 @@ exports.getEmployee = async (req, res) => {
     return
 };
 
+exports.getEmployees = async (req, res) => {
+    //gets all employees grouped by facility (used in cases frontend)
+    try {
+        const employees = await Persons.readEmployees()
+        res.status(201).json({ status: 'success', data: employees });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
 exports.postEmployee = async (req, res) => {
     const { name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId } = req.body;
     try {
