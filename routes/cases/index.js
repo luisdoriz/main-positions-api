@@ -16,7 +16,7 @@ router.post("/", auth.valid, CasesController.postCase);
 router.put("/", auth.valid, CasesController.putCase);
 
 //DELETE
-router.delete("/", auth.valid, CasesController.deleteCase);
+router.delete("/:idCase", auth.valid, CasesController.deleteCase);
 
 
 module.exports = router;

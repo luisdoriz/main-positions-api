@@ -54,7 +54,7 @@ exports.putCase = async (req, res) => {
 };
 
 exports.deleteCase = async (req, res) => {
-    const { idCase } = req.body;
+    const { idCase } = req.params;
     try {
         await Cases.deleteCase({
             idCase
