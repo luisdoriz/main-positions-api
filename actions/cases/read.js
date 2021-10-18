@@ -18,6 +18,7 @@ const readActiveCases = async () => {
     cases.forEach(c => formatedCases.push({
         name: `${c.Person.name} ${c.Person.firstLastName} ${c.Person.secondLastName}`,
         date: c.from,
+        idCase: c.idCase,
         idFacility: c.Person.Facility.idFacility,
         facilityName:  c.Person.Facility.name
     }))
@@ -39,6 +40,7 @@ const readRecoveredCases = async () => {
     cases.forEach(c => formatedCases.push({
         name: `${c.Person.name} ${c.Person.firstLastName} ${c.Person.secondLastName}`,
         date: c.from,
+        idCase: c.idCase,
         idFacility: c.Person.Facility.idFacility,
         facilityName:  c.Person.Facility.name
     }))
