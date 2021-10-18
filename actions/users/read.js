@@ -1,6 +1,6 @@
 const models = require('../../models');
 
-const { User } = models;
+const { User, Organization } = models;
 
 const getUsers = async () => User.findAll();
 
@@ -10,6 +10,9 @@ const getUserByEmail = async (email) => User.findOne({
   where: {
     email,
   },
+  include: {
+    model: Organization
+  }
 });
 
 module.exports = {
