@@ -16,7 +16,16 @@ exports.putBeaconPerson = async (req, res) => {
 
 //********************************EMPLOYEE****************************************
 exports.getEmployee = async (req, res) => {
-    return
+    const { idEmployee } = req.body;
+    try {
+        //TODO
+        //const employee = await Persons.readEmployee({ idEmployee })
+        res.status(201).json({ status: 'success', data: employee });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+
 };
 
 exports.getEmployees = async (req, res) => {
@@ -44,7 +53,16 @@ exports.postEmployee = async (req, res) => {
 };
 
 exports.putEmployee = async (req, res) => {
-    return
+    // const { idEmployee, name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive } = req.body;
+    // try {
+    //     const updatedEmployee = await Persons.updateEmployee({
+    //         idEmployee, name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive, UpdatedBy: req.user.idUser
+    //     })
+    //     res.status(201).json({ status: 'success', data: updatedEmployee });
+    // } catch (error) {
+    //     console.log(error)
+    //     res.status(400).json({ status: 'error', error });
+    // }
 };
 
 exports.deleteEmployee = async (req, res) => {

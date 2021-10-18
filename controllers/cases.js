@@ -54,7 +54,16 @@ exports.putCase = async (req, res) => {
 };
 
 exports.deleteCase = async (req, res) => {
-    return
+    const { idCase } = req.body;
+    try {
+        await Cases.deleteCase({
+            idCase
+        })
+        res.status(201).json({ status: 'success' });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 

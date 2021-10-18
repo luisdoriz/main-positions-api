@@ -11,6 +11,16 @@ const updateBeaconPerson = async ({ idPerson, idBeacon, isActive, UpdatedBy }) =
     });
 }
 
+const updateEmployee = async ({ idEmployee, name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive, UpdatedBy }) => {
+    return Person.update({
+        idBeacon, isActive, UpdatedBy
+    }, {
+        where: {
+            idPerson
+        }
+    });
+}
+
 module.exports = {
     updateBeaconPerson,
 }
