@@ -29,7 +29,7 @@ exports.putPositions = async (req, res) => {
             CreatedBy: req.user.idUser,
             UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: position });
+        res.status(200).json({ status: 'success', data: position });
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });

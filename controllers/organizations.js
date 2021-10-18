@@ -8,7 +8,7 @@ exports.postOrganizations = async (req, res) => {
     try {
         let { name, address, phoneNumber } = req.body;
         await Organizations.createOrganization({ name, address, phoneNumber })
-        res.status(200).send({ 'message': 'Organization created successfully' });
+        res.status(201).send({ 'message': 'Organization created successfully' });
     } catch (error) {
         console.log(error)
         res.status(500).send(error)

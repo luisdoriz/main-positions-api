@@ -78,7 +78,7 @@ exports.putArea = async (req, res) => {
         const area = await Areas.updateArea({
             idArea, name, timeLimit, maxCapacity, idFacility, isActive, UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: area });
+        res.status(200).json({ status: 'success', data: area });
 
     } catch (error) {
         console.log(error)
@@ -92,7 +92,7 @@ exports.putAreaEdge = async (req, res) => {
         const areaEdge = await Areas.updateAreaEdge({
             idAreaEdge, idEdge, idArea, isActive, UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: areaEdge });
+        res.status(200).json({ status: 'success', data: areaEdge });
 
     } catch (error) {
         console.log(error)
@@ -106,7 +106,7 @@ exports.putEdge = async (req, res) => {
         const edge = await Areas.updateEdge({
             idEdge, root, target, isActive, UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: edge });
+        res.status(200).json({ status: 'success', data: edge });
 
     } catch (error) {
         console.log(error)
@@ -120,7 +120,7 @@ exports.putVertex = async (req, res) => {
         const vertex = await Areas.updateVertex({
             idVertex, x, y, isActive, UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: vertex });
+        res.status(200).json({ status: 'success', data: vertex });
 
     } catch (error) {
         console.log(error)
@@ -143,7 +143,7 @@ exports.postPrivilegeLevel = async (req, res) => {
         const privilegeLevel = await Areas.createPrivilegeLevel({
             name, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: privilegeLevel });
+        res.status(200).json({ status: 'success', data: privilegeLevel });
 
     } catch (error) {
         console.log(error)

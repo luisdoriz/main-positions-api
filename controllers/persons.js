@@ -7,7 +7,7 @@ exports.putBeaconPerson = async (req, res) => {
         const person = await Persons.updateBeaconPerson({
             idPerson, idBeacon, isActive, UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: person });
+        res.status(200).json({ status: 'success', data: person });
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -20,7 +20,7 @@ exports.getEmployee = async (req, res) => {
     try {
         //TODO
         //const employee = await Persons.readEmployee({ idEmployee })
-        res.status(201).json({ status: 'success', data: employee });
+        res.status(200).json({ status: 'success', data: employee });
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -32,7 +32,7 @@ exports.getEmployees = async (req, res) => {
     //gets all employees grouped by facility (used in cases frontend)
     try {
         const employees = await Persons.readEmployees()
-        res.status(201).json({ status: 'success', data: employees });
+        res.status(200).json({ status: 'success', data: employees });
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });

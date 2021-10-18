@@ -4,7 +4,7 @@ const Persons = require('../actions/persons');
 exports.getActiveCases = async (req, res) => {
     try {
         const cases = await Cases.readActiveCases()
-        res.status(201).json({ status: 'success', data: cases });
+        res.status(200).json({ status: 'success', data: cases });
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -14,7 +14,7 @@ exports.getActiveCases = async (req, res) => {
 exports.getRecoveredCases = async (req, res) => {
     try {
         const cases = await Cases.readRecoveredCases()
-        res.status(201).json({ status: 'success', data: cases });
+        res.status(200).json({ status: 'success', data: cases });
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -45,7 +45,7 @@ exports.putCase = async (req, res) => {
         const editedCase = await Cases.updateCase({
             idCase, to: toDate, ongoing
         })
-        res.status(201).json({ status: 'success', data: editedCase });
+        res.status(200).json({ status: 'success', data: editedCase });
 
     } catch (error) {
         console.log(error)
@@ -59,7 +59,7 @@ exports.deleteCase = async (req, res) => {
         await Cases.deleteCase({
             idCase
         })
-        res.status(201).json({ status: 'success' });
+        res.status(200).json({ status: 'success' });
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
