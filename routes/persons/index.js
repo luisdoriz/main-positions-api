@@ -8,6 +8,7 @@ const PersonsController = require('../../controllers/persons');
 //GET
 router.get("/employee", auth.valid, PersonsController.getEmployee);
 router.get("/employees", auth.valid, PersonsController.getEmployees);
+router.get("/employees/facilities", auth.valid, PersonsController.getEmployees);
 router.get("/visitor", auth.valid, PersonsController.getVisitor);
 
 //POST
