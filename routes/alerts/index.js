@@ -4,7 +4,7 @@ const router = express.Router();
 const AlertsController = require('../../controllers/alerts');
 
 //GET
-router.get("/", AlertsController.getAlert);
+router.get("/", AlertsController.getAlerts);
 
 //POST
 router.post("/", AlertsController.postAlert);
@@ -13,6 +13,6 @@ router.post("/", AlertsController.postAlert);
 router.put("/", AlertsController.putAlert);
 
 //DELETE
-router.delete("/", AlertsController.deleteAlert);
+router.delete("/:idAlert", AlertsController.deleteAlert);
 
 module.exports = router;

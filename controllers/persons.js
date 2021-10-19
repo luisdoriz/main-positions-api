@@ -1,4 +1,5 @@
 const Persons = require('../actions/persons');
+const PrivilegeLevel = require('../actions/priviledgeLevels');
 
 exports.putBeaconPerson = async (req, res) => {
     //links a beacon to a person
@@ -8,6 +9,16 @@ exports.putBeaconPerson = async (req, res) => {
             idPerson, idBeacon, isActive, UpdatedBy: req.user.idUser
         })
         res.status(200).json({ status: 'success', data: person });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
+exports.getPrivilegeLevel = async (req, res) => {
+    try {
+        const pl = await PrivilegeLevel.readPrivilegeLevels()
+        res.status(200).json({ status: 'success', data: pl });
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });

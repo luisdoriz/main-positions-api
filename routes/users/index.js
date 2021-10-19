@@ -4,7 +4,8 @@ const auth = require('../../middleware/auth');
 const UsersController = require('../../controllers/users');
 
 //GET
-router.get("/", auth.valid, UsersController.getUser);
+router.get("/", auth.valid, UsersController.getUsers);
+router.get("/roles", auth.valid, UsersController.getRoles);
 
 //POST
 router.post("/", UsersController.postUser);

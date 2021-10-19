@@ -51,7 +51,6 @@ exports.postEdge = async (req, res) => {
             root, target, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
         res.status(201).json({ status: 'success', data: gateway });
-
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -65,7 +64,6 @@ exports.postVertex = async (req, res) => {
             x, y, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
         res.status(201).json({ status: 'success', data: gateway });
-
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -79,7 +77,6 @@ exports.putArea = async (req, res) => {
             idArea, name, timeLimit, maxCapacity, idFacility, isActive, UpdatedBy: req.user.idUser
         })
         res.status(200).json({ status: 'success', data: area });
-
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -93,7 +90,6 @@ exports.putAreaEdge = async (req, res) => {
             idAreaEdge, idEdge, idArea, isActive, UpdatedBy: req.user.idUser
         })
         res.status(200).json({ status: 'success', data: areaEdge });
-
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -107,7 +103,6 @@ exports.putEdge = async (req, res) => {
             idEdge, root, target, isActive, UpdatedBy: req.user.idUser
         })
         res.status(200).json({ status: 'success', data: edge });
-
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -121,7 +116,6 @@ exports.putVertex = async (req, res) => {
             idVertex, x, y, isActive, UpdatedBy: req.user.idUser
         })
         res.status(200).json({ status: 'success', data: vertex });
-
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
@@ -144,7 +138,6 @@ exports.postPrivilegeLevel = async (req, res) => {
             name, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
         res.status(200).json({ status: 'success', data: privilegeLevel });
-
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
