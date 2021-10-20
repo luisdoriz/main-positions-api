@@ -11,9 +11,6 @@ const Alert = sequelize.define(
    payload: {
       type: DataTypes.STRING
    }, 
-   entityId: {
-      type: DataTypes.INTEGER
-   }, 
    idArea: {
       type: DataTypes.INTEGER, 
       allowNull:false

@@ -2,7 +2,8 @@ const { sequelize, Alert, Person, Employee } = require('../../models');
 
 const readAlerts = async () => {
     let [alerts] = await sequelize.query(`
-    SELECT "idAlert", "payload", "date", "idEmployee", "Person"."name", "Person"."firstLastName", "Person"."secondLastName", "Alert"."idArea", "Area"."name" as "areaName", "Facility"."idFacility", "Facility"."name" as "facilityName" FROM "Alert"
+    SELECT "idAlert", "payload", "date", "idEmployee", "Person"."name", "Person"."firstLastName", "Person"."secondLastName", "Alert"."idArea", "Area"."name" as "areaName", "Facility"."idFacility", "Facility"."name" as "facilityName", "AlertType"."name" as "alertType" FROM "Alert"
+    JOIN "AlertType" ON "AlertType"."idAlertType"="Alert"."idAlertType"
     JOIN "Person" ON "Person"."idPerson"="Alert"."idPerson"
     JOIN "Employee" ON "Employee"."idPerson"="Person"."idPerson"
     JOIN "Area" ON "Area"."idArea"="Alert"."idArea"
@@ -13,6 +14,7 @@ const readAlerts = async () => {
     alerts.forEach(a => formatedAlerts.push({
         idAlert: a.idAlert,
         payload: a.payload,
+        type: a.alertType,
         date: a.date,
         idEmployee: a.idEmployee,
         employeeName: `${a.name} ${a.firstLastName} ${a.secondLastName}`,
