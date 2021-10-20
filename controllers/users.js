@@ -24,6 +24,17 @@ exports.getRoles = async (req, res) => {
 };
 
 //********************************USERS****************************************
+exports.getUser = async (req, res) => {
+    try {
+        const { idUser } = req.user
+        const user = await Users.readUser({ idUser });
+        res.status(200).json({ status: 'success', data: { user } });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error: 'Check the email address or password.' });
+    }
+};
+
 exports.getUsers = async (req, res) => {
     try {
         const { idOrganization } = req.user

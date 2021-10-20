@@ -1,17 +1,23 @@
 const models = require('../../models');
 
-const { Sequelize, Employee, Person, Facility } = models;
+const { sequelize, Sequelize, Employee, Person, Facility } = models;
 
 const readEmployee = async ({ idEmployee }) => {
-    return Employee.findOne({
-        include: [{
-            model: Person
-        }],
-        where: {
-            isActive: 1,
+    let [employee] = await sequelize.query(`
+    SELECT "Employee"."idEmployee", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macBeacon", 
+    "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Employee"."internalId", "Person"."idPerson", "Beacon"."idBeacon"
+    FROM "Employee"
+    JOIN "Person" ON "Person"."idPerson"="Employee"."idPerson"
+    JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
+    LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
+    LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
+    WHERE "Employee"."idEmployee"=:idEmployee
+    `, {
+        replacements: {
             idEmployee
         }
-    });
+    })
+    return employee[0]
 }
 
 const readEmployees = async () => {

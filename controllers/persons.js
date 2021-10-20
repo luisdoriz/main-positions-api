@@ -27,10 +27,9 @@ exports.getPrivilegeLevel = async (req, res) => {
 
 //********************************EMPLOYEE****************************************
 exports.getEmployee = async (req, res) => {
-    const { idEmployee } = req.body;
+    const { idEmployee } = req.params;
     try {
-        //TODO
-        //const employee = await Persons.readEmployee({ idEmployee })
+        const employee = await Persons.readEmployee({ idEmployee })
         res.status(200).json({ status: 'success', data: employee });
     } catch (error) {
         console.log(error)
@@ -64,20 +63,28 @@ exports.postEmployee = async (req, res) => {
 };
 
 exports.putEmployee = async (req, res) => {
-    // const { idEmployee, name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive } = req.body;
-    // try {
-    //     const updatedEmployee = await Persons.updateEmployee({
-    //         idEmployee, name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive, UpdatedBy: req.user.idUser
-    //     })
-    //     res.status(201).json({ status: 'success', data: updatedEmployee });
-    // } catch (error) {
-    //     console.log(error)
-    //     res.status(400).json({ status: 'error', error });
-    // }
+    const { idEmployee } = req.params;
+    const { name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive } = req.body;
+    try {
+        const updatedEmployee = await Persons.updateEmployee({
+            idEmployee, name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive, UpdatedBy: req.user.idUser
+        })
+        res.status(200).json({ status: 'success', data: updatedEmployee });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.deleteEmployee = async (req, res) => {
-    return
+    try {
+        const { idEmployee } = req.params;
+        const employee = await Persons.deleteEmployee({ idEmployee })
+        res.status(200).json({ status: 'success', data: employee });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 //********************************VISITORS****************************************
