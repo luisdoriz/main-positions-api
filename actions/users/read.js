@@ -9,6 +9,7 @@ const readUsers = async ({ idOrganization }) => {
   })
   const formatedUsers = []
   users.forEach(u => formatedUsers.push({
+    idUser: u.idUser,
     name: u.name,
     //lastNames: `${u.firstLastName} ${u.secondLastName}`,
     email: u.email,
