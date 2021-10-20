@@ -1,1 +1,1 @@
-web: npm i && sequelize db:migrate && node app.js
+web: npm i && node app.js
