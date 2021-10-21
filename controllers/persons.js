@@ -35,13 +35,23 @@ exports.getEmployee = async (req, res) => {
         console.log(error)
         res.status(400).json({ status: 'error', error });
     }
-
 };
 
 exports.getEmployees = async (req, res) => {
+    try {
+        const { idOrganization } = req.user;
+        const employees = await Persons.readEmployees({ idOrganization })
+        res.status(200).json({ status: 'success', data: employees });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
+exports.getEmployeesFacilities = async (req, res) => {
     //gets all employees grouped by facility (used in cases frontend)
     try {
-        const employees = await Persons.readEmployees()
+        const employees = await Persons.readEmployeesFacilities()
         res.status(200).json({ status: 'success', data: employees });
     } catch (error) {
         console.log(error)

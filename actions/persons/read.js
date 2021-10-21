@@ -20,7 +20,25 @@ const readEmployee = async ({ idEmployee }) => {
     return employee[0]
 }
 
-const readEmployees = async () => {
+const readEmployees = async ({idOrganization}) => {
+    let [employees] = await sequelize.query(`
+    SELECT "Employee"."idEmployee", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macBeacon", 
+    "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Employee"."internalId", "Person"."idPerson", "Beacon"."idBeacon"
+    FROM "Employee"
+    JOIN "Person" ON "Person"."idPerson"="Employee"."idPerson"
+    JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
+    LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
+    LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
+    WHERE "Facility"."idOrganization"=:idOrganization
+    `,{
+        replacements: {
+            idOrganization
+        }
+    })
+    return employees
+}
+
+const readEmployeesFacilities = async () => {
     //reads all employees grouped by facility
     const employees = await Employee.findAll({
         raw: true,
@@ -76,5 +94,6 @@ const readEmployees = async () => {
 
 module.exports = {
     readEmployee,
-    readEmployees
+    readEmployees,
+    readEmployeesFacilities
 };
