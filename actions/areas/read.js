@@ -44,7 +44,7 @@ const readAreasBeacon = async ({ macAddress }) => {
         JOIN "AreaAccess" ON "AreaAccess"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
         LEFT JOIN 
         (SELECT "idPosition", "idBeacon", "to" FROM "Position"
-        WHERE "Position"."to" > now() - INTERVAL '1 DAY') as pos
+        WHERE "Position"."to" > now() - INTERVAL '1 DAY' AND "Position"."deletedAt" IS NULL) as pos 
         
         ON "Beacon"."idBeacon"="pos"."idBeacon"
         WHERE "macAddress"=:macAddress

@@ -11,7 +11,7 @@ const readEmployee = async ({ idEmployee }) => {
     JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
     LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
     LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
-    WHERE "Employee"."idEmployee"=:idEmployee
+    WHERE "Employee"."idEmployee"=:idEmployee AND "Employee"."deletedAt" IS NULL
     `, {
         replacements: {
             idEmployee
@@ -29,7 +29,7 @@ const readEmployees = async ({idOrganization}) => {
     JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
     LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
     LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
-    WHERE "Facility"."idOrganization"=:idOrganization
+    WHERE "Facility"."idOrganization"=:idOrganization AND "Employee"."deletedAt" IS NULL
     `,{
         replacements: {
             idOrganization

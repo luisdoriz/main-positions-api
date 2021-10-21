@@ -8,7 +8,7 @@ const readAlerts = async () => {
     JOIN "Employee" ON "Employee"."idPerson"="Person"."idPerson"
     JOIN "Area" ON "Area"."idArea"="Alert"."idArea"
     JOIN "Facility" ON "Facility"."idFacility"="Area"."idFacility"
-    WHERE "Alert"."isActive"=1 AND "Employee"."isActive"=1 and "Person"."isActive"=1
+    WHERE "Alert"."isActive"=1 AND "Employee"."isActive"=1 and "Person"."isActive"=1 AND "Person"."deletedAt" IS NULL
     `)
     const formatedAlerts = []
     alerts.forEach(a => formatedAlerts.push({
