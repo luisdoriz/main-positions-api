@@ -4,7 +4,7 @@ const { sequelize, Sequelize, Employee, Person, Facility } = models;
 
 const readEmployee = async ({ idEmployee }) => {
     let [employee] = await sequelize.query(`
-    SELECT "Employee"."idEmployee", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macBeacon", 
+    SELECT "Employee"."idEmployee", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macAddress", 
     "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Employee"."internalId", "Person"."idPerson", "Beacon"."idBeacon"
     FROM "Employee"
     JOIN "Person" ON "Person"."idPerson"="Employee"."idPerson"
@@ -22,7 +22,7 @@ const readEmployee = async ({ idEmployee }) => {
 
 const readEmployees = async ({idOrganization}) => {
     let [employees] = await sequelize.query(`
-    SELECT "Employee"."idEmployee", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macBeacon", 
+    SELECT "Employee"."idEmployee", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macAddress", 
     "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Employee"."internalId", "Person"."idPerson", "Beacon"."idBeacon"
     FROM "Employee"
     JOIN "Person" ON "Person"."idPerson"="Employee"."idPerson"
