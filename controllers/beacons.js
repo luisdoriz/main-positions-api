@@ -34,7 +34,16 @@ exports.putBeacon = async (req, res) => {
 };
 
 exports.deleteBeacon = async (req, res) => {
-    return
+    const { idBeacon } = req.params;
+    try {
+        await Beacons.deleteBeacon({
+            idBeacon
+        })
+        res.status(200).json({ status: 'success' });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 

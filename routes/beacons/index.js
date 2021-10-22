@@ -16,7 +16,7 @@ router.post("/", auth.valid, BeaconsController.postBeacon);
 router.put("/", auth.valid, BeaconsController.putBeacon);
 
 //DELETE
-router.delete("/", auth.valid, BeaconsController.deleteBeacon);
+router.delete("/:idBeacon", auth.valid, BeaconsController.deleteBeacon);
 
 
 module.exports = router;
