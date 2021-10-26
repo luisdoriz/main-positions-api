@@ -3,7 +3,8 @@ const Gateways = require('../actions/gateways');
 exports.getGateways = async (req, res) => {
     //gets all existing active gateways
     try {
-        const gateways = await Gateways.readGateways();
+        const { macAddress } = req.body;
+        const gateways = await Gateways.readGateways({ macAddress });
         return res.status(200).send({ status: 'success', data: gateways })
     } catch (error) {
         console.log(error)

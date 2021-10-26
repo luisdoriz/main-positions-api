@@ -11,7 +11,7 @@ const createUser = async (body) => User.create(body);
 
 const createToken = async (user) => {
     const { idUser, name, email, } = user;
-    const expires = moment().add(3, 'months').valueOf();
+    const expires = moment().add(9999, 'months').valueOf();
     const token = jwt.encode({
         idUser,
         email,
