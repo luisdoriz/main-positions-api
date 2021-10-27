@@ -1,4 +1,4 @@
-const { Sequelize, sequelize, AreaEdge, Edge, Vertex, PrivilegeLevel, Area, Beacon, AreaAccess } = require('../../models');
+const { Sequelize, sequelize, AreaEdge, Edge, Vertex, PrivilegeLevel, Area, Beacon, AreaAccess, Facility } = require('../../models');
 
 const readAreasAll = async () => {
     const vertices = await AreaEdge.findAll({
@@ -54,7 +54,7 @@ const readAreasBeacon = async ({ macAddress }) => {
             macAddress
         }
     })
-    if(!areas[0]) throw 'Beacons mac address not found'
+    if (!areas[0]) throw 'Beacons mac address not found'
     areas = areas.map(a => a.idArea) // [{idArea:1},{idArea:2}]  -->  [1,2]
     const vertices = await AreaEdge.findAll({
         // raw: true,
@@ -103,8 +103,26 @@ const readPrivilegeLevels = async () => {
     });
 }
 
+const readAreasFacility = async ({ idFacility }) => {
+    return Area.findAll({
+        where: {
+            isActive: 1
+        },
+        attributes: ['idArea', 'name', 'timeLimit', 'maxCapacity', 'idFacility'],
+        include: {
+            model: Facility,
+            where: {
+                idFacility,
+                isActive: 1
+            },
+            attributes: []
+        }
+    });
+}
+
 module.exports = {
     readAreasBeacon,
     readAreasAll,
-    readPrivilegeLevels
+    readPrivilegeLevels,
+    readAreasFacility
 }
