@@ -4,18 +4,11 @@ const { sequelize, Gateway, Area } = models;
 
 const readGateways = async ({ macAddress }) => {
     //get gatewasy from beacon mac's organization
-    const gateways = await Gateway.findAll({
-        include: [{
-            model: Area
-        }],
-        where: {
-            isActive: 1
-        }
-    });
-    //const beacon = await Beacon.findOne({ where: { macAddress } })
+
+    //get beacons in a facility (used for flask cache)
     const [beacons] = await sequelize.query(`
-            SELECT
-            "b".*
+            SELECT DISTINCT
+            "b".*, "Facility"."idFacility"
         FROM
             "Beacon"
             INNER JOIN "Person" ON "Person"."idBeacon" = "Beacon"."idBeacon"
@@ -24,9 +17,27 @@ const readGateways = async ({ macAddress }) => {
             INNER JOIN "Beacon" "b" ON "b"."idBeacon" = "p"."idBeacon"
         WHERE
             "Beacon"."macAddress" = :macAddress
+            AND "b"."deletedAt" IS NULL
     `, {
         replacements: {
             macAddress
+        }
+    })
+
+    if(!beacons[0]) throw "Beacon's mac address not found"
+    const idFacility = beacons[0].idFacility
+    //get gateways from the beacons idFacility
+    const [gateways] = await sequelize.query(`
+        SELECT * FROM "Gateway" 
+        WHERE "Gateway"."idArea" IN
+            (SELECT "idArea" FROM "Facility" 
+            JOIN "Area" USING("idFacility")
+            WHERE "Facility"."idFacility"=:idFacility) /*idAreas in a facility*/
+        AND
+            "Gateway"."deletedAt" IS NULL
+    `, {
+        replacements: {
+            idFacility
         }
     })
     return {

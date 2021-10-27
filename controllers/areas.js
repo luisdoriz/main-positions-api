@@ -7,8 +7,12 @@ exports.getArea = async (req, res) => {
 exports.getAreaBeacon = async (req, res) => {
     //gets areas in facilities a beacon is registered at
     const { macAddress } = req.body;
-    const areas = await Areas.readAreasBeacon({ macAddress });
-    return res.status(200).send({ status: 'success', data: areas })
+    try {
+        const areas = await Areas.readAreasBeacon({ macAddress });
+        return res.status(200).send({ status: 'success', data: areas })
+    } catch (error) {
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.getAreaAll = async (req, res) => {

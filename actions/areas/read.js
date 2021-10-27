@@ -54,6 +54,7 @@ const readAreasBeacon = async ({ macAddress }) => {
             macAddress
         }
     })
+    if(!areas[0]) throw 'Beacons mac address not found'
     areas = areas.map(a => a.idArea) // [{idArea:1},{idArea:2}]  -->  [1,2]
     const vertices = await AreaEdge.findAll({
         // raw: true,
