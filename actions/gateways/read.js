@@ -46,6 +46,25 @@ const readGateways = async ({ macAddress }) => {
     }
 }
 
+const readGatewaysByIdFacility = async ({ idFacility }) => {
+    //get gateways in a facility
+    const [gateways] = await sequelize.query(`
+        SELECT * FROM "Gateway" 
+        WHERE "Gateway"."idArea" IN
+            (SELECT "idArea" FROM "Facility" 
+            JOIN "Area" USING("idFacility")
+            WHERE "Facility"."idFacility"=:idFacility) /*idAreas in a facility*/
+        AND
+            "Gateway"."deletedAt" IS NULL
+    `, {
+        replacements: {
+            idFacility
+        }
+    })
+    return gateways
+}
+
 module.exports = {
-    readGateways
+    readGateways,
+    readGatewaysByIdFacility
 };

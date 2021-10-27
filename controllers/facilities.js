@@ -1,5 +1,6 @@
 const Facilities = require('../actions/facilities');
 const Areas = require('../actions/areas');
+const Gateways = require('../actions/gateways');
 
 exports.getFacilities = async (req, res) => {
     try {
@@ -16,8 +17,10 @@ exports.getAreasFacility = async (req, res) => {
     const { idFacility } = req.params;
     try {
         const areas = await Areas.readAreasFacility({ idFacility });
-        return res.status(200).send({ status: 'success', data: areas })
+        const gateways = await Gateways.readGatewaysByIdFacility({ idFacility });
+        return res.status(200).send({ status: 'success', data: {areas, gateways} })
     } catch (error) {
+        console.log(error)
         res.status(400).json({ status: 'error', error });
     }
 };
