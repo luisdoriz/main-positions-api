@@ -1,5 +1,5 @@
 const { Sequelize, sequelize, AreaEdge, Edge, Vertex, PrivilegeLevel, Area, Beacon, AreaAccess, Facility } = require('../../models');
-
+const { readGateways } = require('../gateways')
 const readAreasAll = async () => {
     const vertices = await AreaEdge.findAll({
         // raw: true,
@@ -39,6 +39,7 @@ const readAreasAll = async () => {
 
 const readAreasBeacon = async ({ macAddress }) => {
     //get areas where beacon is registered
+    //get areas where beacon was in last 24h (positions)
     let [areas] = await sequelize.query(`
         SELECT DISTINCT * FROM (SELECT "AreaAccess"."idArea" FROM "Beacon"
         JOIN "AreaAccess" ON "AreaAccess"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
@@ -56,6 +57,7 @@ const readAreasBeacon = async ({ macAddress }) => {
     })
     if (!areas[0]) throw 'Beacons mac address not found'
     areas = areas.map(a => a.idArea) // [{idArea:1},{idArea:2}]  -->  [1,2]
+    //get vertices for each area found
     const vertices = await AreaEdge.findAll({
         // raw: true,
         where: {
@@ -79,6 +81,7 @@ const readAreasBeacon = async ({ macAddress }) => {
         ],
     })
     let areaVertices = []
+    //format and link vertices to area
     for (let vertex of vertices) {
         let { idArea, x, y } = vertex.dataValues
         //skip if idArea is already in final array
@@ -92,7 +95,9 @@ const readAreasBeacon = async ({ macAddress }) => {
             vertices: verticesFromArea
         })
     }
-    return areaVertices
+    //get gateways/beacons in organization
+    const beacons = await readGateways({ macAddress })
+    return {...areaVertices,...beacons}
 }
 
 const readPrivilegeLevels = async () => {
