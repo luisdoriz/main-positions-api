@@ -17,8 +17,7 @@ exports.getAreasFacility = async (req, res) => {
     const { idFacility } = req.params;
     try {
         const areas = await Areas.readAreasFacility({ idFacility });
-        const gateways = await Gateways.readGatewaysByIdFacility({ idFacility });
-        return res.status(200).send({ status: 'success', data: { areas, gateways } })
+        return res.status(200).send({ status: 'success', data: { areas } })
     } catch (error) {
         console.log(error)
         res.status(400).json({ status: 'error', error });
