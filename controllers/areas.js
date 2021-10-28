@@ -75,7 +75,8 @@ exports.postVertex = async (req, res) => {
 };
 
 exports.putArea = async (req, res) => {
-    const { idArea, name, timeLimit, maxCapacity, idFacility, isActive } = req.body;
+    const { idArea } = req.params
+    const { name, timeLimit, maxCapacity, idFacility, isActive } = req.body;
     try {
         const area = await Areas.updateArea({
             idArea, name, timeLimit, maxCapacity, idFacility, isActive, UpdatedBy: req.user.idUser
@@ -127,7 +128,16 @@ exports.putVertex = async (req, res) => {
 };
 
 exports.deleteArea = async (req, res) => {
-    return
+    const { idArea } = req.params;
+    try {
+        await Areas.deleteArea({
+            idArea
+        })
+        res.status(200).json({ status: 'success' });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.getPrivilegeLevels = async (req, res) => {

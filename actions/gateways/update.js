@@ -1,5 +1,15 @@
 const { Gateway } = require('../../models');
 
+const updateGateway = async ({idGateway, macAddress, idArea, x, y, isActive, UpdatedBy}) => {
+    return Gateway.update({
+        macAddress, idArea, x, y, isActive, UpdatedBy
+    }, {
+        where: {
+            idGateway
+        }
+    });
+}
+
 const updateGatewayArea = async ({idGateway, idArea}) => {
     return Gateway.update({
         idArea
@@ -11,5 +21,6 @@ const updateGatewayArea = async ({idGateway, idArea}) => {
 }
 
 module.exports = {
+    updateGateway,
     updateGatewayArea
 }

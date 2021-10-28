@@ -12,7 +12,7 @@ exports.getGateways = async (req, res) => {
     }
 };
 
-exports.postGateways = async (req, res) => {
+exports.postGateway = async (req, res) => {
     const { macAddress, idArea, x, y } = req.body;
     try {
         const gateway = await Gateways.createGateway({
@@ -30,8 +30,16 @@ exports.postGateways = async (req, res) => {
     }
 };
 
-exports.putGateways = async (req, res) => {
-    return
+exports.putGateway = async (req, res) => {
+    try {
+        const { idGateway } = req.params;
+        const { macAddress, idArea, x, y, isActive } = req.body;
+        const gateway = await Gateways.updateGateway({ idGateway, macAddress, idArea, x, y, isActive, UpdatedBy: req.user.idUser });
+        return res.status(200).send({ status: 'success', data: gateway })
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 exports.putGatewayArea = async (req, res) => {
@@ -46,8 +54,17 @@ exports.putGatewayArea = async (req, res) => {
     }
 };
 
-exports.deleteGateways = async (req, res) => {
-    return
+exports.deleteGateway = async (req, res) => {
+    const { idGateway } = req.params;
+    try {
+        await Gateways.deleteGateway({
+            idGateway
+        })
+        res.status(200).json({ status: 'success' });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
 
 

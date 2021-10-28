@@ -19,7 +19,7 @@ router.post("/vertex", auth.valid, AreaController.postVertex);
 router.post("/privilegeLevel", auth.valid, AreaController.postPrivilegeLevel);
 
 //PUT
-router.put("/", auth.valid, AreaController.putArea);
+router.put("/:idArea", auth.valid, AreaController.putArea);
 router.put("/areaEdge", auth.valid, AreaController.postAreaEdge);
 router.put("/edge", auth.valid, AreaController.postEdge);
 router.put("/vertex", auth.valid, AreaController.putVertex);

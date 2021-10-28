@@ -9,14 +9,14 @@ const GatewaysController = require('../../controllers/gateways');
 router.get("/", auth.valid, GatewaysController.getGateways);
 
 //POST
-router.post("/", auth.valid, GatewaysController.postGateways);
+router.post("/", auth.valid, GatewaysController.postGateway);
 
 //PUT
-router.put("/", auth.valid, GatewaysController.putGateways);
+router.put("/:idGateway", auth.valid, GatewaysController.putGateway);
 router.put("/area", auth.valid, GatewaysController.putGatewayArea);
 
 //DELETE
-router.delete("/", auth.valid, GatewaysController.deleteGateways);
+router.delete("/:idGateway", auth.valid, GatewaysController.deleteGateway);
 
 
 module.exports = router;
