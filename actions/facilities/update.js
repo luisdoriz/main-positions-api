@@ -1,8 +1,8 @@
 const { Facility } = require('../../models');
 
-const updateFacility = async ({ idFacility, name, timeLimit, maxCapacity, isActive, UpdatedBy }) => {
+const updateFacility = async ({ idFacility, name, sizeX, sizeY, isActive, UpdatedBy }) => {
     return Facility.update({
-        name, timeLimit, maxCapacity, isActive, UpdatedBy
+        name, sizeX, sizeY, isActive, UpdatedBy
     }, {
         where: {
             idFacility

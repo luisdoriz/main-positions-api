@@ -10,10 +10,10 @@ router.get("/", auth.valid, FacilitiesController.getFacilities);
 router.get("/areas/:idFacility", auth.valid, FacilitiesController.getAreasFacility);
 
 //POST
-router.post("/", auth.valid, FacilitiesController.postFacilities);
+router.post("/", auth.valid, FacilitiesController.postFacility);
 
 //PUT
-router.put("/:idFacility", auth.valid, FacilitiesController.putFacilities);
+router.put("/:idFacility", auth.valid, FacilitiesController.putFacility);
 
 //DELETE
 router.delete("/", auth.valid, FacilitiesController.deleteFacilities);
