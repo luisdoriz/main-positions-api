@@ -29,6 +29,7 @@ const readGateways = async ({ macAddress }) => {
     //get gateways from the beacons idFacility
     const [gateways] = await sequelize.query(`
         SELECT * FROM "Gateway" 
+        JOIN "Area" USING("idArea")
         WHERE "Gateway"."idArea" IN
             (SELECT "idArea" FROM "Facility" 
             JOIN "Area" USING("idFacility")
