@@ -8,11 +8,6 @@ const deleteEmployee = async ({ idEmployee }) => {
             idEmployee
         }
     });
-    await Beacon.destroy({
-        where: {
-            idBeacon: emp.idBeacon
-        }
-    });
     await Person.destroy({
         where: {
             idPerson: emp.idPerson
