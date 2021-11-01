@@ -21,7 +21,9 @@ exports.getAreaAll = async (req, res) => {
 };
 
 exports.postArea = async (req, res) => {
-    const { name, timeLimit, maxCapacity, idFacility } = req.body;
+    const { vertices } = req.body;
+    return res.status(201).json({ status: 'success', data: vertices });
+    //const { name, timeLimit, maxCapacity, idFacility } = req.body;
     try {
         const gateway = await Areas.createArea({
             name, timeLimit, maxCapacity, idFacility, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
