@@ -16,10 +16,10 @@ const Gateway = sequelize.define(
       allowNull:false
    }, 
    x: {
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT
    }, 
    y: {
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT
    }, 
    isActive: {
       type: DataTypes.INTEGER

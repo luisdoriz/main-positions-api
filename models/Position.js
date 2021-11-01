@@ -9,10 +9,10 @@ const Position = sequelize.define(
       autoIncrement: true
    }, 
    x: {
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT
    }, 
    y: {
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT
    }, 
    from: {
       type: DataTypes.DATE

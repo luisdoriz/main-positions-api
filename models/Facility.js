@@ -12,10 +12,10 @@ const Facility = sequelize.define(
       type: DataTypes.STRING
    }, 
    sizeX: {
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT
    }, 
    sizeY: {
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT
    }, 
    idOrganization: {
       type: DataTypes.INTEGER, 

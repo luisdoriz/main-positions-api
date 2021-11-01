@@ -9,10 +9,10 @@ const Vertex = sequelize.define(
       autoIncrement: true
    }, 
    x: {
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT
    }, 
    y: {
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT
    }, 
    isActive: {
       type: DataTypes.INTEGER
