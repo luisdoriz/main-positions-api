@@ -96,8 +96,8 @@ const readAreasBeacon = async ({ macAddress }) => {
         })
     }
     //get gateways/beacons in organization
-    const beacons = await readGateways({ macAddress })
-    return {...areaVertices,...beacons}
+    const { beacons } = await readGateways({ macAddress })
+    return { areaVertices, beacons }
 }
 
 const readPrivilegeLevels = async () => {
