@@ -38,6 +38,42 @@ const readEmployees = async ({idOrganization}) => {
     return employees
 }
 
+const readVisitor = async ({idVisitor}) => {
+    let [visitors] = await sequelize.query(`
+    SELECT "Visitor"."idVisitor", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macAddress", 
+    "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Visitor"."expirationDate", "Person"."idPerson", "Beacon"."idBeacon"
+    FROM "Visitor"
+    JOIN "Person" ON "Person"."idPerson"="Visitor"."idPerson"
+    JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
+    LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
+    LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
+    WHERE "Visitor"."idVisitor"=:idVisitor AND "Visitor"."deletedAt" IS NULL
+    `,{
+        replacements: {
+            idVisitor
+        }
+    })
+    return visitors
+}
+
+const readVisitors = async ({idOrganization}) => {
+    let [visitors] = await sequelize.query(`
+    SELECT "Visitor"."idVisitor", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macAddress", 
+    "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Visitor"."expirationDate", "Person"."idPerson", "Beacon"."idBeacon"
+    FROM "Visitor"
+    JOIN "Person" ON "Person"."idPerson"="Visitor"."idPerson"
+    JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
+    LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
+    LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
+    WHERE "Facility"."idOrganization"=:idOrganization AND "Visitor"."deletedAt" IS NULL
+    `,{
+        replacements: {
+            idOrganization
+        }
+    })
+    return visitors
+}
+
 const readEmployeesFacilities = async () => {
     //reads all employees grouped by facility
     const employees = await Employee.findAll({
@@ -95,5 +131,7 @@ const readEmployeesFacilities = async () => {
 module.exports = {
     readEmployee,
     readEmployees,
+    readVisitor,
+    readVisitors,
     readEmployeesFacilities
 };

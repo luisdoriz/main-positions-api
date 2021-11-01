@@ -8,9 +8,18 @@ const readFacilities = async () => {
             isActive: 1
         }
     });
+}
 
+const readFacilityByIdOrganization = async ({ idOrganization }) => {
+    return Facility.findAll({
+        where: {
+            idOrganization,
+            isActive: 1
+        }
+    });
 }
 
 module.exports = {
-    readFacilities
+    readFacilities,
+    readFacilityByIdOrganization
 };

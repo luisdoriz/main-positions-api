@@ -10,7 +10,7 @@ router.get("/privilegeLevel", auth.valid, PersonsController.getPrivilegeLevel);
 router.get("/employee/:idEmployee", auth.valid, PersonsController.getEmployee);
 router.get("/employees/facilities", auth.valid, PersonsController.getEmployeesFacilities);
 router.get("/employees", auth.valid, PersonsController.getEmployees);
-router.get("/visitor", auth.valid, PersonsController.getVisitor);
+router.get("/visitors", auth.valid, PersonsController.getVisitors);
 
 //POST
 router.post("/employee", auth.valid, PersonsController.postEmployee);
@@ -23,7 +23,7 @@ router.put("/visitor", auth.valid, PersonsController.putVisitor);
 
 //DELETE
 router.delete("/employee/:idEmployee", auth.valid, PersonsController.deleteEmployee);
-router.delete("/visitor", auth.valid, PersonsController.deleteVisitor);
+router.delete("/visitor/:idVisitor", auth.valid, PersonsController.deleteVisitor);
 
 
 module.exports = router;

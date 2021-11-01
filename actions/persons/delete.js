@@ -1,5 +1,5 @@
-const { Employee, Person, Beacon } = require('../../models');
-const { readEmployee } = require('./read')
+const { Employee, Person, Visitor } = require('../../models');
+const { readEmployee, readVisitor } = require('./read')
 
 const deleteEmployee = async ({ idEmployee }) => {
     const emp = await readEmployee({ idEmployee })
@@ -15,6 +15,21 @@ const deleteEmployee = async ({ idEmployee }) => {
     });
 }
 
+const deleteVisitor = async ({ idVisitor }) => {
+    const vis = await readVisitor({ idVisitor })
+    await Visitor.destroy({
+        where: {
+            idVisitor
+        }
+    });
+    await Person.destroy({
+        where: {
+            idPerson: vis.idPerson
+        }
+    });
+}
+
 module.exports = {
     deleteEmployee,
+    deleteVisitor
 }

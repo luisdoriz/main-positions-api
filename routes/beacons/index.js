@@ -8,6 +8,7 @@ const BeaconsController = require('../../controllers/beacons');
 //GET
 router.get("/", auth.valid, BeaconsController.getBeacon);
 router.get("/all", auth.valid, BeaconsController.getBeaconsAll);
+router.get("/available", auth.valid, BeaconsController.getBeaconsAvailable);
 
 //POST
 router.post("/", auth.valid, BeaconsController.postBeacon);

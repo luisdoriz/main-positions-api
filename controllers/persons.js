@@ -1,4 +1,5 @@
 const Persons = require('../actions/persons');
+const Facilites = require('../actions/facilities');
 const PrivilegeLevel = require('../actions/priviledgeLevels');
 
 exports.putBeaconPerson = async (req, res) => {
@@ -61,7 +62,12 @@ exports.getEmployeesFacilities = async (req, res) => {
 
 exports.postEmployee = async (req, res) => {
     const { name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId } = req.body;
+    const { idOrganization } = req.user;
     try {
+        //validate user creating visitor can only create visitors in same organization
+        const facilities = await Facilites.readFacilityByIdOrganization({ idOrganization });
+        const orgIdFacilities = facilities.map(f => f.idFacility)
+        if (!orgIdFacilities.includes(idFacility)) return res.status(400).json({ status: 'error', message: 'User is not allowed to create visitors in other organizations' });
         const employee = await Persons.createEmployee({
             name, firstLastName, secondLastName, email, idFacility, idBeacon, internalId, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
@@ -102,10 +108,26 @@ exports.getVisitor = async (req, res) => {
     return
 };
 
+exports.getVisitors = async (req, res) => {
+    try {
+        const { idOrganization } = req.user;
+        const visitors = await Persons.readVisitors({ idOrganization })
+        res.status(200).json({ status: 'success', data: visitors });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
 exports.postVisitor = async (req, res) => {
     const { name, firstLastName, secondLastName, email, idFacility, idBeacon, expirationDate } = req.body;
+    const { idOrganization } = req.user; //used to validate person creating visitor is in same organization
     try {
-        const visitor = await Persons.createEmployee({
+        //validate user creating visitor can only create visitors in same organization
+        const facilities = await Facilites.readFacilityByIdOrganization({ idOrganization });
+        const orgIdFacilities = facilities.map(f => f.idFacility)
+        if (!orgIdFacilities.includes(idFacility)) return res.status(400).json({ status: 'error', message: 'User is not allowed to create visitors in other organizations' });
+        const visitor = await Persons.createVisitor({
             name, firstLastName, secondLastName, email, idFacility, idBeacon, expirationDate, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
         res.status(201).json({ status: 'success', data: visitor });
@@ -120,5 +142,12 @@ exports.putVisitor = async (req, res) => {
 };
 
 exports.deleteVisitor = async (req, res) => {
-    return
+    try {
+        const { idVisitor } = req.params;
+        const visitor = await Persons.deleteVisitor({ idVisitor })
+        res.status(200).json({ status: 'success', data: visitor });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
