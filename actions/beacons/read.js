@@ -17,15 +17,21 @@ const readBeacons = async () => {
     });
 }
 
-const readBeaconsAvailable = async () => {
-    let [visitors] = await sequelize.query(`
+const readBeaconsAvailable = async ({ idOrganization }) => {
+    let [beacons] = await sequelize.query(`
     SELECT * FROM "Beacon" 
-    WHERE "Beacon"."idBeacon" NOT IN
-        (SELECT "idBeacon" FROM "Person" WHERE "Person"."isActive" = 1) /*idAreas in a facility*/
+    JOIN "Facility" USING("idFacility")
+    JOIN "Organization" USING("idOrganization")
+    WHERE "Organization"."idOrganization" = :idOrganization
+    AND
+        "Beacon"."idBeacon" NOT IN
+            (SELECT "idBeacon" FROM "Person" WHERE "Person"."isActive" = 1) /*Beacons assigned to a person*/
     AND
         "Beacon"."deletedAt" IS NULL
-    `)
-    return visitors
+    `, {
+        replacements: { idOrganization }
+    })
+    return beacons
 }
 module.exports = {
     readBeaconByMac,

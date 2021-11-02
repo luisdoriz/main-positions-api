@@ -1,14 +1,20 @@
 const { Area, AreaEdge, Edge, Vertex, PrivilegeLevel } = require('../../models');
 
-const createArea = async ({ name, timeLimit, maxCapacity, idFacility, isActive, CreatedBy, UpdatedBy }) => Area.create({
-    name,
-    timeLimit,
-    maxCapacity,
-    idFacility,
-    isActive,
-    CreatedBy,
-    UpdatedBy,
-});
+const createArea = async ({ area, vertices, isActive, CreatedBy, UpdatedBy }) => {
+    // await Area.create({
+    //     name: area.name,
+    //     timeLimit: area.timeLimit,
+    //     maxCapacity: area.maxCapacity,
+    //     idFacility: area.idFacility,
+    //     isActive,
+    //     CreatedBy,
+    //     UpdatedBy,
+    // })
+
+    vertices.forEach(vertex => {
+
+    })
+};
 
 const createAreaEdge = async ({ idEdge, idArea, isActive, CreatedBy, UpdatedBy }) => AreaEdge.create({
     idEdge,

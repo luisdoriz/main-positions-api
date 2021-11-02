@@ -15,6 +15,10 @@ const Beacon = sequelize.define(
       type: DataTypes.INTEGER, 
       allowNull:false
    }, 
+   idFacility: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+   },
    isActive: {
       type: DataTypes.INTEGER
    }, 

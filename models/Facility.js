@@ -51,7 +51,10 @@ Facility.belongsTo(models.Organization, {
  target: 'idOrganization'
 });
 
-
+Facility.hasOne(models.Beacon, {
+   foreignKey: 'idFacility',
+   target: 'idFacility'
+ });
 }
 
 return Facility;

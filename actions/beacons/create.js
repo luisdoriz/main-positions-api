@@ -1,10 +1,10 @@
 const { Beacon } = require('../../models');
 
-const createBeacon = async ({ macAddress, idPrivilegeLevel, isActive, CreatedBy, UpdatedBy }) => {
+const createBeacon = async ({ macAddress, idPrivilegeLevel, idFacility, isActive, CreatedBy, UpdatedBy }) => {
     const beacon = await Beacon.findOne({ where: { macAddress } })
-    if(beacon) throw 'Beacon already exists'    
+    if (beacon) throw 'Beacon already exists'
     return await Beacon.create({
-        macAddress, idPrivilegeLevel, isActive, CreatedBy, UpdatedBy
+        macAddress, idPrivilegeLevel, idFacility, isActive, CreatedBy, UpdatedBy
     });
 }
 

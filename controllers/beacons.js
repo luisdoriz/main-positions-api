@@ -20,9 +20,11 @@ exports.getBeaconsAll = async (req, res) => {
         res.status(400).json({ status: 'error', error });
     }
 };
+
 exports.getBeaconsAvailable = async (req, res) => {
     try {
-        const beacons = await Beacons.readBeaconsAvailable()
+        const { idOrganization } = req.user
+        const beacons = await Beacons.readBeaconsAvailable({ idOrganization })
         return res.status(200).json({ status: 'success', data: beacons });
     } catch (error) {
         console.log(error)
@@ -31,11 +33,12 @@ exports.getBeaconsAvailable = async (req, res) => {
 };
 
 exports.postBeacon = async (req, res) => {
-    const { macAddress, idPrivilegeLevel } = req.body;
+    const { macAddress, idPrivilegeLevel, idFacility } = req.body;
     try {
         const beacon = await Beacons.createBeacon({
             macAddress,
             idPrivilegeLevel,
+            idFacility,
             isActive: 1,
             CreatedBy: req.user.idUser,
             UpdatedBy: req.user.idUser

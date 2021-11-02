@@ -21,14 +21,15 @@ exports.getAreaAll = async (req, res) => {
 };
 
 exports.postArea = async (req, res) => {
-    const { vertices } = req.body;
-    return res.status(201).json({ status: 'success', data: vertices });
+    const { area, vertices } = req.body;
+    const { idOrganization } = req.user;
     //const { name, timeLimit, maxCapacity, idFacility } = req.body;
     try {
-        const gateway = await Areas.createArea({
-            name, timeLimit, maxCapacity, idFacility, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
+        //check if creator is from same organization
+        const area = await Areas.createArea({
+            area, vertices, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: gateway });
+        res.status(201).json({ status: 'success', data: area });
 
     } catch (error) {
         console.log(error)
