@@ -13,7 +13,7 @@ const Beacon = sequelize.define(
    }, 
    idPrivilegeLevel: {
       type: DataTypes.INTEGER, 
-      allowNull:false
+      allowNull:true
    }, 
    idFacility: {
       type: DataTypes.INTEGER,
