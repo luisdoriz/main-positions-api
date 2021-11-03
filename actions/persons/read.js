@@ -4,14 +4,28 @@ const { sequelize, Sequelize, Employee, Person, Facility } = models;
 
 const readEmployee = async ({ idEmployee }) => {
     let [employee] = await sequelize.query(`
-    SELECT "Employee"."idEmployee", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macAddress", 
-    "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Employee"."internalId", "Person"."idPerson", "Beacon"."idBeacon"
-    FROM "Employee"
-    JOIN "Person" ON "Person"."idPerson"="Employee"."idPerson"
-    JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
-    LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
-    LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
-    WHERE "Employee"."idEmployee"=:idEmployee AND "Employee"."deletedAt" IS NULL
+    SELECT
+        "Employee"."idEmployee",
+        "Person"."name",
+        CONCAT("Person"."firstLastName", ' ', "Person"."secondLastName") AS "lastNames",
+        "Person"."email",
+        "Beacon"."macAddress" AS "macAddress",
+        "PrivilegeLevel"."name" AS "privilegeLevel",
+        "PrivilegeLevel"."idPrivilegeLevel",
+        "Facility"."idFacility",
+        "Facility"."name" AS "facilityName",
+        "Employee"."internalId",
+        "Person"."idPerson",
+        "Beacon"."idBeacon"
+    FROM
+        "Employee"
+        JOIN "Person" ON "Person"."idPerson" = "Employee"."idPerson"
+        JOIN "Facility" ON "Facility"."idFacility" = "Person"."idFacility"
+        LEFT JOIN "Beacon" ON "Beacon"."idBeacon" = "Person"."idBeacon"
+        LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel" = "Person"."idPrivilegeLevel"
+    WHERE
+        "Employee"."idEmployee" = :idEmployee
+        AND "Employee"."deletedAt" IS NULL
     `, {
         replacements: {
             idEmployee
@@ -22,14 +36,28 @@ const readEmployee = async ({ idEmployee }) => {
 
 const readEmployees = async ({idOrganization}) => {
     let [employees] = await sequelize.query(`
-    SELECT "Employee"."idEmployee", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macAddress", 
-    "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Employee"."internalId", "Person"."idPerson", "Beacon"."idBeacon"
-    FROM "Employee"
-    JOIN "Person" ON "Person"."idPerson"="Employee"."idPerson"
-    JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
-    LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
-    LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
-    WHERE "Facility"."idOrganization"=:idOrganization AND "Employee"."deletedAt" IS NULL
+    SELECT
+        "Employee"."idEmployee",
+        "Person"."name",
+        CONCAT("Person"."firstLastName", ' ', "Person"."secondLastName") AS "lastNames",
+        "Person"."email",
+        "Beacon"."macAddress" AS "macAddress",
+        "PrivilegeLevel"."name" AS "privilegeLevel",
+        "PrivilegeLevel"."idPrivilegeLevel",
+        "Facility"."idFacility",
+        "Facility"."name" AS "facilityName",
+        "Employee"."internalId",
+        "Person"."idPerson",
+        "Beacon"."idBeacon"
+    FROM
+        "Employee"
+        JOIN "Person" ON "Person"."idPerson" = "Employee"."idPerson"
+        JOIN "Facility" ON "Facility"."idFacility" = "Person"."idFacility"
+        LEFT JOIN "Beacon" ON "Beacon"."idBeacon" = "Person"."idBeacon"
+        LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel" = "Person"."idPrivilegeLevel"
+    WHERE
+        "Facility"."idOrganization" = :idOrganization
+        AND "Employee"."deletedAt" IS NULL
     `,{
         replacements: {
             idOrganization
@@ -40,14 +68,28 @@ const readEmployees = async ({idOrganization}) => {
 
 const readVisitor = async ({idVisitor}) => {
     let [visitors] = await sequelize.query(`
-    SELECT "Visitor"."idVisitor", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macAddress", 
-    "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Visitor"."expirationDate", "Person"."idPerson", "Beacon"."idBeacon"
-    FROM "Visitor"
-    JOIN "Person" ON "Person"."idPerson"="Visitor"."idPerson"
-    JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
-    LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
-    LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
-    WHERE "Visitor"."idVisitor"=:idVisitor AND "Visitor"."deletedAt" IS NULL
+    SELECT
+        "Visitor"."idVisitor",
+        "Person"."name",
+        CONCAT("Person"."firstLastName", ' ', "Person"."secondLastName") AS "lastNames",
+        "Person"."email",
+        "Beacon"."macAddress" AS "macAddress",
+        "PrivilegeLevel"."name" AS "privilegeLevel",
+        "PrivilegeLevel"."idPrivilegeLevel",
+        "Facility"."idFacility",
+        "Facility"."name" AS "facilityName",
+        "Visitor"."expirationDate",
+        "Person"."idPerson",
+        "Beacon"."idBeacon"
+    FROM
+        "Visitor"
+        JOIN "Person" ON "Person"."idPerson" = "Visitor"."idPerson"
+        JOIN "Facility" ON "Facility"."idFacility" = "Person"."idFacility"
+        LEFT JOIN "Beacon" ON "Beacon"."idBeacon" = "Person"."idBeacon"
+        LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel" = "Person"."idPrivilegeLevel"
+    WHERE
+        "Visitor"."idVisitor" = :idVisitor
+        AND "Visitor"."deletedAt" IS NULL
     `,{
         replacements: {
             idVisitor
@@ -58,14 +100,28 @@ const readVisitor = async ({idVisitor}) => {
 
 const readVisitors = async ({idOrganization}) => {
     let [visitors] = await sequelize.query(`
-    SELECT "Visitor"."idVisitor", "Person"."name", CONCAT("Person"."firstLastName",' ',"Person"."secondLastName") as "lastNames", "Person"."email", "Beacon"."macAddress" as "macAddress", 
-    "PrivilegeLevel"."name" as "privilegeLevel", "PrivilegeLevel"."idPrivilegeLevel", "Facility"."idFacility", "Facility"."name" as "facilityName", "Visitor"."expirationDate", "Person"."idPerson", "Beacon"."idBeacon"
-    FROM "Visitor"
-    JOIN "Person" ON "Person"."idPerson"="Visitor"."idPerson"
-    JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
-    LEFT JOIN "Beacon" ON "Beacon"."idBeacon"="Person"."idBeacon"
-    LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
-    WHERE "Facility"."idOrganization"=:idOrganization AND "Visitor"."deletedAt" IS NULL
+    SELECT
+        "Visitor"."idVisitor",
+        "Person"."name",
+        CONCAT("Person"."firstLastName", ' ', "Person"."secondLastName") AS "lastNames",
+        "Person"."email",
+        "Beacon"."macAddress" AS "macAddress",
+        "PrivilegeLevel"."name" AS "privilegeLevel",
+        "PrivilegeLevel"."idPrivilegeLevel",
+        "Facility"."idFacility",
+        "Facility"."name" AS "facilityName",
+        "Visitor"."expirationDate",
+        "Person"."idPerson",
+        "Beacon"."idBeacon"
+    FROM
+        "Visitor"
+        JOIN "Person" ON "Person"."idPerson" = "Visitor"."idPerson"
+        JOIN "Facility" ON "Facility"."idFacility" = "Person"."idFacility"
+        LEFT JOIN "Beacon" ON "Beacon"."idBeacon" = "Person"."idBeacon"
+        LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel" = "Person"."idPrivilegeLevel"
+    WHERE
+        "Facility"."idOrganization" = :idOrganization
+        AND "Visitor"."deletedAt" IS NULL
     `,{
         replacements: {
             idOrganization
