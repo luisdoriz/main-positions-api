@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
+      idFacility: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       name: {
         type: DataTypes.STRING,
       },
@@ -40,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
     PrivilegeLevel.hasMany(models.Person, {
       foreignKey: "idPrivilegeLevel",
       target: "idPrivilegeLevel",
+    });
+    PrivilegeLevel.belongsTo(models.Facility, {
+      foreignKey: "idFacility",
+      // target: "idFacility",
     });
     PrivilegeLevel.hasMany(models.AreaAccess, {
       foreignKey: "idPrivilegeLevel",

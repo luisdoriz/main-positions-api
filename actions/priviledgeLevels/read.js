@@ -1,6 +1,6 @@
 const { PrivilegeLevel, AreaAccess, Area } = require("../../models");
 
-const readPrivilegeLevels = async () => {
+const readPrivilegeLevels = async (where = {}) => {
   return PrivilegeLevel.findAll({
     include: [
       {
@@ -15,6 +15,7 @@ const readPrivilegeLevels = async () => {
     ],
     where: {
       isActive: 1,
+      ...where,
     },
   }).then((result) =>
     result.map((resultItem) => {
