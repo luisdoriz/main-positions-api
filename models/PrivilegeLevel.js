@@ -1,47 +1,51 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
   const PrivilegeLevel = sequelize.define(
-    'PrivilegeLevel', {
+    "PrivilegeLevel",
+    {
       idPrivilegeLevel: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
       },
       name: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       isActive: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       CreatedBy: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       CreationDate: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
       },
       UpdatedBy: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       UpdatedDate: {
-        type: DataTypes.DATE
-      }
-    }, {
+        type: DataTypes.DATE,
+      },
+    },
+    {
       timestamps: true,
-      createdAt: 'CreationDate',
-      updatedAt: 'UpdatedDate',
+      createdAt: "CreationDate",
+      updatedAt: "UpdatedDate",
       paranoid: true,
-      freezeTableName: true
+      freezeTableName: true,
     }
   );
 
-  PrivilegeLevel.associate = function(models) {
-    PrivilegeLevel.hasOne(models.Person, {
-      foreignKey: 'idPrivilegeLevel',
-      target: 'idPrivilegeLevel'
+  PrivilegeLevel.associate = function (models) {
+    PrivilegeLevel.hasMany(models.Person, {
+      foreignKey: "idPrivilegeLevel",
+      target: "idPrivilegeLevel",
     });
-
-
-  }
+    PrivilegeLevel.hasMany(models.AreaAccess, {
+      foreignKey: "idPrivilegeLevel",
+      target: "idPrivilegeLevel",
+    });
+  };
 
   return PrivilegeLevel;
 };
