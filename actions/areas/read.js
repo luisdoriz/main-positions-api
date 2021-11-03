@@ -41,15 +41,29 @@ const readAreasBeacon = async ({ macAddress }) => {
     //get areas where beacon is registered
     //get areas where beacon was in last 24h (positions)
     let [areas] = await sequelize.query(`
-        SELECT DISTINCT * FROM (SELECT "AreaAccess"."idArea" FROM "Beacon"
-        JOIN "AreaAccess" ON "AreaAccess"."idPrivilegeLevel"="Beacon"."idPrivilegeLevel"
-        LEFT JOIN 
-        (SELECT "idPosition", "idBeacon", "to" FROM "Position"
-        WHERE "Position"."to" > now() - INTERVAL '1 DAY' AND "Position"."deletedAt" IS NULL) as pos 
-        
-        ON "Beacon"."idBeacon"="pos"."idBeacon"
-        WHERE "macAddress"=:macAddress
-        ORDER BY "pos"."to" DESC) as query
+    SELECT DISTINCT
+        *
+    FROM (
+        SELECT
+            "AreaAccess"."idArea"
+        FROM
+            "Beacon"
+            JOIN "Person" ON "Person"."idBeacon" = "Beacon"."idBeacon"
+            JOIN "AreaAccess" ON "AreaAccess"."idPrivilegeLevel" = "Person"."idPrivilegeLevel"
+            LEFT JOIN (
+                SELECT
+                    "idPosition",
+                    "idPerson",
+                    "to"
+                FROM
+                    "Position"
+                WHERE
+                    "Position"."to" > now() - INTERVAL '1 DAY'
+                    AND "Position"."deletedAt" IS NULL) AS pos ON "Person"."idPerson" = pos. "idPerson"
+            WHERE
+                "macAddress" = :macAddress
+            ORDER BY
+                "pos"."to" DESC) AS query
     `, {
         replacements: {
             macAddress

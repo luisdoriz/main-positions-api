@@ -1,71 +1,67 @@
-const Beacons = require('../actions/beacons');
+const Beacons = require("../actions/beacons");
 
 exports.getBeacon = async (req, res) => {
-    const { macAddress } = req.body;
-    try {
-        const beacon = await Beacons.readBeaconByMac({ macAddress })
-        return res.status(200).json({ status: 'success', data: beacon });
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ status: 'error', error });
-    }
+  const { macAddress } = req.body;
+  try {
+    const beacon = await Beacons.readBeaconByMac({ macAddress });
+    return res.status(200).json({ status: "success", data: beacon });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
 };
 
 exports.getBeaconsAll = async (req, res) => {
-    try {
-        const beacons = await Beacons.readBeacons()
-        return res.status(200).json({ status: 'success', data: beacons });
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ status: 'error', error });
-    }
+  try {
+    const beacons = await Beacons.readBeacons();
+    return res.status(200).json({ status: "success", data: beacons });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
 };
 
 exports.getBeaconsAvailable = async (req, res) => {
-    try {
-        const { idOrganization } = req.user
-        const beacons = await Beacons.readBeaconsAvailable({ idOrganization })
-        return res.status(200).json({ status: 'success', data: beacons });
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ status: 'error', error });
-    }
+  try {
+    const { idOrganization } = req.user;
+    const beacons = await Beacons.readBeaconsAvailable({ idOrganization });
+    return res.status(200).json({ status: "success", data: beacons });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
 };
 
 exports.postBeacon = async (req, res) => {
-    const { macAddress, idPrivilegeLevel, idFacility } = req.body;
-    try {
-        const beacon = await Beacons.createBeacon({
-            macAddress,
-            idPrivilegeLevel,
-            idFacility,
-            isActive: 1,
-            CreatedBy: req.user.idUser,
-            UpdatedBy: req.user.idUser
-        })
-        res.status(201).json({ status: 'success', data: beacon });
-
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ status: 'error', error });
-    }
+  const { macAddress, idFacility } = req.body;
+  try {
+    const beacon = await Beacons.createBeacon({
+      macAddress,
+      idFacility,
+      isActive: 1,
+      CreatedBy: req.user.idUser,
+      UpdatedBy: req.user.idUser,
+    });
+    res.status(201).json({ status: "success", data: beacon });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
 };
 
 exports.putBeacon = async (req, res) => {
-    return
+  return;
 };
 
 exports.deleteBeacon = async (req, res) => {
-    const { idBeacon } = req.params;
-    try {
-        await Beacons.deleteBeacon({
-            idBeacon
-        })
-        res.status(200).json({ status: 'success' });
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ status: 'error', error });
-    }
+  const { idBeacon } = req.params;
+  try {
+    await Beacons.deleteBeacon({
+      idBeacon,
+    });
+    res.status(200).json({ status: "success" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
 };
-
-

@@ -5,7 +5,7 @@ const { Op } = require('sequelize')
 const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive, CreatedBy, UpdatedBy }) => {
     //updates or creates position. If beacon was in the same position as before, update existing position row by editing its "from" and "to" values instead of creating a new row
 
-    const { idBeacon, idPrivilegeLevel } = await Beacon.findOne({
+    const { idBeacon } = await Beacon.findOne({
         where: {
             macAddress: beacon
         }
