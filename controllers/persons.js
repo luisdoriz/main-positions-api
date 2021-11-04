@@ -21,8 +21,27 @@ exports.putBeaconPerson = async (req, res) => {
 
 exports.getPrivilegeLevel = async (req, res) => {
   try {
-    const { idFacility } = req.query;
-    const pl = await PrivilegeLevel.readPrivilegeLevels({ idFacility });
+    const pl = await PrivilegeLevel.readPrivilegeLevels(req.query);
+    res.status(200).json({ status: "success", data: pl });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
+};
+
+exports.postPrivilegeLevel = async (req, res) => {
+  try {
+    const { name, idFacility, areas } = req.body;
+    const { idUser } = req.user;
+    const body = {
+      name,
+      idFacility,
+      isActive: 1,
+      CreatedBy: idUser,
+      UpdatedBy: idUser,
+      areas,
+    };
+    const pl = await PrivilegeLevel.createPrivilegeLevel(body);
     res.status(200).json({ status: "success", data: pl });
   } catch (error) {
     console.log(error);

@@ -13,6 +13,7 @@ router.get("/employees", auth.valid, PersonsController.getEmployees);
 router.get("/visitors", auth.valid, PersonsController.getVisitors);
 
 //POST
+router.post("/privilegeLevel", auth.valid, PersonsController.postPrivilegeLevel);
 router.post("/employee", auth.valid, PersonsController.postEmployee);
 router.post("/visitor", auth.valid, PersonsController.postVisitor);
 
