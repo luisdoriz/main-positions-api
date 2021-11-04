@@ -127,6 +127,7 @@ exports.postEmployee = async (req, res) => {
     idFacility,
     idBeacon,
     internalId,
+    idPrivilegeLevel,
   } = req.body;
   const { idOrganization } = req.user;
   try {
@@ -149,6 +150,7 @@ exports.postEmployee = async (req, res) => {
       idFacility,
       idBeacon,
       internalId,
+      idPrivilegeLevel,
       isActive: 1,
       CreatedBy: req.user.idUser,
       UpdatedBy: req.user.idUser,
@@ -171,6 +173,7 @@ exports.putEmployee = async (req, res) => {
     idBeacon,
     internalId,
     isActive,
+    idPrivilegeLevel,
   } = req.body;
   try {
     const updatedEmployee = await Persons.updateEmployee({
@@ -183,6 +186,7 @@ exports.putEmployee = async (req, res) => {
       idBeacon,
       internalId,
       isActive,
+      idPrivilegeLevel,
       UpdatedBy: req.user.idUser,
     });
     res.status(200).json({ status: "success", data: updatedEmployee });
@@ -226,6 +230,7 @@ exports.postVisitor = async (req, res) => {
     secondLastName,
     email,
     idFacility,
+    idPrivilegeLevel,
     idBeacon,
     expirationDate,
   } = req.body;
@@ -248,6 +253,7 @@ exports.postVisitor = async (req, res) => {
       secondLastName,
       email,
       idFacility,
+      idPrivilegeLevel,
       idBeacon,
       expirationDate,
       isActive: 1,
