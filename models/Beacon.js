@@ -1,40 +1,43 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
   const Beacon = sequelize.define(
-    'Beacon', {
+    "Beacon",
+    {
       idBeacon: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        autoIncrement: true,
       },
       macAddress: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       idFacility: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       isActive: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       CreatedBy: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       CreationDate: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
       },
       UpdatedBy: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       UpdatedDate: {
-        type: DataTypes.DATE
-      }
-    }, {
+        type: DataTypes.DATE,
+      },
+    },
+    {
       timestamps: true,
-      createdAt: 'CreationDate',
-      updatedAt: 'UpdatedDate',
+      createdAt: "CreationDate",
+      updatedAt: "UpdatedDate",
       paranoid: true,
-      freezeTableName: true
+      freezeTableName: true,
     }
   );
 
