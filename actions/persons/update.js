@@ -37,7 +37,6 @@ const updateEmployee = async ({
     {
       internalId,
       isActive,
-      idPrivilegeLevel,
       UpdatedBy,
     },
     {
@@ -56,6 +55,7 @@ const updateEmployee = async ({
       email,
       idFacility,
       idBeacon,
+      idPrivilegeLevel,
       isActive,
       UpdatedBy,
     },
