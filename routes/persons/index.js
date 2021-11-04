@@ -18,11 +18,13 @@ router.post("/employee", auth.valid, PersonsController.postEmployee);
 router.post("/visitor", auth.valid, PersonsController.postVisitor);
 
 //PUT
+router.put("/privilegeLevel", auth.valid, PersonsController.putPrivilegeLevel);
 router.put("/beacon", auth.valid, PersonsController.putBeaconPerson);
 router.put("/employee/:idEmployee", auth.valid, PersonsController.putEmployee);
 router.put("/visitor", auth.valid, PersonsController.putVisitor);
 
 //DELETE
+router.delete("/privilegeLevel/:id", auth.valid, PersonsController.deletePrivilegeLevel);
 router.delete("/employee/:idEmployee", auth.valid, PersonsController.deleteEmployee);
 router.delete("/visitor/:idVisitor", auth.valid, PersonsController.deleteVisitor);
 

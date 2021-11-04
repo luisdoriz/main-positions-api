@@ -1,5 +1,8 @@
 const { PrivilegeLevel } = require("../../models");
-const { createAreaAccess } = require("../areaAccess");
+const {
+  deleteAllAreaAccessFromIdPrivilegeLevel,
+  updateOrCreateAreaAccess,
+} = require("../areaAccess");
 
 const updatePrivilegeLevel = async ({
   idPrivilegeLevel,
@@ -22,13 +25,11 @@ const updatePrivilegeLevel = async ({
       },
     }
   ).then(async (result) => {
+    await deleteAllAreaAccessFromIdPrivilegeLevel(idPrivilegeLevel);
     areas_promises = areas.map(async (idArea) =>
-      createAreaAccess({
+      updateOrCreateAreaAccess({
         idArea,
-        idPrivilegeLevel: result.dataValues.idPrivilegeLevel,
-        allowed: 1,
-        isActive: 1,
-        CreatedBy,
+        idPrivilegeLevel: idPrivilegeLevel,
         UpdatedBy,
       })
     );

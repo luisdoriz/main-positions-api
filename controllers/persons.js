@@ -49,6 +49,41 @@ exports.postPrivilegeLevel = async (req, res) => {
   }
 };
 
+exports.putPrivilegeLevel = async (req, res) => {
+  try {
+    const { name, idFacility, areas, idPrivilegeLevel } = req.body;
+    const { idUser } = req.user;
+    const body = {
+      name,
+      idFacility,
+      UpdatedBy: idUser,
+      areas,
+      idPrivilegeLevel,
+    };
+    await PrivilegeLevel.updatePrivilegeLevel(body);
+    res.status(200).json({ status: "success", message: "updated succesfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
+};
+
+exports.deletePrivilegeLevel = async (req, res) => {
+  try {
+    const { id: idPrivilegeLevel } = req.params;
+    const { idUser } = req.user;
+    const body = {
+      UpdatedBy: idUser,
+      idPrivilegeLevel,
+    };
+    await PrivilegeLevel.deletePrivilegeLevel(body);
+    res.status(200).json({ status: "success", message: "deleted succesfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
+};
+
 //********************************EMPLOYEE****************************************
 exports.getEmployee = async (req, res) => {
   const { idEmployee } = req.params;
