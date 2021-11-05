@@ -215,7 +215,12 @@ exports.getVisitor = async (req, res) => {
 exports.getVisitors = async (req, res) => {
   try {
     const { idOrganization } = req.user;
-    const visitors = await Persons.readVisitors({ idOrganization });
+    const { query } = req.query;
+    let queryType = "active"
+    if (query=== "all"){
+      queryType = query
+    }
+    const visitors = await Persons.readVisitors({ idOrganization, queryType });
     res.status(200).json({ status: "success", data: visitors });
   } catch (error) {
     console.log(error);
@@ -280,7 +285,7 @@ exports.putVisitor = async (req, res) => {
     isActive,
     expirationDate,
   } = req.body;
-  const { idOrganization } = req.user; //used to validate person creating visitor is in same organization
+  const { idOrganization, idUser } = req.user; //used to validate person creating visitor is in same organization
   try {
     //validate user creating visitor can only create visitors in same organization
     const facilities = await Facilites.readFacilityByIdOrganization({
@@ -293,7 +298,7 @@ exports.putVisitor = async (req, res) => {
         message:
           "User is not allowed to create visitors in other organizations",
       });
-    const visitor = await Persons.createVisitor({
+    const visitor = await Persons.updateVisitor({
       idVisitor,
       name,
       firstLastName,
@@ -304,7 +309,7 @@ exports.putVisitor = async (req, res) => {
       idBeacon,
       isActive,
       expirationDate,
-      UpdatedBy: req.user.idUser,
+      UpdatedBy: idUser,
     });
     res.status(201).json({ status: "success", data: visitor });
   } catch (error) {

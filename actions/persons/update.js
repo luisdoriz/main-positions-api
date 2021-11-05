@@ -78,11 +78,13 @@ const updateVisitor = async ({
   idBeacon,
   isActive,
   expirationDate,
+  UpdatedBy,
 }) => {
   const updatedEmployee = await Visitor.update(
     {
       expirationDate,
       UpdatedBy,
+      isActive,
     },
     {
       where: {
@@ -115,4 +117,5 @@ const updateVisitor = async ({
 module.exports = {
   updateBeaconPerson,
   updateEmployee,
+  updateVisitor,
 };
