@@ -1,84 +1,85 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
   const Person = sequelize.define(
-    'Person', {
+    "Person",
+    {
       idPerson: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        autoincrement: true,
       },
       name: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       firstLastName: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       secondLastName: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       email: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       idFacility: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       idBeacon: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       idPrivilegeLevel: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
       },
       isActive: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       CreatedBy: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       CreationDate: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
       },
       UpdatedBy: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       UpdatedDate: {
-        type: DataTypes.DATE
-      }
-    }, {
+        type: DataTypes.DATE,
+      },
+    },
+    {
       timestamps: true,
-      createdAt: 'CreationDate',
-      updatedAt: 'UpdatedDate',
+      createdAt: "CreationDate",
+      updatedAt: "UpdatedDate",
       paranoid: true,
       freezeTableName: true,
-      comment: 'Person who holds a beacon'
+      comment: "Person who holds a beacon",
     }
   );
 
-  Person.associate = function(models) {
+  Person.associate = function (models) {
     Person.belongsTo(models.Facility, {
-      foreignKey: 'idFacility',
-      target: 'idFacility'
+      foreignKey: "idFacility",
+      target: "idFacility",
     });
 
     Person.belongsTo(models.Beacon, {
-      foreignKey: 'idBeacon',
-      target: 'idBeacon'
+      foreignKey: "idBeacon",
+      target: "idBeacon",
     });
 
     Person.hasOne(models.Case, {
-      foreignKey: 'idPerson',
-      target: 'idPerson'
+      foreignKey: "idPerson",
+      target: "idPerson",
     });
 
     Person.hasOne(models.Position, {
-      foreignKey: 'idPerson',
-      target: 'idPerson'
+      foreignKey: "idPerson",
+      target: "idPerson",
     });
-
-
-  }
+  };
 
   return Person;
 };
