@@ -268,7 +268,49 @@ exports.postVisitor = async (req, res) => {
 };
 
 exports.putVisitor = async (req, res) => {
-  return;
+  const {
+    idVisitor,
+    name,
+    firstLastName,
+    secondLastName,
+    email,
+    idFacility,
+    idPrivilegeLevel,
+    idBeacon,
+    isActive,
+    expirationDate,
+  } = req.body;
+  const { idOrganization } = req.user; //used to validate person creating visitor is in same organization
+  try {
+    //validate user creating visitor can only create visitors in same organization
+    const facilities = await Facilites.readFacilityByIdOrganization({
+      idOrganization,
+    });
+    const orgIdFacilities = facilities.map((f) => f.idFacility);
+    if (!orgIdFacilities.includes(idFacility))
+      return res.status(400).json({
+        status: "error",
+        message:
+          "User is not allowed to create visitors in other organizations",
+      });
+    const visitor = await Persons.createVisitor({
+      idVisitor,
+      name,
+      firstLastName,
+      secondLastName,
+      email,
+      idFacility,
+      idPrivilegeLevel,
+      idBeacon,
+      isActive,
+      expirationDate,
+      UpdatedBy: req.user.idUser,
+    });
+    res.status(201).json({ status: "success", data: visitor });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
 };
 
 exports.deleteVisitor = async (req, res) => {

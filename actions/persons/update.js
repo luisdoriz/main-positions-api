@@ -1,4 +1,4 @@
-const { Person, Employee } = require("../../models");
+const { Person, Employee, Visitor } = require("../../models");
 
 const updateBeaconPerson = async ({
   idPerson,
@@ -42,6 +42,51 @@ const updateEmployee = async ({
     {
       where: {
         idEmployee,
+      },
+      returning: true,
+    }
+  );
+  if (!updatedEmployee[1][0]) throw "Employee does not exist";
+  await Person.update(
+    {
+      name,
+      firstLastName,
+      secondLastName,
+      email,
+      idFacility,
+      idBeacon,
+      idPrivilegeLevel,
+      isActive,
+      UpdatedBy,
+    },
+    {
+      where: {
+        idPerson: updatedEmployee[1][0].idPerson,
+      },
+    }
+  );
+};
+
+const updateVisitor = async ({
+  idVisitor,
+  name,
+  firstLastName,
+  secondLastName,
+  email,
+  idFacility,
+  idPrivilegeLevel,
+  idBeacon,
+  isActive,
+  expirationDate,
+}) => {
+  const updatedEmployee = await Visitor.update(
+    {
+      expirationDate,
+      UpdatedBy,
+    },
+    {
+      where: {
+        idVisitor,
       },
       returning: true,
     }
