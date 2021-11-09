@@ -62,6 +62,7 @@ const readEmployees = async ({ idOrganization }) => {
     WHERE
         "Facility"."idOrganization" = :idOrganization
         AND "Employee"."deletedAt" IS NULL
+        AND "Person"."deletedAt" IS NULL
     `,
     {
       replacements: {
