@@ -13,6 +13,7 @@ const PersonsRoutes = require('./persons');
 const PositionsRoutes = require('./positions');
 const UsersRoutes = require('./users');
 const CasesRoutes = require('./cases');
+const ReportsRoutes = require('./reports');
 
 module.exports = (base_url, app) => {
   router.use('/test', TestRoutes);
@@ -26,6 +27,7 @@ module.exports = (base_url, app) => {
   router.use('/positions', PositionsRoutes);
   router.use('/users', UsersRoutes);
   router.use('/cases', CasesRoutes);
+  router.use('/reports', ReportsRoutes);
 
   app.get('/', (req, res) => {
     res.send('<h1> NODE API Working 0.1 </h1>');
