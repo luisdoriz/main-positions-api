@@ -1,4 +1,5 @@
 const { Sequelize, sequelize, AreaEdge, Edge, Vertex, PrivilegeLevel, Area, Beacon, AreaAccess, Facility } = require('../../models');
+const { readFacilityByIdArea } = require('../facilities')
 const { readGateways } = require('../gateways')
 const readAreasAll = async () => {
     const vertices = await AreaEdge.findAll({
@@ -29,8 +30,11 @@ const readAreasAll = async () => {
         const verticesFromArea = []
         vertices.forEach(v => { if (v.idArea === idArea) verticesFromArea.push([v.dataValues.x, v.dataValues.y]) })
         //push to final array
+        const facility = await readFacilityByIdArea(idArea)
         areaVertices.push({
             idArea: idArea,
+            idFacility: facility.idFacility,
+            facilityName: facility.name,
             vertices: verticesFromArea
         })
     }

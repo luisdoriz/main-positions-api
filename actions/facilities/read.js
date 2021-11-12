@@ -1,12 +1,27 @@
 const models = require("../../models");
 
-const { Facility, sequelize } = models;
+const { Facility, Area, sequelize } = models;
 
 const readFacilities = async () => {
   return Facility.findAll({
     where: {
       isActive: 1,
     },
+  });
+};
+
+const readFacilityByIdArea = async (idArea) => {
+  return Facility.findOne({
+    where: {
+      isActive: 1,
+    },
+    include: {
+      model: Area,
+      attributes: [],
+      where: {
+        idArea
+      }
+    }
   });
 };
 
@@ -109,6 +124,7 @@ const getCheckIn = async (query) =>
 
 module.exports = {
   readFacilities,
+  readFacilityByIdArea,
   readFacilityByIdOrganization,
   getAreaTraffic,
   getOcurrenciesPerArea,

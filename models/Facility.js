@@ -57,6 +57,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "idFacility",
     });
 
+    Facility.hasMany(models.Area, {
+      foreignKey: "idArea",
+    });
+
     Facility.hasOne(models.Beacon, {
       foreignKey: "idFacility",
       target: "idFacility",
