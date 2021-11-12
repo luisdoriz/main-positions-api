@@ -25,11 +25,13 @@ exports.postArea = async (req, res) => {
     const { idOrganization } = req.user;
     //const { name, timeLimit, maxCapacity, idFacility } = req.body;
     try {
-        //check if creator is from same organization
-        const area = await Areas.createArea({
+        //TODO check if creator is from same organization
+
+
+        const nArea = await Areas.createArea({
             area, vertices, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
-        res.status(201).json({ status: 'success', data: area });
+        res.status(201).json({ status: 'success', data: nArea });
 
     } catch (error) {
         console.log(error)
