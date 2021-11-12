@@ -49,7 +49,7 @@ const getOcurrenciesPerArea = async (query) =>
     `
         SELECT
             "Person"."idPerson",
-            "Person"."name",
+            "Person"."name" as "personName",
             "Person"."firstLastName",
             "Person"."secondLastName",
             "Area"."idArea",
