@@ -1,6 +1,6 @@
 const models = require("../../models");
 
-const { sequelize, Sequelize, Employee, Person, Facility } = models;
+const { sequelize, Sequelize, Employee, Person, Facility, Beacon } = models;
 
 const readEmployee = async ({ idEmployee }) => {
   let [employee] = await sequelize.query(
@@ -204,10 +204,29 @@ const readEmployeesFacilities = async () => {
   return facilities;
 };
 
+const readPersonByBeaconMac = (macAddress) => {
+  return Person.findOne({
+    include: {
+      model: Beacon,
+      where: {
+        macAddress
+      }
+    }
+  })
+}
+
+const readPerson = (idPerson) => {
+  return Person.findOne({
+    where: { idPerson }
+  })
+}
+
 module.exports = {
   readEmployee,
   readEmployees,
   readVisitor,
   readVisitors,
   readEmployeesFacilities,
+  readPersonByBeaconMac,
+  readPerson
 };

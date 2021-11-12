@@ -1,19 +1,29 @@
 const moment = require("moment");
-const { Beacon, Position } = require('../../models');
+const { Sequelize, Beacon, Position, Person } = require('../../models');
 const { Op } = require('sequelize')
 
 const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive, CreatedBy, UpdatedBy }) => {
     //updates or creates position. If beacon was in the same position as before, update existing position row by editing its "from" and "to" values instead of creating a new row
 
-    const { idBeacon } = await Beacon.findOne({
+    const { idBeacon, idPerson, idPrivilegeLevel } = await Beacon.findOne({
+        attributes: [
+            'idBeacon',
+            [Sequelize.col('Person.idPerson'), 'idPerson'],
+            [Sequelize.col('Person.idPrivilegeLevel'), 'idPrivilegeLevel'],
+        ],
+        include: {
+            model: Person,
+            attributes: []
+        },
         where: {
             macAddress: beacon
-        }
+        },
+        raw: true
     })
 
     const previousPositions = await Position.findOne({
         where: {
-            idBeacon, x, y,
+            idPerson, x, y,
             to: { //only get rows from past 5 minutes. if exist edit their "to" else create new position row
                 [Op.gte]: moment(input_to).subtract(5, 'minutes').toDate(),
             }
@@ -26,9 +36,9 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
 
         //check input_to is newer than original to
         if (moment(input_to) <= moment(previousPositions.to)) return console.log('input_to is older than original to')
-        
+
         console.log('edited idPosition', previousPositions.idPosition, "to:", input_to)
-        return Position.update({
+        await Position.update({
             to: input_to
         }, {
             where: {
@@ -38,10 +48,11 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
     } else {
         //create new position row
         console.log('created new position')
-        return Position.create({
-            x, y, from, to:input_to, idArea: area, idBeacon, isActive, CreatedBy, UpdatedBy
+        await Position.create({
+            x, y, from, to: input_to, idArea: area, idPerson, isActive, CreatedBy, UpdatedBy
         })
     }
+    return { idBeacon, idPerson, idPrivilegeLevel }
 }
 
 module.exports = {

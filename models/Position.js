@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
       idPosition: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        autoIncrement: true,
       },
       x: {
         type: DataTypes.FLOAT

@@ -41,5 +41,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  Beacon.associate = function (models) {
+    Beacon.hasOne(models.Person, {
+      foreignKey: "idBeacon",
+      target: "idBeacon",
+    });
+
+  };
   return Beacon;
 };

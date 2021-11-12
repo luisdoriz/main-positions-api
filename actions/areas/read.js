@@ -123,9 +123,18 @@ const readAreasFacility = async ({ idFacility }) => {
     });
 }
 
+const readArea = async (idArea) => {
+    return Area.findOne({
+        where: {
+            idArea
+        }
+    });
+}
+
 module.exports = {
     readAreasBeacon,
     readAreasAll,
     readPrivilegeLevels,
-    readAreasFacility
+    readAreasFacility,
+    readArea
 }

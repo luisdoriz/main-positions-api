@@ -1,5 +1,5 @@
 const Positions = require('../actions/positions');
-
+const { generateAlerts } = require('./alerts')
 exports.getPositions = async (req, res) => {
     return
 };
@@ -20,17 +20,19 @@ exports.postPositions = async (req, res) => {
     }
 };
 exports.putPositions = async (req, res) => {
-    //data from flask
+    //data from flask. create or update position and check if alert is generated
     const { positions } = req.body;
+    console.log(positions)
     try {
         for (let position of positions) {
             const { x, y, from, to, area, beacon } = position;
-            Positions.upsertPosition({
+            const { idBeacon, idPerson, idPrivilegeLevel } = await Positions.upsertPosition({
                 x, y, from, to, area, beacon,
                 isActive: 1,
                 CreatedBy: req.user.idUser,
                 UpdatedBy: req.user.idUser
             })
+            generateAlerts({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel })
         }
         res.status(200).json({ status: 'success', data: positions.length });
     } catch (error) {
