@@ -7,7 +7,7 @@ const GatewaysController = require('../../controllers/gateways');
 
 //GET
 router.get("/", auth.valid, GatewaysController.getGateways);
-router.get("/facility", auth.valid, GatewaysController.getGatewaysFacility);
+router.get("/facility/:idFacility", auth.valid, GatewaysController.getGatewaysFacility);
 
 //POST
 router.post("/", auth.valid, GatewaysController.postGateway);
