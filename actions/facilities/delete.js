@@ -1,0 +1,1 @@
+//delete facilty, area, areaedge, edge, vertice, position, gateway, alert, person, areaaccess, privilegelevel

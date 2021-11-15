@@ -12,6 +12,18 @@ exports.getGateways = async (req, res) => {
     }
 };
 
+exports.getGatewaysFacility = async (req, res) => {
+    //gets all existing active gateways
+    try {
+        const { idFacility } = req.params;
+        const gateways = await Gateways.readGatewaysByIdFacility({ idFacility });
+        return res.status(200).send({ status: 'success', data: gateways })
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
 exports.postGateway = async (req, res) => {
     const { macAddress, idArea, x, y } = req.body;
     try {
