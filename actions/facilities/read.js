@@ -1,6 +1,6 @@
 const models = require("../../models");
 
-const { Facility, Area, sequelize } = models;
+const { Facility, Area, sequelize, Sequelize } = models;
 
 const readFacilities = async () => {
   return Facility.findAll({
@@ -10,18 +10,22 @@ const readFacilities = async () => {
   });
 };
 
-const readFacilityByIdArea = async (idArea) => {
-  return Facility.findOne({
+const readFacilityByIdArea = async ({ idArea }) => {
+  return Area.findOne({
     where: {
       isActive: 1,
+      idArea
     },
+    attributes: [
+      'idArea',
+      [Sequelize.col('Facility.idFacility'), 'idFacility'],
+      [Sequelize.col('Facility.name'), 'name'],
+    ],
     include: {
-      model: Area,
-      attributes: [],
-      where: {
-        idArea
-      }
-    }
+      model: Facility,
+      attributes: []
+    },
+    raw: true
   });
 };
 

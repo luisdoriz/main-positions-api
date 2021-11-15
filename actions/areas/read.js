@@ -30,7 +30,7 @@ const readAreasAll = async () => {
         const verticesFromArea = []
         vertices.forEach(v => { if (v.idArea === idArea) verticesFromArea.push([v.dataValues.x, v.dataValues.y]) })
         //push to final array
-        const facility = await readFacilityByIdArea(idArea)
+        const facility = await readFacilityByIdArea({ idArea })
         areaVertices.push({
             idArea: idArea,
             idFacility: facility.idFacility,
@@ -111,11 +111,16 @@ const readPrivilegeLevels = async () => {
 }
 
 const readAreasFacility = async ({ idFacility }) => {
-    return Area.findAll({
+    var areaFacility = await Area.findAll({
         where: {
             isActive: 1
         },
-        attributes: ['idArea', 'name', 'timeLimit', 'maxCapacity', 'idFacility'],
+        attributes: [
+            'idArea', 'name', 'timeLimit', 'maxCapacity', 'idFacility',
+            [Sequelize.col('Facility.name'), 'facilityName'],
+            [Sequelize.col('Facility.sizeX'), 'facilitySizeX'],
+            [Sequelize.col('Facility.sizeY'), 'facilitySizeY'],
+        ],
         include: {
             model: Facility,
             where: {
@@ -123,8 +128,55 @@ const readAreasFacility = async ({ idFacility }) => {
                 isActive: 1
             },
             attributes: []
-        }
+        },
+        raw: true
     });
+
+    for (let i = 0; i < areaFacility.length; i++) {
+        console.log(areaFacility[i].idArea)
+        const vertices = await AreaEdge.findAll({
+            // raw: true,
+            attributes: [
+                'idArea',
+                [Sequelize.col('Edge.Vertex.x'), 'x'],
+                [Sequelize.col('Edge.Vertex.y'), 'y'],
+
+            ],
+            include: [
+                {
+                    model: Edge,
+                    attributes: [],
+                    include: [{
+                        model: Vertex,
+                        attributes: [],
+                    }]
+                }
+            ],
+            where: {
+                idArea: areaFacility[i].idArea
+            }
+        })
+        let areaVertices = []
+        for (let vertex of vertices) {
+            let { idArea, x, y } = vertex.dataValues
+            //skip if idArea is already in final array
+            if (areaVertices.find(v => v.idArea === idArea)) continue;
+            //get all vertices of this area
+            const verticesFromArea = []
+            vertices.forEach(v => { if (v.idArea === idArea) verticesFromArea.push([v.dataValues.x, v.dataValues.y]) })
+            //push to final array
+            areaVertices.push({
+                idArea: idArea,
+                vertices: verticesFromArea
+            })
+        }
+        areaFacility[i].vertices = areaVertices
+
+    }
+    console.log(areaFacility[0].vertices)
+    console.log(areaFacility[1].vertices)
+    return areaFacility
+
 }
 
 const readArea = async (idArea) => {
