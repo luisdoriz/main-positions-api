@@ -56,8 +56,15 @@ exports.putFacility = async (req, res) => {
     }
 };
 
-exports.deleteFacilities = async (req, res) => {
-    return
+exports.deleteFacility = async (req, res) => {
+    const { idFacility } = req.params;
+    try {
+        await Facilities.deleteFacility({
+            idFacility
+        })
+        res.status(200).json({ status: 'success' });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
 };
-
-

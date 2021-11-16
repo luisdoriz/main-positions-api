@@ -16,7 +16,7 @@ router.post("/", auth.valid, FacilitiesController.postFacility);
 router.put("/:idFacility", auth.valid, FacilitiesController.putFacility);
 
 //DELETE
-router.delete("/", auth.valid, FacilitiesController.deleteFacilities);
+router.delete("/:idFacility", auth.valid, FacilitiesController.deleteFacility);
 
 
 module.exports = router;

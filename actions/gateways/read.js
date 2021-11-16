@@ -51,6 +51,7 @@ const readGatewaysByIdFacility = async ({ idFacility }) => {
     //get gateways in a facility
     const [gateways] = await sequelize.query(`
         SELECT * FROM "Gateway" 
+        LEFT JOIN "Area" USING("idArea")
         WHERE "Gateway"."idArea" IN
             (SELECT "idArea" FROM "Facility" 
             JOIN "Area" USING("idFacility")
