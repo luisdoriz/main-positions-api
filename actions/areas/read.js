@@ -173,8 +173,6 @@ const readAreasFacility = async ({ idFacility }) => {
         areaFacility[i].vertices = areaVertices
 
     }
-    console.log(areaFacility[0].vertices)
-    console.log(areaFacility[1].vertices)
     return areaFacility
 
 }
