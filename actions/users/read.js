@@ -6,7 +6,7 @@ const readUsers = async ({ idOrganization }) => {
   //gets all users in an organization
   const users = await User.findAll({
     where: { idOrganization },
-    include: { model: Role }
+    include: { model: Role, where: { idRole: [3, 4] } }
   })
   const formatedUsers = []
   users.forEach(u => formatedUsers.push({
