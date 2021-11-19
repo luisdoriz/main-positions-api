@@ -16,17 +16,18 @@ exports.getAlerts = async (req, res) => {
 };
 
 exports.postAlert = async (req, res) => {
-    const { payload, idArea, idPerson, date, idAlertType} = req.body;
+    const { payload, idArea, idPerson, date, idAlertType } = req.body;
     try {
-      const alert = await Alerts.createAlert({ payload, idArea, idPerson, date, idAlertType,         
-        isActive: 1,
-        CreatedBy: req.user.idUser,
-        UpdatedBy: req.user.idUser, 
-    })
-      res.status(201).json({ status: "success", data: alert });
+        const alert = await Alerts.createAlert({
+            payload, idArea, idPerson, date, idAlertType,
+            isActive: 1,
+            CreatedBy: req.user.idUser,
+            UpdatedBy: req.user.idUser,
+        })
+        res.status(201).json({ status: "success", data: alert });
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ status: "error", error });
+        console.log(error);
+        res.status(400).json({ status: "error", error });
     }
 
 };
