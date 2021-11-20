@@ -6,6 +6,7 @@ const UsersController = require('../../controllers/users');
 //GET
 router.get("/roles", auth.valid, UsersController.getRoles);
 router.get("/individual", auth.valid, UsersController.getUser);
+router.get("/admins", auth.valid, UsersController.getAdmins);
 router.get("/", auth.valid, UsersController.getUsers);
 
 //POST

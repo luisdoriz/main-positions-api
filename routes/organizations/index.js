@@ -9,13 +9,13 @@ const OrganizationsController = require('../../controllers/organizations');
 router.get("/", OrganizationsController.getOrganizations);
 
 //POST
-router.post("/", OrganizationsController.postOrganizations);
+router.post("/", OrganizationsController.postOrganization);
 
 //PUT
-router.put("/", OrganizationsController.putOrganizations);
+router.put("/", OrganizationsController.putOrganization);
 
 //DELETE
-router.delete("/", OrganizationsController.deleteOrganizations);
+router.delete("/", OrganizationsController.deleteOrganization);
 
 
 module.exports = router;

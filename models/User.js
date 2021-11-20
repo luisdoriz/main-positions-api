@@ -23,7 +23,7 @@ const User = sequelize.define(
    }, 
    idOrganization: {
       type: DataTypes.INTEGER, 
-      allowNull:false
+      allowNull:true
    }, 
    isActive: {
       type: DataTypes.INTEGER
@@ -56,8 +56,12 @@ User.belongsTo(models.Role, {
 });
 
 User.belongsTo(models.Organization, {
- foreignKey: 'idOrganization',
- target: 'idOrganization'
+   foreignKey: {
+      name: 'idOrganization',
+      allowNull: true
+   },
+   constraints: false,
+   target: 'idOrganization',
 });
 
 

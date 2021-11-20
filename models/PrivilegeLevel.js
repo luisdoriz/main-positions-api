@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
       },
+      entryTime: {
+        type: DataTypes.STRING,
+      },
       isActive: {
         type: DataTypes.INTEGER,
       },

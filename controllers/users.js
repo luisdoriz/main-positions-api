@@ -94,3 +94,13 @@ exports.deleteUser = async (req, res) => {
         res.status(400).json({ status: 'error', error });
     }
 };
+
+exports.getAdmins = async (req, res) => {
+    try {
+        const admins = await Users.readAdmins();
+        res.status(200).json({ status: 'success', data: { admins } });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error: 'Check the email address or password.' });
+    }
+};

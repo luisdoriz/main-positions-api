@@ -34,6 +34,14 @@ const readUser = async ({ idUser }) => {
   }
 };
 
+const readAdmins = async () => {
+  //gets admins
+  return User.findAll({
+    attributes: ['idUser', 'name', 'email'],
+    include: { model: Role, where: { idRole: 2 }, attributes: [] }
+  })
+};
+
 const userEmailExists = async (email) => User.count({ where: { email } });
 
 const getUserByEmail = async (email) => User.findOne({
@@ -50,4 +58,5 @@ module.exports = {
   readUser,
   getUserByEmail,
   userEmailExists,
+  readAdmins
 };
