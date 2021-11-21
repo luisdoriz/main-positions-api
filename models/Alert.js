@@ -13,7 +13,7 @@ const Alert = sequelize.define(
    }, 
    idArea: {
       type: DataTypes.INTEGER, 
-      allowNull:false
+      allowNull:SVGComponentTransferFunctionElement
    }, 
    idPerson: {
       type: DataTypes.INTEGER, 
