@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-models.sequelize.sync({alter:true}).then(() => {
+models.sequelize.sync().then(() => {
   server.listen(port, () => {});
   server.on('error', onError);
   server.on('listening', onListening);
