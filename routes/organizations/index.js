@@ -1,21 +1,21 @@
 const express = require("express");
 const router = express.Router();
-//const { auth } = require('../../middleware/auth');
+const auth = require('../../middleware/auth');
 const OrganizationsController = require('../../controllers/organizations');
 
 //base '/organizations'
 
 //GET
-router.get("/", OrganizationsController.getOrganizations);
+router.get("/", auth.valid, OrganizationsController.getOrganizations);
 
 //POST
-router.post("/", OrganizationsController.postOrganization);
+router.post("/", auth.valid, OrganizationsController.postOrganization);
 
 //PUT
-router.put("/:idOrganization", OrganizationsController.putOrganization);
+router.put("/:idOrganization", auth.valid, OrganizationsController.putOrganization);
 
 //DELETE
-router.delete("/:idOrganization", OrganizationsController.deleteOrganization);
+router.delete("/:idOrganization", auth.valid, OrganizationsController.deleteOrganization);
 
 
 module.exports = router;
