@@ -12,10 +12,10 @@ router.get("/", OrganizationsController.getOrganizations);
 router.post("/", OrganizationsController.postOrganization);
 
 //PUT
-router.put("/", OrganizationsController.putOrganization);
+router.put("/:idOrganization", OrganizationsController.putOrganization);
 
 //DELETE
-router.delete("/", OrganizationsController.deleteOrganization);
+router.delete("/:idOrganization", OrganizationsController.deleteOrganization);
 
 
 module.exports = router;
