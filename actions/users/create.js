@@ -16,7 +16,7 @@ const createToken = async (user) => {
         idUser,
         email,
         name,
-        idOrganization: user.Organization.idOrganization,
+        idOrganization: user.Organization ? user.Organization.idOrganization : 0,
         exp: expires,
     }, tokenSecret);
     await user.update({ token });

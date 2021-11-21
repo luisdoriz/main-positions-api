@@ -1,17 +1,20 @@
 const { Organization } = require('../../models');
 
-const createOrganization = ({ name, address, phoneNumber }) => {
-    return Organization.create({
+const createOrganization = async({ name, address, phoneNumber }) => {
+    const org = await Organization.findOne({ where: { name } })
+    if(org) throw 'Ya existe una organización con ese nombre'
+    await Organization.create({
         name,
         address,
         phoneNumber,
-        IsActive: true,
+        isActive: true,
         CreatedBy: 1,
         CreationDate: new Date(),
         UpdatedBy: 1,
         UpdatedDate: new Date()
 
     });
+    return
 }
 
 module.exports = {
