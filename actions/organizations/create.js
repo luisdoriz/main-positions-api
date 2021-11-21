@@ -5,7 +5,7 @@ const createOrganization = ({ name, address, phoneNumber }) => {
         name,
         address,
         phoneNumber,
-        IsActive: true,
+        isActive: true,
         CreatedBy: 1,
         CreationDate: new Date(),
         UpdatedBy: 1,
