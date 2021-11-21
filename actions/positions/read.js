@@ -52,7 +52,11 @@ const getActualPositions = async (idFacility) => {
         "Position"
         LEFT JOIN "Person" ON "Person"."idPerson" = "Position"."idPerson"
     WHERE 
-       "Person"."idFacility" = :idFacility
+      ("Position"."CreationDate" >= date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '-5 minute')) AS timestamp))
+      AND "Position"."CreationDate" < date_trunc('minute', CAST(now() AS timestamp)))
+      OR("Position"."to" >= date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '-5 minute')) AS timestamp))
+      AND "Position"."to" < date_trunc('minute', CAST(now() AS timestamp)))
+      AND "Person"."idFacility" = :idFacility
     ORDER BY
         "Person"."idPerson",
         "Position"."to" DESC,
@@ -64,11 +68,6 @@ const getActualPositions = async (idFacility) => {
   );
   return positions;
 };
-// ("Position"."CreationDate" >= date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '-5 minute')) AS timestamp))
-// AND "Position"."CreationDate" < date_trunc('minute', CAST(now() AS timestamp)))
-// OR("Position"."to" >= date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '-5 minute')) AS timestamp))
-// AND "Position"."to" < date_trunc('minute', CAST(now() AS timestamp)))
-// AND 
 
 module.exports = {
   readPositionsPerson24h,

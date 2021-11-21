@@ -20,9 +20,11 @@ exports.getFacilityReport = async (req, res) => {
     const [areaTraffic] = await Facilites.getAreaTraffic(query);
     const [areaOcurrencies] = await Facilites.getOcurrenciesPerArea(query);
     const [checkIn] = await Facilites.getCheckIn(query);
+    const [casesReport] = await Facilites.getCasesReport(query);
+    const [casesReportData] = await Facilites.getCasesReportData(query);
     res.status(200).json({
       status: "success",
-      data: { areaTraffic, areaOcurrencies, checkIn },
+      data: { areaTraffic, areaOcurrencies, checkIn, cases: {casesReport, casesReportData} },
     });
   } catch (error) {
     console.log(error);
