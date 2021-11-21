@@ -48,10 +48,13 @@ const Alert = sequelize.define(
 
 Alert.associate = function(models) {
 Alert.belongsTo(models.Area, {
- foreignKey: 'idArea',
- target: 'idArea'
+   foreignKey: {
+      name: 'idArea',
+      allowNull: true
+   },
+   constraints: false,
+   target: 'idArea',
 });
-
 Alert.belongsTo(models.Person, {
  foreignKey: 'idPerson',
  target: 'idPerson'
