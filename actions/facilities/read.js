@@ -124,7 +124,7 @@ const getCheckIn = async (query) =>
                 
     `,
     {
-      replacements: query, idOrganization
+      replacements: query
     }
   );
 
