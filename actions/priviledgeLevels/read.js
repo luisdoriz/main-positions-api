@@ -1,4 +1,4 @@
-const { PrivilegeLevel, AreaAccess, Area } = require("../../models");
+const { PrivilegeLevel, AreaAccess, Area, Facility } = require("../../models");
 
 const readPrivilegeLevels = async (where = {}, idOrganization) => {
   return PrivilegeLevel.findAll({
