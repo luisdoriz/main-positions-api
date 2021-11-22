@@ -14,18 +14,18 @@ const readFacilityByIdArea = async ({ idArea }) => {
   return Area.findOne({
     where: {
       isActive: 1,
-      idArea
+      idArea,
     },
     attributes: [
-      'idArea',
-      [Sequelize.col('Facility.idFacility'), 'idFacility'],
-      [Sequelize.col('Facility.name'), 'name'],
+      "idArea",
+      [Sequelize.col("Facility.idFacility"), "idFacility"],
+      [Sequelize.col("Facility.name"), "name"],
     ],
     include: {
       model: Facility,
-      attributes: []
+      attributes: [],
     },
-    raw: true
+    raw: true,
   });
 };
 
@@ -105,7 +105,7 @@ const getCheckIn = async (query) =>
             "Person"."name",
             "Person"."firstLastName",
             "Person"."secondLastName",
-            "Area"."name",
+            "Area"."name" as "areaName",
             "Position"."CreationDate"
         FROM
             "Position"
@@ -126,6 +126,92 @@ const getCheckIn = async (query) =>
     }
   );
 
+const getCasesReport = async (query) =>
+  sequelize.query(
+    `
+    SELECT
+      (CAST(date_trunc('week', CAST((CAST("public"."Case"."CreationDate" AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')) AS "CreationDate",
+      count(*) AS "count"
+    FROM
+      "public"."Case"
+      LEFT JOIN "Person" "Person" ON "Case"."idPerson" = "Person"."idPerson"
+      LEFT JOIN "Facility" "Facility" ON "Person"."idFacility" = "Facility"."idFacility"
+    WHERE ("Case"."deletedAt" IS NULL
+      AND "Case"."isActive" = 1
+      AND "Person"."deletedAt" IS NULL
+      AND "Facility"."idFacility" = :idFacility
+      AND "Case"."CreationDate" >= timestamp WITH time zone :fromDate
+      AND "Case"."CreationDate" < timestamp WITH time zone :toDate
+    )
+    GROUP BY
+      (
+        CAST(
+          date_trunc(
+            'week',
+            CAST((
+                CAST(
+                  "Case"."CreationDate" AS timestamp
+    ) + (
+                  INTERVAL '1 day'
+    )
+    ) AS timestamp
+    )
+    ) AS timestamp
+    ) + (
+          INTERVAL '-1 day'
+    )
+    )
+    ORDER BY
+      (
+        CAST(
+          date_trunc(
+            'week',
+            CAST((
+                CAST(
+                  "Case"."CreationDate" AS timestamp
+    ) + (
+                  INTERVAL '1 day'
+    )
+    ) AS timestamp
+    )
+    ) AS timestamp
+    ) + (
+          INTERVAL '-1 day'
+    )
+    ) ASC
+    `,
+    {
+      replacements: query,
+    }
+  );
+
+const getCasesReportData = async (query) =>
+  sequelize.query(
+    `
+    SELECT
+      "Person"."idPerson",
+      "Person"."name",
+      "Person"."firstLastName",
+      "Person"."secondLastName",
+      "Case"."from" AS "from",
+      "Case"."to" AS "to"
+    FROM
+      "Case"
+      LEFT JOIN "Person" "Person" ON "Case"."idPerson" = "Person"."idPerson"
+      LEFT JOIN "Facility" "Facility" ON "Person"."idFacility" = "Facility"."idFacility"
+    WHERE ("Case"."deletedAt" IS NULL
+      AND "Case"."isActive" = 1
+      AND "Person"."deletedAt" IS NULL
+      AND "Case"."CreationDate" >= timestamp WITH time zone :fromDate
+      AND "Case"."CreationDate" < timestamp WITH time zone :toDate
+      AND "Facility"."idFacility" = :idFacility
+    )
+    `,
+    {
+      replacements: query,
+    }
+  );
+
 module.exports = {
   readFacilities,
   readFacilityByIdArea,
@@ -133,4 +219,6 @@ module.exports = {
   getAreaTraffic,
   getOcurrenciesPerArea,
   getCheckIn,
+  getCasesReport,
+  getCasesReportData,
 };
