@@ -29,7 +29,7 @@ exports.getRoles = async (req, res) => {
 exports.getUser = async (req, res) => {
     try {
         const { idUser } = req.user
-        const user = await Users.readUser({ idUser:17 });
+        const user = await Users.readUser({ idUser });
         res.status(200).json({ status: 'success', data: { user } });
     } catch (error) {
         console.log(error)
