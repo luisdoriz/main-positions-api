@@ -10,7 +10,7 @@ const readActiveCases = async ({ idOrganization }) => {
       include: {
         model: Facility,
         required: true,
-        where: { idOrganization:5 }
+        where: { idOrganization }
       },
     },
     where: {
