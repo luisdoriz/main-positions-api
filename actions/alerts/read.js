@@ -1,4 +1,4 @@
-const { sequelize, Alert, Person, Employee } = require('../../models');
+const { sequelize, Alert, AlertType, Person, Employee } = require('../../models');
 
 const readAlerts = async () => {
     let [alerts] = await sequelize.query(`
@@ -26,6 +26,11 @@ const readAlerts = async () => {
     return formatedAlerts
 }
 
+const readAlertTypes = async () => {
+    return AlertType.findAll();
+}
+
 module.exports = {
-    readAlerts
+    readAlerts,
+    readAlertTypes
 };

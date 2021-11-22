@@ -15,6 +15,16 @@ exports.getAlerts = async (req, res) => {
     }
 };
 
+exports.getAlertTypes = async (req, res) => {
+    try {
+        const alertTypes = await Alerts.readAlertTypes()
+        res.status(200).json({ status: 'success', data: alertTypes });
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: 'error', error });
+    }
+};
+
 exports.postAlert = async (req, res) => {
     const { payload, idArea, idPerson, date, idAlertType } = req.body;
     try {
