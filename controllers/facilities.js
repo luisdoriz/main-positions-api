@@ -28,7 +28,8 @@ exports.getAreasFacility = async (req, res) => {
 };
 
 exports.postFacility = async (req, res) => {
-    const { name, sizeX, sizeY, idOrganization } = req.body;
+    const { name, sizeX, sizeY } = req.body;
+    const { idOrganization } = req.user;
     try {
         const gateway = await Facilities.createFacility({
             name, sizeX, sizeY, idOrganization,
