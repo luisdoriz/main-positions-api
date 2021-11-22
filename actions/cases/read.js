@@ -6,18 +6,20 @@ const readActiveCases = async ({ idOrganization }) => {
   const cases = await Case.findAll({
     include: {
       model: Person,
+      required: true,
       include: {
         model: Facility,
-        where: { idOrganization }
+        required: true,
+        where: { idOrganization:5 }
       },
     },
     where: {
       ongoing: true,
     },
   });
-  if(!cases) return []
+  //if(!cases.Person) return []
   const formatedCases = [];
-  cases.forEach((c) =>
+  cases.forEach((c) => {
     formatedCases.push({
       name: `${c.Person.name} ${c.Person.firstLastName} ${c.Person.secondLastName}`,
       date: c.from,
@@ -25,6 +27,7 @@ const readActiveCases = async ({ idOrganization }) => {
       idFacility: c.Person.Facility.idFacility,
       facilityName: c.Person.Facility.name,
     })
+  }
   );
   return formatedCases;
 };
@@ -32,8 +35,10 @@ const readRecoveredCases = async ({ idOrganization }) => {
   const cases = await Case.findAll({
     include: {
       model: Person,
+      required: true,
       include: {
         model: Facility,
+        required: true,
         where: { idOrganization }
       },
     },
@@ -41,7 +46,7 @@ const readRecoveredCases = async ({ idOrganization }) => {
       ongoing: false,
     },
   });
-  if(!cases) return []
+  //if(!cases.Person) return []
   const formatedCases = [];
   cases.forEach((c) =>
     formatedCases.push({
