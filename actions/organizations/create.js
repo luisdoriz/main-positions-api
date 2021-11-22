@@ -7,7 +7,7 @@ const createOrganization = async({ name, address, phoneNumber }) => {
         name,
         address,
         phoneNumber,
-        isActive: true,
+        isActive: 1,
         CreatedBy: 1,
         CreationDate: new Date(),
         UpdatedBy: 1,
