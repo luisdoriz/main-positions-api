@@ -9,8 +9,10 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
         include: [
           {
             model: Area,
+            required: true,
             include: {
               model: Facility,
+              required: true,
               attributes: [],
               where: { idOrganization }
             }
