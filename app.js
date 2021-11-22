@@ -1,21 +1,24 @@
 //Load express module with `require` directive
-require('dotenv').config()
+require("dotenv").config();
 const port = process.env.PORT || 3000;
-var express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
+var express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 
-const routes = require('./routes');
-const models = require('./models');
-const server = require('http').Server(app);
+const routes = require("./routes");
+const models = require("./models");
+const { lateCheckin, absentAlert } = require("./modules/cron");
+const server = require("http").Server(app);
 
 const allowCrossDomain = (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'token, Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, x-chat-id');
-  if (req.method === 'OPTIONS') {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "token, Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, x-chat-id"
+  );
+  if (req.method === "OPTIONS") {
     res.send(204);
   } else {
     next();
@@ -27,30 +30,32 @@ app.use(allowCrossDomain);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
 models.sequelize.sync().then(() => {
-  server.listen(port, () => {});
-  server.on('error', onError);
-  server.on('listening', onListening);
+  server.listen(port, () => {
+    lateCheckin.start();
+    absentAlert.start();
+  });
+  server.on("error", onError);
+  server.on("listening", onListening);
   routes("/api", app);
 });
 
 /*
  * Event listener for HTTP server "error" event.
-*/
+ */
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
 
   switch (error.code) {
-    case 'EACCES':
+    case "EACCES":
       console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
-    case 'EADDRINUSE':
+    case "EADDRINUSE":
       console.error(`${bind} is already in use`);
       process.exit(1);
       break;
@@ -61,13 +66,12 @@ function onError(error) {
 
 /*
  * Event listener for HTTP server "listening" event.
-*/
+ */
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
   console.log(`node api still alive though ${bind}`); // eslint-disable-line
 }
-
 
 module.exports = {
   app,

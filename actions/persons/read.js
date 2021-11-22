@@ -222,6 +222,56 @@ const readPerson = (idPerson) => {
   })
 }
 
+const readLateCheckin = async () => {
+  const [persons] = await sequelize.query(
+    `
+    SELECT DISTINCT ON ("results"."idPerson")
+      *
+    FROM (
+      SELECT
+        "Position"."idPerson",
+        "Person"."name",
+        "Person"."firstLastName",
+        "Person"."secondLastName",
+        "Position"."CreationDate"
+      FROM
+        "Position"
+      LEFT JOIN "Person" ON "Person"."idPerson" = "Position"."idPerson"
+      LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel" = "Person"."idPrivilegeLevel"
+    WHERE ("Position"."CreationDate" >= CAST(now() AS date)
+      AND "Position"."CreationDate" < CAST((CAST(now() AS timestamp) + (INTERVAL '1 day')) AS date))
+    AND "PrivilegeLevel"."entryTime"::time > "Position"."CreationDate"::TIME
+    AND "Person"."deletedAt" IS NULL
+    AND "Position"."deletedAt" IS NULL
+    AND "PrivilegeLevel"."deletedAt" IS NULL
+    ORDER BY
+      "Position"."CreationDate" DESC) AS "results"
+    WHERE ("results"."CreationDate" >= date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '-30 minute')) AS timestamp))
+      AND "results"."CreationDate" < date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '1 minute')) AS timestamp)))
+    `);
+  return persons;
+};
+
+const readAbsentPerson = async () => {
+  const [persons] = await sequelize.query(
+    `
+    SELECT
+      *
+    FROM
+      "Person"
+    WHERE
+      "Person"."idPerson" NOT in(
+        SELECT
+          "Person"."idPerson" FROM "Position"
+        LEFT JOIN "Person" ON "Person"."idPerson" = "Position"."idPerson"
+      WHERE ("Position"."CreationDate" >= CAST(now() AS date)
+        AND "Position"."CreationDate" < CAST((CAST(now() AS timestamp) + (INTERVAL '1 day')) AS date)))
+    ORDER BY
+      "Person"."idPerson" ASC
+    `);
+  return persons;
+};
+
 module.exports = {
   readEmployee,
   readEmployees,
@@ -229,5 +279,7 @@ module.exports = {
   readVisitors,
   readEmployeesFacilities,
   readPersonByBeaconMac,
-  readPerson
+  readPerson,
+  readAbsentPerson,
+  readLateCheckin,
 };
