@@ -22,7 +22,8 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
       isActive: 1,
       ...where,
     },
-  }).then((result) =>
+  }).then((result) => {
+    if(!result) return []
     result.map((resultItem) => {
       newBody = resultItem.dataValues;
       const areas = newBody.AreaAccesses.map(
@@ -32,6 +33,8 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
       delete newBody.AreaAccesses;
       return newBody;
     })
+  }
+    
   );
 };
 
