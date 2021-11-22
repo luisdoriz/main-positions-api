@@ -15,6 +15,7 @@ const readActiveCases = async ({ idOrganization }) => {
       ongoing: true,
     },
   });
+  if(!cases) return []
   const formatedCases = [];
   cases.forEach((c) =>
     formatedCases.push({
@@ -40,6 +41,7 @@ const readRecoveredCases = async ({ idOrganization }) => {
       ongoing: false,
     },
   });
+  if(!cases) return []
   const formatedCases = [];
   cases.forEach((c) =>
     formatedCases.push({
