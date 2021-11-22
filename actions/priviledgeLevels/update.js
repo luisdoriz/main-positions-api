@@ -11,10 +11,12 @@ const updatePrivilegeLevel = async ({
   isActive,
   UpdatedBy,
   areas,
+  entryTime
 }) =>
   PrivilegeLevel.update(
     {
       name,
+      entryTime,
       idFacility,
       isActive,
       UpdatedBy,

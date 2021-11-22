@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       isActive: {
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER
       },
       CreatedBy: {
         type: DataTypes.INTEGER

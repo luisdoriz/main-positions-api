@@ -35,5 +35,14 @@ const Role = sequelize.define(
   }
 );
 
+Role.associate = function(models) {
+   Role.belongsTo(models.User, {
+    foreignKey: 'idRole',
+    target: 'idRole'
+   });
+   
+   
+   }
+
 return Role;
 };

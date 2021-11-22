@@ -1,7 +1,7 @@
 const { Sequelize, sequelize, AreaEdge, Edge, Vertex, PrivilegeLevel, Area, Beacon, AreaAccess, Facility } = require('../../models');
 const { readFacilityByIdArea } = require('../facilities')
 const { readGateways } = require('../gateways')
-const readAreasAll = async () => {
+const readAreasAll = async ({ idOrganization }) => {
     const vertices = await AreaEdge.findAll({
         // raw: true,
         attributes: [
@@ -31,6 +31,7 @@ const readAreasAll = async () => {
         vertices.forEach(v => { if (v.idArea === idArea) verticesFromArea.push([v.dataValues.x, v.dataValues.y]) })
         //push to final array
         const facility = await readFacilityByIdArea({ idArea })
+        if(facility.idOrganization != idOrganization) continue //if facility is from different organization of user sending request
         areaVertices.push({
             idArea: idArea,
             idFacility: facility.idFacility,
@@ -110,7 +111,7 @@ const readPrivilegeLevels = async () => {
     });
 }
 
-const readAreasFacility = async ({ idFacility }) => {
+const readAreasFacility = async ({ idFacility, idOrganization }) => {
     var areaFacility = await Area.findAll({
         where: {
             isActive: 1
@@ -124,6 +125,7 @@ const readAreasFacility = async ({ idFacility }) => {
         include: {
             model: Facility,
             where: {
+                idOrganization,
                 idFacility,
                 isActive: 1
             },

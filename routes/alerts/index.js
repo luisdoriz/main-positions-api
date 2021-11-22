@@ -5,6 +5,7 @@ const AlertsController = require('../../controllers/alerts');
 
 //GET
 router.get("/", auth.valid, AlertsController.getAlerts);
+router.get("/types", auth.valid, AlertsController.getAlertTypes);
 
 //POST
 router.post("/", auth.valid, AlertsController.postAlert);

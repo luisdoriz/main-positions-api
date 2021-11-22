@@ -21,7 +21,8 @@ exports.putBeaconPerson = async (req, res) => {
 
 exports.getPrivilegeLevel = async (req, res) => {
   try {
-    const pl = await PrivilegeLevel.readPrivilegeLevels(req.query);
+    const { idOrganization } = req.user;
+    const pl = await PrivilegeLevel.readPrivilegeLevels(req.query, idOrganization);
     res.status(200).json({ status: "success", data: pl });
   } catch (error) {
     console.log(error);
@@ -31,7 +32,7 @@ exports.getPrivilegeLevel = async (req, res) => {
 
 exports.postPrivilegeLevel = async (req, res) => {
   try {
-    const { name, idFacility, areas } = req.body;
+    const { name, idFacility, areas, entryTime } = req.body;
     const { idUser } = req.user;
     const body = {
       name,
@@ -40,6 +41,7 @@ exports.postPrivilegeLevel = async (req, res) => {
       CreatedBy: idUser,
       UpdatedBy: idUser,
       areas,
+      entryTime
     };
     const pl = await PrivilegeLevel.createPrivilegeLevel(body);
     res.status(200).json({ status: "success", data: pl });
@@ -51,7 +53,7 @@ exports.postPrivilegeLevel = async (req, res) => {
 
 exports.putPrivilegeLevel = async (req, res) => {
   try {
-    const { name, idFacility, areas, idPrivilegeLevel } = req.body;
+    const { name, idFacility, areas, idPrivilegeLevel, entryTime } = req.body;
     const { idUser } = req.user;
     const body = {
       name,
@@ -59,6 +61,7 @@ exports.putPrivilegeLevel = async (req, res) => {
       UpdatedBy: idUser,
       areas,
       idPrivilegeLevel,
+      entryTime
     };
     await PrivilegeLevel.updatePrivilegeLevel(body);
     res.status(200).json({ status: "success", message: "updated succesfully" });
@@ -110,7 +113,8 @@ exports.getEmployees = async (req, res) => {
 exports.getEmployeesFacilities = async (req, res) => {
   //gets all employees grouped by facility (used in cases frontend)
   try {
-    const employees = await Persons.readEmployeesFacilities();
+    const { idOrganization } = req.user;
+    const employees = await Persons.readEmployeesFacilities({ idOrganization });
     res.status(200).json({ status: "success", data: employees });
   } catch (error) {
     console.log(error);

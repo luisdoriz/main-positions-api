@@ -46,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "idBeacon",
       target: "idBeacon",
     });
+    Beacon.belongsTo(models.Facility, {
+      foreignKey: "idFacility",
+      target: "idFacility",
+    });
 
   };
   return Beacon;

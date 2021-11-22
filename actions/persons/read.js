@@ -150,7 +150,7 @@ const readVisitors = async ({ idOrganization, queryType }) => {
   return visitors;
 };
 
-const readEmployeesFacilities = async () => {
+const readEmployeesFacilities = async ({ idOrganization }) => {
   //reads all employees grouped by facility
   const employees = await Employee.findAll({
     raw: true,
@@ -168,6 +168,7 @@ const readEmployeesFacilities = async () => {
         attributes: [],
         include: {
           model: Facility,
+          where: { idOrganization },
           attributes: [],
         },
       },

@@ -3,7 +3,8 @@ const Persons = require("../actions/persons");
 
 exports.getActiveCases = async (req, res) => {
   try {
-    const cases = await Cases.readActiveCases();
+    const { idOrganization } = req.user;
+    const cases = await Cases.readActiveCases({ idOrganization });
     res.status(200).json({ status: "success", data: cases });
   } catch (error) {
     console.log(error);
@@ -14,7 +15,7 @@ exports.getActiveCases = async (req, res) => {
 exports.getCaseAtRiskPersons = async (req, res) => {
   try {
     const { idCase } = req.params;
-    const persons = await Cases.readAtRiskPersons(idCase);
+    const persons = await Cases.readAtRiskPersons({ idCase });
     res.status(200).json({ status: "success", data: persons });
   } catch (error) {
     console.log(error);
@@ -24,7 +25,8 @@ exports.getCaseAtRiskPersons = async (req, res) => {
 
 exports.getRecoveredCases = async (req, res) => {
   try {
-    const cases = await Cases.readRecoveredCases();
+    const { idOrganization } = req.user;
+    const cases = await Cases.readRecoveredCases({ idOrganization });
     res.status(200).json({ status: "success", data: cases });
   } catch (error) {
     console.log(error);

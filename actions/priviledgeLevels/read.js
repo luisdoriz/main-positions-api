@@ -1,6 +1,6 @@
 const { PrivilegeLevel, AreaAccess, Area } = require("../../models");
 
-const readPrivilegeLevels = async (where = {}) => {
+const readPrivilegeLevels = async (where = {}, idOrganization) => {
   return PrivilegeLevel.findAll({
     include: [
       {
@@ -9,6 +9,11 @@ const readPrivilegeLevels = async (where = {}) => {
         include: [
           {
             model: Area,
+            include: {
+              model: Facility,
+              attributes: [],
+              where: { idOrganization }
+            }
           },
         ],
       },

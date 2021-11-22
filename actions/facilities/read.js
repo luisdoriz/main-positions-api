@@ -2,10 +2,11 @@ const models = require("../../models");
 
 const { Facility, Area, sequelize, Sequelize } = models;
 
-const readFacilities = async () => {
+const readFacilities = async ({ idOrganization }) => {
   return Facility.findAll({
     where: {
       isActive: 1,
+      idOrganization
     },
   });
 };
@@ -19,6 +20,7 @@ const readFacilityByIdArea = async ({ idArea }) => {
     attributes: [
       "idArea",
       [Sequelize.col("Facility.idFacility"), "idFacility"],
+      [Sequelize.col("Facility.idOrganization"), "idOrganization"],
       [Sequelize.col("Facility.name"), "name"],
     ],
     include: {
@@ -38,7 +40,7 @@ const readFacilityByIdOrganization = async ({ idOrganization }) => {
   });
 };
 
-const getAreaTraffic = async (query) =>
+const getAreaTraffic = async (query, idOrganization) =>
   sequelize.query(
     `
         SELECT
@@ -52,18 +54,18 @@ const getAreaTraffic = async (query) =>
         WHERE ("Area"."idFacility" = :idFacility
             AND "Position"."CreationDate" >= timestamp WITH time zone :fromDate
             AND "Position"."CreationDate" < timestamp WITH time zone :toDate
-        )
+        ) AND "Facility"."idOrganization" = :idOrganization
         GROUP BY
             "Area"."idArea"
         ORDER BY
             "Area"."idArea" ASC
           `,
     {
-      replacements: query,
+      replacements: query, idOrganization
     }
   );
 
-const getOcurrenciesPerArea = async (query) =>
+const getOcurrenciesPerArea = async (query, idOrganization) =>
   sequelize.query(
     `
         SELECT
@@ -78,10 +80,11 @@ const getOcurrenciesPerArea = async (query) =>
             "Position"
             LEFT JOIN "Person" ON "Position"."idPerson" = "Person"."idPerson"
             LEFT JOIN "Area" ON "Position"."idArea" = "Area"."idArea"
+            LEFT JOIN "Facility" "Facility" ON "Area"."idFacility" = "Facility"."idFacility"
         WHERE ("Area"."idFacility" = :idFacility
             AND "Position"."CreationDate" >= timestamp WITH time zone :fromDate
             AND "Position"."CreationDate" < timestamp WITH time zone :toDate
-        )
+            ) AND "Facility"."idOrganization" = :idOrganization
         GROUP BY
             "Person"."idPerson",
             "Area"."idArea"
@@ -90,11 +93,11 @@ const getOcurrenciesPerArea = async (query) =>
             "Area"."idArea" ASC
     `,
     {
-      replacements: query,
+      replacements: query, idOrganization
     }
   );
 
-const getCheckIn = async (query) =>
+const getCheckIn = async (query, idOrganization) =>
   sequelize.query(
     `
     SELECT DISTINCT ON ("results"."idPerson")
@@ -115,18 +118,18 @@ const getCheckIn = async (query) =>
     WHERE ("Area"."idFacility" = :idFacility
         AND "Position"."CreationDate" >= timestamp WITH time zone :fromDate
         AND "Position"."CreationDate" < timestamp WITH time zone :toDate
-    )
+        ) AND "Facility"."idOrganization" = :idOrganization
     ORDER BY
         "Position"."CreationDate" DESC
     ) AS "results"
                 
     `,
     {
-      replacements: query,
+      replacements: query, idOrganization
     }
   );
 
-const getCasesReport = async (query) =>
+const getCasesReport = async (query, idOrganization) =>
   sequelize.query(
     `
     SELECT
@@ -140,6 +143,7 @@ const getCasesReport = async (query) =>
       AND "Case"."isActive" = 1
       AND "Person"."deletedAt" IS NULL
       AND "Facility"."idFacility" = :idFacility
+      AND "Facility"."idOrganization" = :idOrganization
       AND "Case"."CreationDate" >= timestamp WITH time zone :fromDate
       AND "Case"."CreationDate" < timestamp WITH time zone :toDate
     )
@@ -181,11 +185,11 @@ const getCasesReport = async (query) =>
     ) ASC
     `,
     {
-      replacements: query,
+      replacements: query, idOrganization
     }
   );
 
-const getCasesReportData = async (query) =>
+const getCasesReportData = async (query, idOrganization) =>
   sequelize.query(
     `
     SELECT
@@ -205,10 +209,11 @@ const getCasesReportData = async (query) =>
       AND "Case"."CreationDate" >= timestamp WITH time zone :fromDate
       AND "Case"."CreationDate" < timestamp WITH time zone :toDate
       AND "Facility"."idFacility" = :idFacility
+      AND "Facility"."idOrganization" = :idOrganization
     )
     `,
     {
-      replacements: query,
+      replacements: query, idOrganization
     }
   );
 

@@ -16,7 +16,8 @@ exports.getGatewaysFacility = async (req, res) => {
     //gets all existing active gateways
     try {
         const { idFacility } = req.params;
-        const gateways = await Gateways.readGatewaysByIdFacility({ idFacility });
+        const { idOrganization } = req.user;
+        const gateways = await Gateways.readGatewaysByIdFacility({ idFacility, idOrganization });
         return res.status(200).send({ status: 'success', data: gateways })
     } catch (error) {
         console.log(error)
