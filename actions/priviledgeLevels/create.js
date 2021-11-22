@@ -8,9 +8,11 @@ const createPrivilegeLevel = async ({
   CreatedBy,
   UpdatedBy,
   areas,
+  entryTime
 }) =>
   PrivilegeLevel.create({
     name,
+    entryTime,
     idFacility,
     isActive,
     CreatedBy,

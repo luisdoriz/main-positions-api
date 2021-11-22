@@ -31,7 +31,7 @@ exports.getPrivilegeLevel = async (req, res) => {
 
 exports.postPrivilegeLevel = async (req, res) => {
   try {
-    const { name, idFacility, areas } = req.body;
+    const { name, idFacility, areas, entryTime } = req.body;
     const { idUser } = req.user;
     const body = {
       name,
@@ -40,6 +40,7 @@ exports.postPrivilegeLevel = async (req, res) => {
       CreatedBy: idUser,
       UpdatedBy: idUser,
       areas,
+      entryTime
     };
     const pl = await PrivilegeLevel.createPrivilegeLevel(body);
     res.status(200).json({ status: "success", data: pl });
@@ -51,7 +52,7 @@ exports.postPrivilegeLevel = async (req, res) => {
 
 exports.putPrivilegeLevel = async (req, res) => {
   try {
-    const { name, idFacility, areas, idPrivilegeLevel } = req.body;
+    const { name, idFacility, areas, idPrivilegeLevel, entryTime } = req.body;
     const { idUser } = req.user;
     const body = {
       name,
@@ -59,6 +60,7 @@ exports.putPrivilegeLevel = async (req, res) => {
       UpdatedBy: idUser,
       areas,
       idPrivilegeLevel,
+      entryTime
     };
     await PrivilegeLevel.updatePrivilegeLevel(body);
     res.status(200).json({ status: "success", message: "updated succesfully" });
