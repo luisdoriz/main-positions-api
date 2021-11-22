@@ -34,11 +34,12 @@ const readUser = async ({ idUser }) => {
   }
 };
 
-const readAdmins = async () => {
+const readAdmins = async ({ idOrganization }) => {
   //gets admins
   return User.findAll({
     attributes: ['idUser', 'name', 'email'],
-    include: { model: Role, where: { idRole: 2 }, attributes: [] }
+    include: { model: Role, where: { idRole: 2 }, attributes: [] },
+    where: { idOrganization }
   })
 };
 
