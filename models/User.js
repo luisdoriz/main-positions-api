@@ -50,7 +50,7 @@ const User = sequelize.define(
 );
 
 User.associate = function(models) {
-User.belongsTo(models.Role, {
+User.hasOne(models.Role, {
  foreignKey: 'idRole',
  target: 'idRole'
 });

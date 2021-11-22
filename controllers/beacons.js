@@ -13,7 +13,8 @@ exports.getBeacon = async (req, res) => {
 
 exports.getBeaconsAll = async (req, res) => {
   try {
-    const beacons = await Beacons.readBeacons();
+    const { idOrganization } = req.user;
+    const beacons = await Beacons.readBeacons({ idOrganization });
     return res.status(200).json({ status: "success", data: beacons });
   } catch (error) {
     console.log(error);

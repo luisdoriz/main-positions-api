@@ -21,7 +21,8 @@ exports.putBeaconPerson = async (req, res) => {
 
 exports.getPrivilegeLevel = async (req, res) => {
   try {
-    const pl = await PrivilegeLevel.readPrivilegeLevels(req.query);
+    const { idOrganization } = req.user;
+    const pl = await PrivilegeLevel.readPrivilegeLevels(req.query, idOrganization);
     res.status(200).json({ status: "success", data: pl });
   } catch (error) {
     console.log(error);
@@ -112,7 +113,8 @@ exports.getEmployees = async (req, res) => {
 exports.getEmployeesFacilities = async (req, res) => {
   //gets all employees grouped by facility (used in cases frontend)
   try {
-    const employees = await Persons.readEmployeesFacilities();
+    const { idOrganization } = req.user;
+    const employees = await Persons.readEmployeesFacilities({ idOrganization });
     res.status(200).json({ status: "success", data: employees });
   } catch (error) {
     console.log(error);

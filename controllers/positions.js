@@ -25,7 +25,8 @@ exports.postPositions = async (req, res) => {
 exports.getPositions = async (req, res) => {
   const { idFacility } = req.query;
   try {
-    const positions = await Positions.getActualPositions(idFacility);
+    const { idOrganization } = req.user;
+    const positions = await Positions.getActualPositions(idFacility, idOrganization);
     res.status(201).json({ status: "success", data: positions });
   } catch (error) {
     console.log(error);

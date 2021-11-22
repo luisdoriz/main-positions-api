@@ -16,11 +16,12 @@ exports.logIn = async (req, res) => {
 
 exports.getRoles = async (req, res) => {
     try {
-        const roles = await Roles.readRoles();
+        const { idOrganization } = req.user;
+        const roles = await Roles.readRoles({ idOrganization });
         res.status(200).json({ status: 'success', data: { roles } });
     } catch (error) {
         console.log(error)
-        res.status(400).json({ status: 'error', error: 'Check the email address or password.' });
+        res.status(400).json({ status: 'error', error });
     }
 };
 

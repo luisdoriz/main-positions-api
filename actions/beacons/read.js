@@ -1,4 +1,4 @@
-const { Sequelize, sequelize, Beacon } = require("../../models");
+const { Sequelize, sequelize, Beacon, Facility } = require("../../models");
 
 const readBeaconByMac = async ({ macAddress }) => {
   return Beacon.findOne({
@@ -9,11 +9,15 @@ const readBeaconByMac = async ({ macAddress }) => {
   });
 };
 
-const readBeacons = async () => {
+const readBeacons = async ({ idOrganization }) => {
   return Beacon.findAll({
     where: {
       isActive: 1,
     },
+    include: {
+      model: Facility,
+      where: { idOrganization }
+    }
   });
 };
 

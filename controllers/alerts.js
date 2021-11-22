@@ -7,7 +7,8 @@ const moment = require("moment");
 
 exports.getAlerts = async (req, res) => {
     try {
-        const alerts = await Alerts.readAlerts()
+        const { idOrganization } = req.user;
+        const alerts = await Alerts.readAlerts({ idOrganization })
         res.status(200).json({ status: 'success', data: alerts });
     } catch (error) {
         console.log(error)

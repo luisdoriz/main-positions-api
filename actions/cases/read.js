@@ -2,12 +2,13 @@ const models = require("../../models");
 
 const { sequelize, Case, Person, Facility } = models;
 
-const readActiveCases = async () => {
+const readActiveCases = async ({ idOrganization }) => {
   const cases = await Case.findAll({
     include: {
       model: Person,
       include: {
         model: Facility,
+        where: { idOrganization }
       },
     },
     where: {
@@ -26,12 +27,13 @@ const readActiveCases = async () => {
   );
   return formatedCases;
 };
-const readRecoveredCases = async () => {
+const readRecoveredCases = async ({ idOrganization }) => {
   const cases = await Case.findAll({
     include: {
       model: Person,
       include: {
         model: Facility,
+        where: { idOrganization }
       },
     },
     where: {
@@ -51,7 +53,7 @@ const readRecoveredCases = async () => {
   return formatedCases;
 };
 
-const readAtRiskPersons = async (idCase) => {
+const readAtRiskPersons = async ({idCase}) => {
   let [atRisk] = await sequelize.query(
     `
     SELECT DISTINCT

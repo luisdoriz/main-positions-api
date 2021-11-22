@@ -16,12 +16,13 @@ exports.getFacilityReport = async (req, res) => {
     res.status(400).json({ status: "error", message: "idFaciliy is required" });
   }
   const query = { toDate, fromDate, idFacility };
+  const { idOrganization } = req.user;
   try {
-    const [areaTraffic] = await Facilites.getAreaTraffic(query);
-    const [areaOcurrencies] = await Facilites.getOcurrenciesPerArea(query);
-    const [checkIn] = await Facilites.getCheckIn(query);
-    const [casesReport] = await Facilites.getCasesReport(query);
-    const [casesReportData] = await Facilites.getCasesReportData(query);
+    const [areaTraffic] = await Facilites.getAreaTraffic(query, idOrganization);
+    const [areaOcurrencies] = await Facilites.getOcurrenciesPerArea(query, idOrganization);
+    const [checkIn] = await Facilites.getCheckIn(query, idOrganization);
+    const [casesReport] = await Facilites.getCasesReport(query, idOrganization);
+    const [casesReportData] = await Facilites.getCasesReportData(query, idOrganization);
     res.status(200).json({
       status: "success",
       data: { areaTraffic, areaOcurrencies, checkIn, cases: {casesReport, casesReportData} },

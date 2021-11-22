@@ -16,7 +16,8 @@ exports.getAreaBeacon = async (req, res) => {
 };
 
 exports.getAreaAll = async (req, res) => {
-    const areas = await Areas.readAreasAll();
+    const { idOrganization } = req.user;
+    const areas = await Areas.readAreasAll({ idOrganization });
     return res.status(200).send({ status: 'success', data: areas })
 };
 
@@ -25,9 +26,6 @@ exports.postArea = async (req, res) => {
     const { idOrganization } = req.user;
     //const { name, timeLimit, maxCapacity, idFacility } = req.body;
     try {
-        //TODO check if creator is from same organization
-
-
         const nArea = await Areas.createArea({
             area, vertices, isActive: 1, CreatedBy: req.user.idUser, UpdatedBy: req.user.idUser
         })
