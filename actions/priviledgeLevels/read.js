@@ -1,6 +1,6 @@
-const { PrivilegeLevel, AreaAccess, Area, Facility } = require("../../models");
+const { PrivilegeLevel, AreaAccess, Area } = require("../../models");
 
-const readPrivilegeLevels = async (where = {}, idOrganization) => {
+const readPrivilegeLevels = async (where = {}) => {
   return PrivilegeLevel.findAll({
     include: [
       {
@@ -9,13 +9,6 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
         include: [
           {
             model: Area,
-            required: true,
-            include: {
-              model: Facility,
-              required: true,
-              attributes: [],
-              where: { idOrganization }
-            }
           },
         ],
       },
@@ -24,8 +17,7 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
       isActive: 1,
       ...where,
     },
-  }).then((result) => {
-    if(!result) return []
+  }).then((result) =>
     result.map((resultItem) => {
       newBody = resultItem.dataValues;
       const areas = newBody.AreaAccesses.map(
@@ -35,8 +27,6 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
       delete newBody.AreaAccesses;
       return newBody;
     })
-  }
-    
   );
 };
 
