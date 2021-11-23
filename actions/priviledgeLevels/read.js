@@ -6,12 +6,15 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
     include: {
       model: AreaAccess,
       attributes: [],
+      required: true,
       include: {
         attributes: [],
         model: Area,
+        required: true,
         include: {
           attributes: [],
           model: Facility,
+          required: true,
           where: { idOrganization }
         }
       }
@@ -19,7 +22,7 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
     raw: true
   })
   allowedIds = allowedIds.map(e => e.idPrivilegeLevel)
-
+  console.log(allowedIds)
   return PrivilegeLevel.findAll({
     include: [
       {
