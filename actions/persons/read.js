@@ -111,8 +111,7 @@ const readVisitor = async ({ idVisitor }) => {
 const readVisitors = async ({ idOrganization, queryType }) => {
   let whereQuery = 'AND "Visitor"."isActive" = 0';
   if (queryType === "active") {
-    whereQuery =
-      'AND "Visitor"."isActive" = 1';
+    whereQuery = 'AND "Visitor"."isActive" = 1';
   }
   let [visitors] = await sequelize.query(
     `
@@ -210,17 +209,17 @@ const readPersonByBeaconMac = (macAddress) => {
     include: {
       model: Beacon,
       where: {
-        macAddress
-      }
-    }
-  })
-}
+        macAddress,
+      },
+    },
+  });
+};
 
 const readPerson = (idPerson) => {
   return Person.findOne({
-    where: { idPerson }
-  })
-}
+    where: { idPerson },
+  });
+};
 
 const readLateCheckin = async () => {
   const [persons] = await sequelize.query(
@@ -250,7 +249,8 @@ const readLateCheckin = async () => {
       "Position"."CreationDate" DESC) AS "results"
     WHERE ("results"."CreationDate" >= date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '-30 minute')) AS timestamp))
       AND "results"."CreationDate" < date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '1 minute')) AS timestamp)))
-    `);
+    `
+  );
   return persons;
 };
 
@@ -272,9 +272,11 @@ const readAbsentPerson = async () => {
         LEFT JOIN "Person" ON "Person"."idPerson" = "Position"."idPerson"
       WHERE ("Position"."CreationDate" >= CAST(now() AS date)
         AND "Position"."CreationDate" < CAST((CAST(now() AS timestamp) + (INTERVAL '1 day')) AS date)))
+      AND "Person"."deletedAt" IS NULL
     ORDER BY
       "Person"."idPerson" ASC
-    `);
+    `
+  );
   return persons;
 };
 

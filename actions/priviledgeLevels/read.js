@@ -1,8 +1,25 @@
-const { sequelize, PrivilegeLevel, AreaAccess, Area, Facility } = require("../../models");
+const {
+  sequelize,
+  PrivilegeLevel,
+  AreaAccess,
+  Area,
+  Facility,
+} = require("../../models");
 
-const readPrivilegeLevels = async (where = {}, idOrganization) => {
+const readPrivilegeLevels = async (where = {}, idOrganization = null) => {
+  const areaInclude = {
+    attributes: [],
+    model: Facility,
+    required: true,
+  };
+  if (idOrganization !== null) {
+    areaInclude.where = { idOrganization };
+  }
   let allowedIds = await PrivilegeLevel.findAll({
-    attributes: [sequelize.fn('DISTINCT','idPrivilegeLevel'), 'idPrivilegeLevel'],
+    attributes: [
+      sequelize.fn("DISTINCT", "idPrivilegeLevel"),
+      "idPrivilegeLevel",
+    ],
     include: {
       model: AreaAccess,
       attributes: [],
@@ -11,18 +28,13 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
         attributes: [],
         model: Area,
         required: true,
-        include: {
-          attributes: [],
-          model: Facility,
-          required: true,
-          where: { idOrganization }
-        }
-      }
+        include: areaInclude,
+      },
     },
-    raw: true
-  })
-  allowedIds = allowedIds.map(e => e.idPrivilegeLevel)
-  console.log(allowedIds)
+    raw: true,
+  });
+  allowedIds = allowedIds.map((e) => e.idPrivilegeLevel);
+  console.log(allowedIds);
   return PrivilegeLevel.findAll({
     include: [
       {
@@ -38,7 +50,7 @@ const readPrivilegeLevels = async (where = {}, idOrganization) => {
     where: {
       isActive: 1,
       ...where,
-      idPrivilegeLevel: allowedIds
+      idPrivilegeLevel: allowedIds,
     },
   }).then((result) =>
     result.map((resultItem) => {
