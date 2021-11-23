@@ -10,6 +10,17 @@ const updateUser = async ({ idUser, email, name, idRole, idOrganization }) => {
     });
 }
 
+const updateNotificationData = async ({ idUser, notificationData }) => {
+    return User.update({
+        notificationData
+    }, {
+        where: {
+            idUser
+        }
+    });
+}
+
 module.exports = {
     updateUser,
+    updateNotificationData
 }

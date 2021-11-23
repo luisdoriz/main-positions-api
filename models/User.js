@@ -28,6 +28,9 @@ const User = sequelize.define(
    isActive: {
       type: DataTypes.INTEGER
    }, 
+   notificationData: {
+      type: DataTypes.JSON
+   },
    CreatedBy: {
       type: DataTypes.INTEGER
    }, 

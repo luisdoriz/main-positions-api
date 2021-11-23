@@ -14,6 +14,7 @@ router.post("/login", UsersController.logIn);
 router.post("/", UsersController.postUser);
 
 //PUT
+router.put("/subscribe", auth.valid, UsersController.subscribeUser);
 router.put("/:idUser", auth.valid, UsersController.putUser);
 
 //DELETE
