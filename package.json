@@ -19,6 +19,7 @@
     "node-cron": "^3.0.0",
     "nodemon": "^2.0.12",
     "pg": "^8.7.1",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.5",
+    "web-push": "^3.4.5"
   }
 }

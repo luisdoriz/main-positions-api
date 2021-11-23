@@ -233,11 +233,13 @@ const readLateCheckin = async () => {
         "Person"."name",
         "Person"."firstLastName",
         "Person"."secondLastName",
-        "Position"."CreationDate"
-      FROM
-        "Position"
+        "Position"."CreationDate",
+        "Facility"."idOrganization"
+    FROM
+      "Position"
       LEFT JOIN "Person" ON "Person"."idPerson" = "Position"."idPerson"
       LEFT JOIN "PrivilegeLevel" ON "PrivilegeLevel"."idPrivilegeLevel" = "Person"."idPrivilegeLevel"
+      LEFT JOIN "Facility" on "Facility"."idFacility" = "Person"."idFacility"
     WHERE ("Position"."CreationDate" >= CAST(now() AS date)
       AND "Position"."CreationDate" < CAST((CAST(now() AS timestamp) + (INTERVAL '1 day')) AS date))
     AND "PrivilegeLevel"."entryTime"::time > "Position"."CreationDate"::TIME
@@ -256,9 +258,13 @@ const readAbsentPerson = async () => {
   const [persons] = await sequelize.query(
     `
     SELECT
-      *
+      "Person"."name",
+      "Person"."firstLastName",
+      "Person"."idPerson",
+      "Facility"."idOrganization"
     FROM
       "Person"
+      LEFT JOIN "Facility" ON "Facility"."idFacility" = "Person"."idFacility"
     WHERE
       "Person"."idPerson" NOT in(
         SELECT
