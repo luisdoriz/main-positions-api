@@ -1,5 +1,14 @@
 const { Sequelize, sequelize, Beacon, Facility } = require("../../models");
 
+const readBeaconsMQTT = async () => {
+  const beacons = await  Beacon.findAll({
+    where: {
+      isActive: 1,
+    },
+  });
+  return beacons.map(b => b.macAddress)
+};
+
 const readBeaconByMac = async ({ macAddress }) => {
   return Beacon.findOne({
     where: {
@@ -78,6 +87,7 @@ const readBeaconsAvailable = async ({ idOrganization, idFacility }) => {
   }
 };
 module.exports = {
+  readBeaconsMQTT,
   readBeaconByMac,
   readBeacons,
   readBeaconsAvailable,

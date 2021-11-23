@@ -1,5 +1,16 @@
 const Beacons = require("../actions/beacons");
 
+exports.getBeaconsMQTT = async (req, res) => {
+  //gets all beacons macAddress in database. Used in Messages Broker for knowing which macAddresses to read
+  try {
+    const beacons = await Beacons.readBeaconsMQTT();
+    return res.status(200).send(beacons);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ status: "error", error });
+  }
+};
+
 exports.getBeacon = async (req, res) => {
   const { macAddress } = req.body;
   try {
