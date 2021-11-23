@@ -31,7 +31,7 @@ const readAreasAll = async ({ idOrganization }) => {
         vertices.forEach(v => { if (v.idArea === idArea) verticesFromArea.push([v.dataValues.x, v.dataValues.y]) })
         //push to final array
         const facility = await readFacilityByIdArea({ idArea })
-        if(facility.idOrganization != idOrganization) continue //if facility is from different organization of user sending request
+        if (facility.idOrganization != idOrganization) continue //if facility is from different organization of user sending request
         areaVertices.push({
             idArea: idArea,
             idFacility: facility.idFacility,
@@ -55,7 +55,7 @@ const readAreasBeacon = async ({ macAddress }) => {
         "Beacon"."macAddress" = :macAddress
     `, {
         replacements: {
-            macAddress
+            macAddress: macAddress.toUpperCase()
         }
     })
     if (!areas[0]) throw 'Beacons mac address not found'
@@ -99,7 +99,7 @@ const readAreasBeacon = async ({ macAddress }) => {
         })
     }
     //get gateways/beacons in organization
-    const { beacons } = await readGateways({ macAddress })
+    const { beacons } = await readGateways({ macAddress: macAddress.toUpperCase() })
     return { areaVertices, beacons }
 }
 

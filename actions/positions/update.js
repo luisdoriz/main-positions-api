@@ -16,7 +16,7 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
             attributes: []
         },
         where: {
-            macAddress: beacon
+            macAddress: beacon.toUpperCase() 
         },
         raw: true
     })

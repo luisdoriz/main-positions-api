@@ -6,7 +6,7 @@ const readBeaconsMQTT = async () => {
       isActive: 1,
     },
   });
-  return beacons.map(b => b.macAddress)
+  return beacons.map(b => b.macAddress.toUpperCase() )
 };
 
 const readBeaconByMac = async ({ macAddress }) => {

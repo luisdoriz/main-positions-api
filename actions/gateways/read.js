@@ -6,7 +6,8 @@ const readGateways = async ({ macAddress }) => {
     //get gatewasy from beacon mac's organization
 
     //get beacons in a facility (used for flask cache)
-    const beacon = await Beacon.findOne({ where: { macAddress } })
+    const beacon = await Beacon.findOne({ where: { macAddress: macAddress.toUpperCase() } })
+    console.log(beacon)
     const [beacons] = await sequelize.query(`
             SELECT DISTINCT
             "Beacon".*
