@@ -31,7 +31,7 @@ const readPersonsPositionsArea = async ({ area, to }) => {
   });
 };
 
-const getActualPositions = async (idFacility, idOrganization) => {
+const getActualPositions = async (idFacility) => {
   let [positions] = await sequelize.query(
     `
     SELECT DISTINCT ON ("Person"."idPerson")
@@ -58,14 +58,13 @@ const getActualPositions = async (idFacility, idOrganization) => {
       OR("Position"."to" >= date_trunc('minute', CAST((CAST(now() AS timestamp) + (INTERVAL '-5 minute')) AS timestamp))
       AND "Position"."to" < date_trunc('minute', CAST(now() AS timestamp)))
       AND "Person"."idFacility" = :idFacility
-      AND "Facility"."idOrganization" = :idOrganization
     ORDER BY
         "Person"."idPerson",
         "Position"."to" DESC,
         "Position"."CreationDate" DESC     
     `,
     {
-      replacements: { idFacility, idOrganization },
+      replacements: { idFacility },
     }
   );
   return positions;
