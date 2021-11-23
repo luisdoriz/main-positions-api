@@ -46,7 +46,7 @@ const lateCheckin = cron.schedule("*/30 * * * *", async () => {
   console.log(Date(), "lateCheckin done!");
 });
 // 0 6 */1 * *
-const absentAlert = cron.schedule("0 6 */1 * *", async () => {
+const absentAlert = cron.schedule("0 2 * * 1-5", async () => {
   console.log(Date(), "absentAlert");
   const persons = await readAbsentPerson();
   promises = persons.map(async ({ idPerson, name, firstLastName, idOrganization }) => {
