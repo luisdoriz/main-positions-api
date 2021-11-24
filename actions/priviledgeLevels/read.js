@@ -34,7 +34,6 @@ const readPrivilegeLevels = async (where = {}, idOrganization = null) => {
     raw: true,
   });
   allowedIds = allowedIds.map((e) => e.idPrivilegeLevel);
-  console.log(allowedIds);
   return PrivilegeLevel.findAll({
     include: [
       {

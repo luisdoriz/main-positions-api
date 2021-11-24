@@ -135,7 +135,6 @@ const readAreasFacility = async ({ idFacility, idOrganization }) => {
     });
 
     for (let i = 0; i < areaFacility.length; i++) {
-        console.log(areaFacility[i].idArea)
         const vertices = await AreaEdge.findAll({
             // raw: true,
             attributes: [

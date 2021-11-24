@@ -60,13 +60,11 @@ exports.deleteAlert = async (req, res) => {
 
 exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel }) => {
     //check if position triggers an alert. (called on put positions)
-    console.log({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel })
     const { timeLimit, maxCapacity } = await Areas.readArea(area)
 
     //generate alert for being in restricted area
     const isInRestrictedArea = await checkRestrictedArea({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel, timeLimit, maxCapacity })
     if (isInRestrictedArea) {
-        //console.log('alert: person is in rectricted area')
         const person = await Persons.readPerson(idPerson)
         const rArea = await Areas.readArea(area)
         let payload = `${person.name} ${person.firstLastName} ${person.secondLastName} ha entrado a la area restringida: ${rArea.name}`
@@ -76,7 +74,6 @@ exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPers
     //generate alert for being too much time in an area
     const { excededTimeLimit, timeInArea } = await checkTimeAllowed({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel, timeLimit, maxCapacity })
     if (excededTimeLimit) {
-        //console.log('alert: person exceded time allowed in area', area)
         const person = await Persons.readPerson(idPerson)
         const rArea = await Areas.readArea(area)
         let payload = `${person.name} ${person.firstLastName} ${person.secondLastName} ha excedido el tiempo permitido en el area "${rArea.name}" con un total de ${timeInArea} minutos`
@@ -86,7 +83,6 @@ exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPers
     //generate alert for being too much time in an area
     const { excededOcuppancy, numPeople } = await checkMaxOcuppancy({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel })
     if (excededOcuppancy) {
-        //console.log('alert: area max occupancy exceded', area)
         const rArea = await Areas.readArea(area)
         let payload = `Se ha excedido el limite de personas permitidas en el area "${rArea.name}" con un total de ${numPeople} personas`
         Alerts.createAlert({ payload, idArea: area, idPerson, date: to, idAlertType: 5 })
@@ -118,14 +114,14 @@ const checkTimeAllowed = async ({ x, y, from, to, area, beacon, idBeacon, idPers
     let timeInArea = 0 //minutes
     for (let i = numPositions - 1; i >= 0; i--) {
         if (positions[i].idArea != latestArea.idArea) break;
-        const posFrom = moment(positions[i].from)
-        const posTo = moment(positions[i].to)
+        const posFrom = moment(positions[i].from, "YYYY-MM-DD HH:mm:ss.SSS")
+        const posTo = moment(positions[i].to, "YYYY-MM-DD HH:mm:ss.SSS")
         timeInArea += posTo.diff(posFrom, 'minutes')
         console.log(positions[i].idPosition, posTo.diff(posFrom, 'minutes'))
     }
     //add to total time spent in newly added position row (data from req.body)
-    const reqFrom = moment(from)
-    const reqTo = moment(to)
+    const reqFrom = moment(from, "YYYY-MM-DD HH:mm:ss.SSS")
+    const reqTo = moment(to, "YYYY-MM-DD HH:mm:ss.SSS")
     timeInArea += reqTo.diff(reqFrom, 'minutes')
     //check if person exceded time limit in area
     if (timeInArea >= timeLimit) excededTimeLimit = true
