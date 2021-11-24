@@ -23,7 +23,13 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
 
     const previousPositions = await Position.findOne({
         where: {
-            idPerson, x, y,
+            idPerson, 
+            x: {
+                [Op.between]: [x - 1, x + 1],   //extend range to 2 meters
+            }, 
+            y: {
+                [Op.between]: [y - 1, y + 1],   //extend range to 2 meters
+            },
             to: { //only get rows from past 5 minutes. if exist edit their "to" else create new position row
                 [Op.gte]: moment(input_to).subtract(5, 'minutes').toDate(),
             }
