@@ -2,7 +2,7 @@ const { Gateway } = require('../../models');
 
 const updateGateway = async ({idGateway, macAddress, idArea, x, y, isActive, UpdatedBy}) => {
     return Gateway.update({
-        macAddress, idArea, x, y, isActive, UpdatedBy
+        macAddress: macAddress.toUpperCase() , idArea, x, y, isActive, UpdatedBy
     }, {
         where: {
             idGateway

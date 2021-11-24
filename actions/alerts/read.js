@@ -7,7 +7,7 @@ const readAlerts = async ({ idOrganization }) => {
         LEFT JOIN "Person" ON "Person"."idPerson"="Alert"."idPerson"
         LEFT JOIN "Area" ON "Area"."idArea"="Alert"."idArea"
         LEFT JOIN "Facility" ON "Facility"."idFacility"="Person"."idFacility"
-        WHERE "Alert"."isActive"=1 AND "Facility"."idOrganization"=:idOrganization
+        WHERE "Alert"."isActive"=1 AND "Facility"."idOrganization"=:idOrganization AND "Alert"."deletedAt" IS NULL
         `, {
         replacements: {
             idOrganization

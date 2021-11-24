@@ -8,7 +8,8 @@ const BeaconsController = require('../../controllers/beacons');
 //GET
 router.get("/", auth.valid, BeaconsController.getBeacon);
 router.get("/all", auth.valid, BeaconsController.getBeaconsAll);
-router.get("/available", auth.valid, BeaconsController.getBeaconsAvailable);
+router.get("/available/", auth.valid, BeaconsController.getBeaconsAvailable);
+router.get("/mqtt", BeaconsController.getBeaconsMQTT);
 
 //POST
 router.post("/", auth.valid, BeaconsController.postBeacon);
