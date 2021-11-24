@@ -102,7 +102,6 @@ const checkRestrictedArea = async ({ x, y, from, to, area, beacon, idBeacon, idP
     let isInRestrictedArea = true
     //iterate allowed areas and check if person was in an allowed area
     pl.areas.forEach(allowedArea => {
-        console.log(allowedArea.idArea, 'vs', area)
         if (allowedArea.idArea == area) isInRestrictedArea = false
     })
     return isInRestrictedArea
@@ -130,14 +129,12 @@ const checkTimeAllowed = async ({ x, y, from, to, area, beacon, idBeacon, idPers
     timeInArea += reqTo.diff(reqFrom, 'minutes')
     //check if person exceded time limit in area
     if (timeInArea >= timeLimit) excededTimeLimit = true
-    console.log(timeInArea, 'vs', timeLimit)
     return { excededTimeLimit, timeInArea }
 }
 
 const checkMaxOcuppancy = async ({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel, timeLimit, maxCapacity }) => {
     //check live number of people in area in "to" date. to - 5 min, and count unique persons
     const numPeople = await Positions.readPersonsPositionsArea({ area, to })
-    console.log('occ', numPeople)
     let excededOcuppancy = numPeople > maxCapacity ? true : false
     return { excededOcuppancy, numPeople }
 }

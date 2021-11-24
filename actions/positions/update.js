@@ -4,7 +4,7 @@ const { Op } = require('sequelize')
 
 const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive, CreatedBy, UpdatedBy }) => {
     //updates or creates position. If beacon was in the same position as before, update existing position row by editing its "from" and "to" values instead of creating a new row
-
+    console.log(beacon, beacon.toUpperCase())
     const { idBeacon, idPerson, idPrivilegeLevel } = await Beacon.findOne({
         attributes: [
             'idBeacon',
@@ -20,7 +20,7 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
         },
         raw: true
     })
-
+    console.log('aaa',idBeacon, idPerson, idPrivilegeLevel)
     const previousPositions = await Position.findOne({
         where: {
             idPerson, 
@@ -41,7 +41,7 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
         //a position within 5 minutes already exists, edit "to"
 
         //check input_to is newer than original to
-        if (moment(input_to) <= moment(previousPositions.to)) return console.log('input_to is older than original to')
+        if (moment(input_to) <= moment(previousPositions.to)) throw console.log('input_to is older than original to')
 
         console.log('edited idPosition', previousPositions.idPosition, "to:", input_to)
         await Position.update({
