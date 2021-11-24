@@ -74,14 +74,62 @@ const readAtRiskPersons = async ({idCase}) => {
       LEFT JOIN "Position" AS "CasePosition" ON "Case"."idPerson" = "CasePosition"."idPerson"
       LEFT JOIN "Position" AS "RiskPosition" ON "CasePosition"."idArea" = "RiskPosition"."idArea"
       LEFT JOIN "Person" AS "RiskPerson" ON "RiskPerson"."idPerson" = "RiskPosition"."idPerson"
-    WHERE (("CasePosition"."from" BETWEEN(CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day'))
-        AND "Case"."to")
-      OR("CasePosition"."to" BETWEEN(CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day'))
-    AND "Case"."to"))
-    AND(("RiskPosition"."from" BETWEEN(CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day'))
-    AND "Case"."to")
-      OR("RiskPosition"."to" BETWEEN(CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day'))
-    AND "Case"."to"))
+    WHERE (
+        (
+        "CasePosition"."from"
+        BETWEEN (
+          CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS 				timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')
+          )
+        AND "Case"."to"
+        OR
+        "CasePosition"."from"
+        BETWEEN (
+          CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS 				timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')
+          )
+        AND now()
+        )
+      OR (
+        "CasePosition"."to"
+        BETWEEN (
+          CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS 				timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')
+          )
+        AND "Case"."to"
+        OR
+        "CasePosition"."to"
+        BETWEEN (
+          CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS 				timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')
+          )
+        AND now()
+        )
+      )
+    AND (
+      (
+        "RiskPosition"."from"
+        BETWEEN (
+          CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS 				timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')
+          )
+        AND "Case"."to"
+        OR
+        "RiskPosition"."from"
+        BETWEEN (
+          CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS 				timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')
+          )
+        AND now()
+      )
+      OR (
+        "RiskPosition"."to"
+        BETWEEN (
+          CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS					timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')
+          )
+        AND "Case"."to"
+        OR
+        "RiskPosition"."to"
+        BETWEEN (
+          CAST(date_trunc('week', CAST((CAST((CAST("Case"."from" AS timestamp) + (INTERVAL '-1 week')) AS					timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')
+          )
+        AND now()
+        )
+      )
     AND "RiskPosition"."idPerson" != "Case"."idPerson"
     AND "Case"."idCase" = :idCase
         `,
