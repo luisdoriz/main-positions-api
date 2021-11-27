@@ -34,10 +34,19 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
                 [Op.gte]: moment(input_to, "YYYY-MM-DD HH:mm:ss.SSS").subtract(5, 'minutes').toDate(),
             }
         },
-        order: [['CreationDate', 'DESC']], //get latest row 
+        order: [['to', 'DESC']], //get latest row 
     })
+    
+    let updatePreviousPosition = false
+    if(previousPosition) {
+        if( (previousPosition.x >= x - 1 && previousPosition.x <= x + 1) &&
+            (previousPosition.y >= y - 1 && previousPosition.y <= y + 1)
+        ) { //if previousPosition x and y is within 2 meters of new req position
+            updatePreviousPosition = true
+        }
+    }
 
-    if (previousPosition) {
+    if (updatePreviousPosition) {
         //a position within 5 minutes already exists, edit "to"
         
         //check input_to is newer than original to
