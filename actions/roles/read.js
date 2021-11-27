@@ -10,7 +10,7 @@ const readRoles = async ({ idOrganization }) => {
         include: {
             attributes: [],
             model: User,
-            where: { idOrganization }
+            // where: { idOrganization }
         }
     });
 }
