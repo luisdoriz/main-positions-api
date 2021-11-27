@@ -54,8 +54,7 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.postUser = async (req, res) => {
-  const { idOrganization } = req.user;
-  const { email, name, password, idRole } = req.body;
+  const { email, name, password, idRole, idOrganization } = req.body;
   try {
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       // email regex validator w3resource
