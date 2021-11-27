@@ -61,7 +61,6 @@ exports.deleteAlert = async (req, res) => {
 exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel }) => {
     //check if position triggers an alert. (called on put positions)
     console.log({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel })
-    const { timeLimit, maxCapacity } = await Areas.readArea(area)
 
     //generate alert for being in restricted area
     const isInRestrictedArea = await checkRestrictedArea({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel, timeLimit, maxCapacity })
@@ -72,24 +71,28 @@ exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPers
         let payload = `${person.name} ${person.firstLastName} ${person.secondLastName} ha entrado a la area restringida: ${rArea.name}`
         Alerts.createAlert({ payload, idArea: area, idPerson, date: to, idAlertType: 3 })
     }
-
-    //generate alert for being too much time in an area
-    const { excededTimeLimit, timeInArea } = await checkTimeAllowed({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel, timeLimit, maxCapacity })
-    if (excededTimeLimit) {
-        //console.log('alert: person exceded time allowed in area', area)
-        const person = await Persons.readPerson(idPerson)
-        const rArea = await Areas.readArea(area)
-        let payload = `${person.name} ${person.firstLastName} ${person.secondLastName} ha excedido el tiempo permitido en el area "${rArea.name}" con un total de ${timeInArea} minutos`
-        Alerts.createAlert({ payload, idArea: area, idPerson, date: to, idAlertType: 4 })
+    const { timeLimit, maxCapacity } = await Areas.readArea(area)
+    if(timeLimit) {
+        //generate alert for being too much time in an area
+        const { excededTimeLimit, timeInArea } = await checkTimeAllowed({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel, timeLimit, maxCapacity })
+        if (excededTimeLimit) {
+            //console.log('alert: person exceded time allowed in area', area)
+            const person = await Persons.readPerson(idPerson)
+            const rArea = await Areas.readArea(area)
+            let payload = `${person.name} ${person.firstLastName} ${person.secondLastName} ha excedido el tiempo permitido en el area "${rArea.name}" con un total de ${timeInArea} minutos`
+            Alerts.createAlert({ payload, idArea: area, idPerson, date: to, idAlertType: 4 })
+        }
     }
 
-    //generate alert for being too much time in an area
-    const { excededOcuppancy, numPeople } = await checkMaxOcuppancy({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel })
-    if (excededOcuppancy) {
-        //console.log('alert: area max occupancy exceded', area)
-        const rArea = await Areas.readArea(area)
-        let payload = `Se ha excedido el limite de personas permitidas en el area "${rArea.name}" con un total de ${numPeople} personas`
-        Alerts.createAlert({ payload, idArea: area, idPerson, date: to, idAlertType: 5 })
+    if(maxCapacity) {
+        //generate alert for being too much time in an area
+        const { excededOcuppancy, numPeople } = await checkMaxOcuppancy({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel })
+        if (excededOcuppancy) {
+            //console.log('alert: area max occupancy exceded', area)
+            const rArea = await Areas.readArea(area)
+            let payload = `Se ha excedido el limite de personas permitidas en el area "${rArea.name}" con un total de ${numPeople} personas`
+            Alerts.createAlert({ payload, idArea: area, idPerson, date: to, idAlertType: 5 })
+        }
     }
 }
 
