@@ -131,6 +131,7 @@ const readAreasFacility = async ({ idFacility, idOrganization }) => {
             },
             attributes: []
         },
+        order: [["name", "ASC"]],
         raw: true
     });
 
