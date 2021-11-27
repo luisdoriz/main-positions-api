@@ -4,7 +4,7 @@ const { Op } = require('sequelize')
 
 const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive, CreatedBy, UpdatedBy }) => {
     //updates or creates position. If beacon was in the same position as before, update existing position row by editing its "from" and "to" values instead of creating a new row
-    console.log(beacon, beacon.toUpperCase())
+    // console.log(beacon, beacon.toUpperCase())
     const { idBeacon, idPerson, idPrivilegeLevel } = await Beacon.findOne({
         attributes: [
             'idBeacon',
@@ -20,8 +20,8 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
         },
         raw: true
     })
-    console.log('aaa',idBeacon, idPerson, idPrivilegeLevel)
-    const previousPositions = await Position.findOne({
+    // console.log('aaa',idBeacon, idPerson, idPrivilegeLevel)
+    const previousPosition = await Position.findOne({
         where: {
             idPerson, 
             x: {
@@ -31,24 +31,24 @@ const upsertPosition = async ({ x, y, from, to: input_to, area, beacon, isActive
                 [Op.between]: [y - 1, y + 1],   //extend range to 2 meters
             },
             to: { //only get rows from past 5 minutes. if exist edit their "to" else create new position row
-                [Op.gte]: moment(input_to).subtract(5, 'minutes').toDate(),
+                [Op.gte]: moment(input_to, "YYYY-MM-DD HH:mm:ss.SSS").subtract(5, 'minutes').toDate(),
             }
         },
         order: [['CreationDate', 'DESC']], //get latest row 
     })
 
-    if (previousPositions) {
+    if (previousPosition) {
         //a position within 5 minutes already exists, edit "to"
-
+        
         //check input_to is newer than original to
-        if (moment(input_to) <= moment(previousPositions.to)) throw console.log('input_to is older than original to')
-
-        console.log('edited idPosition', previousPositions.idPosition, "to:", input_to)
+        if (moment(input_to, "YYYY-MM-DD HH:mm:ss.SSS") <= moment(previousPosition.to)) throw console.log('input_to is older than original to')
+        
+        console.log('updated position')
         await Position.update({
             to: input_to
         }, {
             where: {
-                idPosition: previousPositions.idPosition
+                idPosition: previousPosition.idPosition
             }
         });
     } else {

@@ -8,7 +8,7 @@ const readPositionsPerson24h = async ({ idPerson, area, from, to }) => {
       idPerson,
       from: {
         //only get rows from past 24 hours
-        [Op.gte]: moment(to).subtract(24, "hours").toDate(),
+        [Op.gte]: moment(to, "YYYY-MM-DD HH:mm:ss.SSS").subtract(24, "hours").toDate(),
       },
     },
     order: [["from", "ASC"]],
@@ -22,7 +22,7 @@ const readPersonsPositionsArea = async ({ area, to }) => {
       idArea: area,
       to: {
         //only get rows from past 5 minutes. if exist edit their "to" else create new position row
-        [Op.gte]: moment(to).subtract(5, "minutes").toDate(),
+        [Op.gte]: moment(to, "YYYY-MM-DD HH:mm:ss.SSS").subtract(5, "minutes").toDate(),
       },
     },
     distinct: true,

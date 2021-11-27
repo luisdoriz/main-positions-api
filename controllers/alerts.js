@@ -60,12 +60,11 @@ exports.deleteAlert = async (req, res) => {
 
 exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel }) => {
     //check if position triggers an alert. (called on put positions)
-    console.log({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel })
+    //console.log({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel })
 
     //generate alert for being in restricted area
     const isInRestrictedArea = await checkRestrictedArea({ x, y, from, to, area, beacon, idBeacon, idPerson, idPrivilegeLevel, timeLimit, maxCapacity })
     if (isInRestrictedArea) {
-        //console.log('alert: person is in rectricted area')
         const person = await Persons.readPerson(idPerson)
         const rArea = await Areas.readArea(area)
         let payload = `${person.name} ${person.firstLastName} ${person.secondLastName} ha entrado a la area restringida: ${rArea.name}`
@@ -121,14 +120,14 @@ const checkTimeAllowed = async ({ x, y, from, to, area, beacon, idBeacon, idPers
     let timeInArea = 0 //minutes
     for (let i = numPositions - 1; i >= 0; i--) {
         if (positions[i].idArea != latestArea.idArea) break;
-        const posFrom = moment(positions[i].from)
-        const posTo = moment(positions[i].to)
+        const posFrom = moment(positions[i].from, "YYYY-MM-DD HH:mm:ss.SSS")
+        const posTo = moment(positions[i].to, "YYYY-MM-DD HH:mm:ss.SSS")
         timeInArea += posTo.diff(posFrom, 'minutes')
         console.log(positions[i].idPosition, posTo.diff(posFrom, 'minutes'))
     }
     //add to total time spent in newly added position row (data from req.body)
-    const reqFrom = moment(from)
-    const reqTo = moment(to)
+    const reqFrom = moment(from, "YYYY-MM-DD HH:mm:ss.SSS")
+    const reqTo = moment(to, "YYYY-MM-DD HH:mm:ss.SSS")
     timeInArea += reqTo.diff(reqFrom, 'minutes')
     //check if person exceded time limit in area
     if (timeInArea >= timeLimit) excededTimeLimit = true

@@ -36,7 +36,6 @@ exports.getPositions = async (req, res) => {
 exports.putPositions = async (req, res) => {
   //data from flask. create or update position and check if alert is generated
   const { positions } = req.body;
-  console.log(positions);
   try {
     for (let position of positions) {
       const { x, y, from, to, area, beacon } = position;
