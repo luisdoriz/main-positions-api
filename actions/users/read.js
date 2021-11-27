@@ -35,7 +35,7 @@ const readUser = async ({ idUser }) => {
     email: u.email,
     roleName: u.Role.name,
     idRole: u.Role.idRole,
-    idOrganization: u.Role.idOrganization,
+    idOrganization: u.idOrganization,
   };
 };
 
