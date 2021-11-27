@@ -37,7 +37,7 @@ exports.getUser = async (req, res) => {
     console.log(error);
     res
       .status(400)
-      .json({ status: "error", error: "Check the email address or password." });
+      .json({ status: "error", error });
   }
 };
 
@@ -50,7 +50,7 @@ exports.getUsers = async (req, res) => {
     console.log(error);
     res
       .status(400)
-      .json({ status: "error", error: "Check the email address or password." });
+      .json({ status: "error", error });
   }
 };
 
@@ -103,7 +103,7 @@ exports.putUser = async (req, res) => {
     console.log(error);
     res
       .status(400)
-      .json({ status: "error", error: "Check the email address or password." });
+      .json({ status: "error", error });
   }
 };
 
@@ -137,6 +137,6 @@ exports.getAdmins = async (req, res) => {
     console.log(error);
     res
       .status(400)
-      .json({ status: "error", error: "Check the email address or password." });
+      .json({ status: "error", error });
   }
 };
