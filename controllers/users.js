@@ -18,8 +18,7 @@ exports.logIn = async (req, res) => {
 
 exports.getRoles = async (req, res) => {
   try {
-    const { idOrganization } = req.user;
-    const roles = await Roles.readRoles({ idOrganization });
+    const roles = await Roles.readRoles();
     res.status(200).json({ status: "success", data: { roles } });
   } catch (error) {
     console.log(error);
@@ -55,7 +54,8 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.postUser = async (req, res) => {
-  const { email, name, password, idRole, idOrganization } = req.body;
+  const { idOrganization } = req.user;
+  const { email, name, password, idRole } = req.body;
   try {
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       // email regex validator w3resource

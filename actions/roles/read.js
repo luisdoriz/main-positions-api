@@ -1,7 +1,7 @@
 const { Role, User } = require('../../models');
 const { Op } = require('sequelize')
 
-const readRoles = async ({ idOrganization }) => {
+const readRoles = async () => {
     return Role.findAll({
         where: {
             "idRole": { [Op.gt]: 2 },
@@ -10,7 +10,6 @@ const readRoles = async ({ idOrganization }) => {
         include: {
             attributes: [],
             model: User,
-            // where: { idOrganization }
         }
     });
 }
