@@ -115,6 +115,7 @@ const getCheckIn = async (query) =>
         LEFT JOIN "Area" ON "Area"."idArea" = "Position"."idArea"
         LEFT JOIN "Facility" ON "Facility"."idFacility" = "Person"."idFacility"
     WHERE ("Area"."idFacility" = :idFacility
+        AND "Person"."deletedAt" IS NULL
         AND "Position"."CreationDate" >= timestamp WITH time zone :fromDate
         AND "Position"."CreationDate" < timestamp WITH time zone :toDate
         )
