@@ -30,8 +30,8 @@ exports.getFacilityReport = async (req, res) => {
         areaOcurrencies,
         checkIn,
         cases: { casesReport, casesReportData },
+        timeSpentData,
       },
-      timeSpentData,
     });
   } catch (error) {
     console.log(error);
