@@ -205,8 +205,8 @@ const getCasesReportData = async (query) =>
     WHERE ("Case"."deletedAt" IS NULL
       AND "Case"."isActive" = 1
       AND "Person"."deletedAt" IS NULL
-      AND "Case"."CreationDate" >= timestamp WITH time zone :fromDate
-      AND "Case"."CreationDate" < timestamp WITH time zone :toDate
+      AND "Case"."from" >= timestamp WITH time zone :fromDate
+      AND "Case"."from" < timestamp WITH time zone :toDate
       AND "Facility"."idFacility" = :idFacility
     )
     `,
