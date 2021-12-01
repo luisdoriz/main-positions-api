@@ -28,7 +28,7 @@ const emitNotification = async (idOrganization, payload) => {
 const lateCheckin = cron.schedule("*/30 * * * *", async () => {
   console.log(Date(), "lateCheckin");
   const persons = await readLateCheckin();
-  promises = persons.map(async ({ idPerson, name, firstLastName, idOrganization }) => {
+  promises = persons.map(async ({ idPerson, name, firstLastName }) => {
     const payload = `${name} ${firstLastName} llegó tarde a las ${moment().format(
       "YYYY-MM-DD HH:MM"
     )} `
@@ -40,7 +40,6 @@ const lateCheckin = cron.schedule("*/30 * * * *", async () => {
       idAlertType: 1,
     };
     await createAlert(body);
-    await emitNotification(idOrganization, payload)
   });
   await Promise.all(promises);
   console.log(Date(), "lateCheckin done!");
