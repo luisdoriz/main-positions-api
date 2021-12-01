@@ -53,7 +53,7 @@ const getAreaTraffic = async (query) =>
             LEFT JOIN "Facility" "Facility" ON "Area"."idFacility" = "Facility"."idFacility"
         WHERE ("Area"."idFacility" = :idFacility
             AND "Position"."CreationDate" >= timestamp WITH time zone :fromDate
-            AND "Position"."CreationDate" < timestamp WITH time zone :toDate
+            AND "Position"."CreationDate" < timestamp WITH time zone :toDate + (INTERVAL '1 day')
         ) 
         GROUP BY
             "Area"."idArea"
@@ -82,7 +82,7 @@ const getOcurrenciesPerArea = async (query) =>
             LEFT JOIN "Area" ON "Position"."idArea" = "Area"."idArea"
         WHERE ("Area"."idFacility" = :idFacility
             AND "Position"."CreationDate" >= timestamp WITH time zone :fromDate
-            AND "Position"."CreationDate" < timestamp WITH time zone :toDate
+            AND "Position"."CreationDate" < timestamp WITH time zone :toDate + (INTERVAL '1 day')
             ) 
         GROUP BY
             "Person"."idPerson",
@@ -117,7 +117,7 @@ const getCheckIn = async (query) =>
     WHERE ("Area"."idFacility" = :idFacility
         AND "Person"."deletedAt" IS NULL
         AND "Position"."CreationDate" >= timestamp WITH time zone :fromDate
-        AND "Position"."CreationDate" < timestamp WITH time zone :toDate
+        AND "Position"."CreationDate" < timestamp WITH time zone :toDate + (INTERVAL '1 day')
         )
     ORDER BY
         "Position"."CreationDate" DESC
@@ -133,7 +133,7 @@ const getCasesReport = async (query) =>
   sequelize.query(
     `
     SELECT
-      (CAST(date_trunc('week', CAST((CAST("public"."Case"."CreationDate" AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')) AS "CreationDate",
+      (CAST(date_trunc('week', CAST((CAST("public"."Case"."from" AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')) AS "CreationDate",
       count(*) AS "count"
     FROM
       "public"."Case"
@@ -143,8 +143,8 @@ const getCasesReport = async (query) =>
       AND "Case"."isActive" = 1
       AND "Person"."deletedAt" IS NULL
       AND "Facility"."idFacility" = :idFacility
-      AND "Case"."CreationDate" >= timestamp WITH time zone :fromDate
-      AND "Case"."CreationDate" < timestamp WITH time zone :toDate
+      AND "Case"."from" >= timestamp WITH time zone :fromDate
+      AND "Case"."from" < timestamp WITH time zone :toDate + (INTERVAL '1 day')
     )
     GROUP BY
       (
@@ -153,7 +153,7 @@ const getCasesReport = async (query) =>
             'week',
             CAST((
                 CAST(
-                  "Case"."CreationDate" AS timestamp
+                  "Case"."from" AS timestamp
     ) + (
                   INTERVAL '1 day'
     )
@@ -171,7 +171,7 @@ const getCasesReport = async (query) =>
             'week',
             CAST((
                 CAST(
-                  "Case"."CreationDate" AS timestamp
+                  "Case"."from" AS timestamp
     ) + (
                   INTERVAL '1 day'
     )
@@ -205,8 +205,8 @@ const getCasesReportData = async (query) =>
     WHERE ("Case"."deletedAt" IS NULL
       AND "Case"."isActive" = 1
       AND "Person"."deletedAt" IS NULL
-      AND "Case"."CreationDate" >= timestamp WITH time zone :fromDate
-      AND "Case"."CreationDate" < timestamp WITH time zone :toDate
+      AND "Case"."from" >= timestamp WITH time zone :fromDate
+      AND "Case"."from" < timestamp WITH time zone :toDate + (INTERVAL '1 day')
       AND "Facility"."idFacility" = :idFacility
     )
     `,
@@ -234,7 +234,7 @@ const getTimeSpentReport = async (query) =>
       AND "Position"."isActive" = 1
       AND "Person"."deletedAt" IS NULL
       AND "Position"."from" >= timestamp WITH time zone :fromDate
-      AND "Position"."to" < timestamp WITH time zone :toDate
+      AND "Position"."to" < timestamp WITH time zone :toDate + (INTERVAL '1 day')
       AND "Area"."idFacility" = :idFacility
     )
     GROUP BY
