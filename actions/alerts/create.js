@@ -2,6 +2,7 @@ const moment = require("moment");
 const { Op } = require("sequelize");
 
 const { Alert } = require('../../models');
+const { emitNotification } = require("../../modules/cron");
 const { getPersonOrganization } = require("../persons");
 
 const createAlert = async ({ payload, idArea, idPerson, date, idAlertType, }) => {
