@@ -133,7 +133,7 @@ const getCasesReport = async (query) =>
   sequelize.query(
     `
     SELECT
-      (CAST(date_trunc('week', CAST((CAST("public"."Case"."CreationDate" AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')) AS "CreationDate",
+      (CAST(date_trunc('week', CAST((CAST("public"."Case"."to" AS timestamp) + (INTERVAL '1 day')) AS timestamp)) AS timestamp) + (INTERVAL '-1 day')) AS "to",
       count(*) AS "count"
     FROM
       "public"."Case"
@@ -143,8 +143,8 @@ const getCasesReport = async (query) =>
       AND "Case"."isActive" = 1
       AND "Person"."deletedAt" IS NULL
       AND "Facility"."idFacility" = :idFacility
-      AND "Case"."CreationDate" >= timestamp WITH time zone :fromDate
-      AND "Case"."CreationDate" < timestamp WITH time zone :toDate
+      AND "Case"."to" >= timestamp WITH time zone :fromDate
+      AND "Case"."to" < timestamp WITH time zone :toDate
     )
     GROUP BY
       (
@@ -153,7 +153,7 @@ const getCasesReport = async (query) =>
             'week',
             CAST((
                 CAST(
-                  "Case"."CreationDate" AS timestamp
+                  "Case"."to" AS timestamp
     ) + (
                   INTERVAL '1 day'
     )
@@ -171,7 +171,7 @@ const getCasesReport = async (query) =>
             'week',
             CAST((
                 CAST(
-                  "Case"."CreationDate" AS timestamp
+                  "Case"."to" AS timestamp
     ) + (
                   INTERVAL '1 day'
     )
