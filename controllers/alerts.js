@@ -85,7 +85,7 @@ exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPers
         }
     }
 
-    if (maxCapacity != null) {
+    if (maxCapacity) {
         //generate alert for being too much time in an area
         const { excededOcuppancy, numPeople } = await checkMaxOcuppancy({ to, area, maxCapacity })
         if (excededOcuppancy) {
