@@ -1,9 +1,60 @@
+const moment = require("moment");
+const { Op } = require("sequelize");
+
 const { Alert } = require('../../models');
 
 const createAlert = async ({ payload, idArea, idPerson, date, idAlertType, }) => {
-    return Alert.create({
-        payload, idArea, idPerson, date, idAlertType, isActive: 1
-    });
+    let prevAlerts = []
+    if (idAlertType == 3) {
+        //capacidad excedida, check alerts from area in past 30 min
+        prevAlerts = await Alert.findAll({
+            where: {
+                idAlertType,
+                idArea,
+                date: {
+                    //only get rows from past 5 minutes. if exist edit their "to" else create new position row
+                    [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(30, "minutes").toDate(),
+                },
+            },
+            raw: true
+        })
+    } else if (idAlertType == 5) {
+        //area restringida, check past 30 minutes and alerts from same person
+        prevAlerts = await Alert.findAll({
+            where: {
+                idAlertType,
+                idArea,
+                idPerson,
+                date: {
+                    //only get rows from past 5 minutes. if exist edit their "to" else create new position row
+                    [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(30, "minutes").toDate(),
+                },
+            },
+            raw: true
+        })
+    } else {
+        //check all day for prevous alerts for person
+        prevAlerts = await Alert.findAll({
+            where: {
+                idAlertType,
+                idArea,
+                idPerson,
+                date: {
+                    //only get rows from past 5 minutes. if exist edit their "to" else create new position row
+                    [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(24, "hours").toDate(),
+                },
+            },
+            raw: true
+        })
+    }
+    if (prevAlerts.length == 0) { //if no prevous alerts found, create new alert
+        console.log('alert was created', idAlertType, payload)
+        return Alert.create({
+            payload, idArea, idPerson, date, idAlertType, isActive: 1
+        });
+    } else {
+        console.log('alert was not created because it already exists today', idAlertType, payload)
+    }
 }
 
 module.exports = {
