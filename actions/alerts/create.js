@@ -12,7 +12,7 @@ const createAlert = async ({ payload, idArea, idPerson, date, idAlertType, }) =>
                 idAlertType,
                 idArea,
                 date: {
-                    //only get rows from past 5 minutes. if exist edit their "to" else create new position row
+                    //only get rows from past 30 minutes
                     [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(30, "minutes").toDate(),
                 },
             },
@@ -26,7 +26,7 @@ const createAlert = async ({ payload, idArea, idPerson, date, idAlertType, }) =>
                 idArea,
                 idPerson,
                 date: {
-                    //only get rows from past 5 minutes. if exist edit their "to" else create new position row
+                    //only get rows from past 30 minutes
                     [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(30, "minutes").toDate(),
                 },
             },
@@ -40,8 +40,8 @@ const createAlert = async ({ payload, idArea, idPerson, date, idAlertType, }) =>
                 idArea,
                 idPerson,
                 date: {
-                    //only get rows from past 5 minutes. if exist edit their "to" else create new position row
-                    [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(24, "hours").toDate(),
+                    //only get rows from this working day.
+                    [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(8, "hours").toDate(),
                 },
             },
             raw: true
