@@ -41,7 +41,7 @@ const createAlert = async ({ payload, idArea, idPerson, date, idAlertType, }) =>
                 idPerson,
                 date: {
                     //only get rows from this working day.
-                    [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(8, "hours").toDate(),
+                    [Op.gte]: moment(date, "YYYY-MM-DD HH:mm:ss.SSS").subtract(12, "hours").toDate(),
                 },
             },
             raw: true
