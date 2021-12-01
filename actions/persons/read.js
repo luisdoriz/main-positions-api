@@ -280,7 +280,7 @@ const readAbsentPerson = async () => {
   return persons;
 };
 
-const getPersonOrganization = async ({ idPerson }) => {
+const getPersonOrganization = async (idPerson) => {
   let [person] = await sequelize.query(
     `
     SELECT
