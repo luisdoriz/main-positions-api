@@ -75,4 +75,5 @@ const absentAlert = cron.schedule("0 2 * * 1-5", async () => {
 module.exports = {
   lateCheckin,
   absentAlert,
+  emitNotification,
 };

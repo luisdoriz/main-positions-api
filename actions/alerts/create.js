@@ -2,6 +2,7 @@ const moment = require("moment");
 const { Op } = require("sequelize");
 
 const { Alert } = require('../../models');
+const { getPersonOrganization } = require("../persons");
 
 const createAlert = async ({ payload, idArea, idPerson, date, idAlertType, }) => {
     let prevAlerts = []
@@ -49,6 +50,10 @@ const createAlert = async ({ payload, idArea, idPerson, date, idAlertType, }) =>
     }
     if (prevAlerts.length == 0) { //if no prevous alerts found, create new alert
         console.log('alert was created', idAlertType, payload)
+        const idOrganization = await getPersonOrganization(idPerson)
+        if (idOrganization !== null) {
+            await emitNotification(idOrganization, payload)
+        }
         return Alert.create({
             payload, idArea, idPerson, date, idAlertType, isActive: 1
         });
