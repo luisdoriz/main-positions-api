@@ -300,7 +300,7 @@ const getPersonOrganization = async (idPerson) => {
   if (person.length === 0) {
     return null
   }
-  const id = person.idOrganization
+  const id = person[0].idOrganization
   return id;
 };
 
