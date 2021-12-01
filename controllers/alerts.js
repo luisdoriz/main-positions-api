@@ -72,8 +72,10 @@ exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPers
     }
     const { timeLimit, maxCapacity } = await Areas.readArea(area)
     if (timeLimit) {
+        console.log(timeLimit)
         //generate alert for being too much time in an area
         const { excededTimeLimit, timeInArea } = await checkTimeAllowed({ from, to, area, idPerson, timeLimit })
+        console.log(excededTimeLimit, timeInArea)
         if (excededTimeLimit) {
             //console.log('alert: person exceded time allowed in area', area)
             const person = await Persons.readPerson(idPerson)
@@ -122,7 +124,8 @@ const checkTimeAllowed = async ({ from, to, area, idPerson, timeLimit }) => {
         if (positions[i].idArea != latestArea.idArea) break;
         const posFrom = moment(positions[i].from, "YYYY-MM-DD HH:mm:ss.SSS")
         const posTo = moment(positions[i].to, "YYYY-MM-DD HH:mm:ss.SSS")
-        timeInArea += posTo.diff(posFrom, 'minutes')
+        const minutesInPosition = posTo.diff(posFrom, 'minutes')
+        timeInArea += (minutesInPosition == 0 ? 1 : minutesInPosition)
         //console.log(positions[i].idPosition, posTo.diff(posFrom, 'minutes'))
     }
     //add to total time spent in newly added position row (data from req.body)
