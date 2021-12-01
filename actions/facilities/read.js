@@ -115,6 +115,7 @@ const getCheckIn = async (query) =>
         LEFT JOIN "Area" ON "Area"."idArea" = "Position"."idArea"
         LEFT JOIN "Facility" ON "Facility"."idFacility" = "Person"."idFacility"
     WHERE ("Area"."idFacility" = :idFacility
+        AND "Person"."deletedAt" IS NULL
         AND "Position"."CreationDate" >= timestamp WITH time zone :fromDate
         AND "Position"."CreationDate" < timestamp WITH time zone :toDate
         )
@@ -214,6 +215,38 @@ const getCasesReportData = async (query) =>
     }
   );
 
+  const getTimeSpentReport = async (query) =>
+  sequelize.query(
+    `
+    SELECT
+      "Area"."idArea",
+      "Area"."name" AS "areaName",
+      "Person"."idPerson",
+      "Person"."name",
+      "Person"."firstLastName",
+      "Person"."secondLastName",
+      SUM(EXTRACT(EPOCH FROM ("Position"."to" - "Position"."from"))) AS "daysSpent"
+    FROM
+      "Position"
+      LEFT JOIN "Person" ON "Position"."idPerson" = "Person"."idPerson"
+      LEFT JOIN "Area" ON "Position"."idArea" = "Area"."idArea"
+    WHERE ("Position"."deletedAt" IS NULL
+      AND "Position"."isActive" = 1
+      AND "Person"."deletedAt" IS NULL
+      AND "Position"."from" >= timestamp WITH time zone :fromDate
+      AND "Position"."to" < timestamp WITH time zone :toDate
+      AND "Area"."idFacility" = :idFacility
+    )
+    GROUP BY
+      "Area"."idArea",
+      "Person"."idPerson",
+      "Position"."idPerson"
+    `,
+    {
+      replacements: query
+    }
+  );
+
 module.exports = {
   readFacilities,
   readFacilityByIdArea,
@@ -223,4 +256,5 @@ module.exports = {
   getCheckIn,
   getCasesReport,
   getCasesReportData,
+  getTimeSpentReport,
 };
