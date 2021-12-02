@@ -12,14 +12,13 @@ webpush.setVapidDetails(
   process.env.PRIVATE_VAPID_KEY
 );
 
-const sendNotification = (subscription, payload) =>
+const sendNotification = async (subscription, payload) =>
   webpush
     .sendNotification(subscription, payload)
-    .catch((e) => console.log(e.stack));
+    .catch((e) => console.log("error", e.stack));
 
 const emitNotification = async (idOrganization, payload) => {
   const subscriptions = await Users.getUserNotificationData(idOrganization);
-  console.log(subscriptions)
   subscriptions.forEach((subscription) =>
     sendNotification(subscription, payload)
   );
@@ -31,7 +30,7 @@ const lateCheckin = cron.schedule("*/30 * * * *", async () => {
   promises = persons.map(async ({ idPerson, name, firstLastName }) => {
     const payload = `${name} ${firstLastName} llegó tarde a las ${moment().format(
       "YYYY-MM-DD HH:MM"
-    )} `
+    )} `;
     const body = {
       payload,
       idArea: null,
@@ -48,10 +47,10 @@ const lateCheckin = cron.schedule("*/30 * * * *", async () => {
 const absentAlert = cron.schedule("0 2 * * 1-5", async () => {
   console.log(Date(), "absentAlert");
   const persons = await readAbsentPerson();
-  promises = persons.map(async ({ idPerson, name, firstLastName, idOrganization }) => {
+  promises = persons.map(async ({ idPerson, name, firstLastName }) => {
     const payload = `${name} ${firstLastName} no se presentó el día ${moment().format(
       "YYYY-MM-DD"
-    )} `
+    )} `;
     const body = {
       payload,
       idArea: null,
@@ -59,13 +58,8 @@ const absentAlert = cron.schedule("0 2 * * 1-5", async () => {
       date: Date(),
       idAlertType: 6,
     };
-    const notification = JSON.stringify({
-      title: 'Falta',
-      body: payload,
-    })
     await createAlert(body);
-    await emitNotification(idOrganization, notification)
-    return true
+    return true;
   });
   await Promise.all(promises);
   console.log(Date(), "absentAlert done!");
