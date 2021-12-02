@@ -280,6 +280,30 @@ const readAbsentPerson = async () => {
   return persons;
 };
 
+const getPersonOrganization = async (idPerson) => {
+  let [person] = await sequelize.query(
+    `
+    SELECT
+      "idOrganization"
+    FROM
+      "Person"
+      LEFT JOIN "Facility" ON "Facility"."idFacility" = "Person"."idFacility"
+    WHERE
+      "Person"."idPerson" = :idPerson
+    `,
+    {
+      replacements: {
+        idPerson,
+      },
+    }
+  );
+  if (person.length === 0) {
+    return null
+  }
+  const id = person[0].idOrganization
+  return id;
+};
+
 module.exports = {
   readEmployee,
   readEmployees,
@@ -290,4 +314,5 @@ module.exports = {
   readPerson,
   readAbsentPerson,
   readLateCheckin,
+  getPersonOrganization,
 };
