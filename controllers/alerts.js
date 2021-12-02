@@ -67,7 +67,7 @@ exports.generateAlerts = async ({ x, y, from, to, area, beacon, idBeacon, idPers
     if (isInRestrictedArea) {
         const person = await Persons.readPerson(idPerson)
         const rArea = await Areas.readArea(area)
-        let payload = `${person.name} ${person.firstLastName} ${person.secondLastName} ha entrado a la area restringida: ${rArea.name}`
+        let payload = `${person.name} ${person.firstLastName} ${person.secondLastName} ha entrado al área restringida: ${rArea.name}`
         Alerts.createAlert({ payload, idArea: area, idPerson, date: to, idAlertType: 3 })
     }
     const { timeLimit, maxCapacity } = await Areas.readArea(area)
